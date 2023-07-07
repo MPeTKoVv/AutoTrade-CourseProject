@@ -4,10 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace AutoTrade.Web.Controllers
 {
 	[Authorize]
-	public class CarController : Controller
+	public class SellerController : Controller
 	{
-		[AllowAnonymous]
-		public IActionResult All()
+		public async Task<IActionResult> Become()
 		{
 			return View();
 		}

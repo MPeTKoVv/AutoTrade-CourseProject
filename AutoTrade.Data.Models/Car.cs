@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Authentication.ExtendedProtection;
 
 namespace AutoTrade.Data.Models
 {
@@ -30,19 +31,24 @@ namespace AutoTrade.Data.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        public int Horsepower { get; set; }
+		[Required]
+		public string ImageUrl { get; set; } = null!;
 
-        public DateTime CreatedOn { get; set; }
+		public int Horsepower { get; set; }
 
         public decimal Price { get; set; }
 
+        public int Year { get; set; }
+
         public int Mileage { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; } = null!;
+        public DateTime AddedOn { get; set; }
 
         public int ConditionId { get; set; }
         public virtual Condition Condition { get; set; } = null!;
+
+        public int EngineId { get; set; }
+        public virtual EngineType Engine { get; set; } = null!;
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;

@@ -14,6 +14,11 @@
             public const int NameMaxLength = 50;
         }
 
+        public static class Engine
+        {
+            public const int TypeMinLength = 2;
+            public const int TypeMaxLength = 50;
+        }
 
         public static class Image
         {

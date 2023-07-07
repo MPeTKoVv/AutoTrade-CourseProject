@@ -55,13 +55,14 @@ namespace AutoTrade.Data.Configurations
                 Model = "C63 AMG",
                 Country = "Germany",
                 Description = "This is my favorite car and the first my app :)",
-                Horsepower = 650,
-                CreatedOn = DateTime.UtcNow.Date,
+                Horsepower = 500,
+                Year = 2023,
+                AddedOn = DateTime.UtcNow.Date,
                 Price = 150000M,
                 Mileage = 0,
                 ImageUrl = "https://i.ytimg.com/vi/i30EiaV-4_k/maxresdefault.jpg",
                 ConditionId = 1,
-                CategoryId = 6,
+                CategoryId = 5,
                 SellerId = Guid.Parse("CDB33D65-5B4B-4DEC-899B-32E2B843F801"),
                 //CustomerId = Guid.Parse("018D9958-F826-4FE3-9115-B9E14589BD2C")
             };
