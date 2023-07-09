@@ -32,6 +32,12 @@ namespace AutoTrade.Data.Configurations
                .HasForeignKey(c => c.CustomerId)
                .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .HasOne(c => c.EngineType)
+                .WithMany(et => et.Cars)
+                .HasForeignKey(c => c.EngineId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             //builder
             //   .HasOne(c => c.Customer)
@@ -52,7 +58,7 @@ namespace AutoTrade.Data.Configurations
             car = new Car
             {
                 Make = "Mercedes",
-                Model = "C63 AMG",
+                Model = "C 63 AMG",
                 Country = "Germany",
                 Description = "This is my favorite car and the first my app :)",
                 Horsepower = 500,
@@ -61,6 +67,7 @@ namespace AutoTrade.Data.Configurations
                 Price = 150000M,
                 Mileage = 0,
                 ImageUrl = "https://i.ytimg.com/vi/i30EiaV-4_k/maxresdefault.jpg",
+                EngineId = 1,
                 ConditionId = 1,
                 CategoryId = 5,
                 SellerId = Guid.Parse("CDB33D65-5B4B-4DEC-899B-32E2B843F801"),

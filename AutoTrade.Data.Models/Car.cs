@@ -48,7 +48,7 @@ namespace AutoTrade.Data.Models
         public virtual Condition Condition { get; set; } = null!;
 
         public int EngineId { get; set; }
-        public virtual EngineType Engine { get; set; } = null!;
+        public virtual EngineType EngineType { get; set; } = null!;
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;

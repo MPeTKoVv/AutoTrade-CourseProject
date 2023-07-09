@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AutoTrade.Data.Models
 {
-	internal class Engine
+    using static Common.EntityValidationConstants.Engine;
+
+	public class EngineType
 	{
-	}
+        public EngineType()
+        {
+            this.Cars = new HashSet<Car>();
+        }
+
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [MaxLength(TypeMaxLength)]
+        public string Type { get; set; } = null!;
+
+        public virtual ICollection<Car> Cars { get; set; }
+    }
 }
