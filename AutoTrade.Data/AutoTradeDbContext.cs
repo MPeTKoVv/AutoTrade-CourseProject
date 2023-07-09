@@ -17,9 +17,11 @@ namespace AutoTrade.Web.Data
 
         public DbSet<Category> Categories { get; set; } = null!;
 
-        public DbSet<Condition> Conditions { get; set; }
+        public DbSet<Condition> Conditions { get; set; } = null!;
 
-        public DbSet<EngineType> EngineTypes { get; set; }
+		public DbSet<EngineType> EngineTypes { get; set; } = null!;
+
+		public DbSet<Review> Reviews { get; set; } = null!;
 
 		public DbSet<Image> Images { get; set; } = null!;
 

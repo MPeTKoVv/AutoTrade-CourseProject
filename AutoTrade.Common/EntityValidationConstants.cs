@@ -20,6 +20,15 @@
             public const int TypeMaxLength = 50;
         }
 
+        public static class Review
+        {
+            public const int DescriptionMinLength = 5;
+            public const int DescriptionMaxLength = 500;
+
+            public const int RatingMinValue = 0;
+            public const int RatingMaxValue = 5;
+		}
+
         public static class Image
         {
             public const int UrlMaxLength = 2048;
