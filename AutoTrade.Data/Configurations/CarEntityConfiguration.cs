@@ -38,6 +38,11 @@ namespace AutoTrade.Data.Configurations
                 .HasForeignKey(c => c.EngineId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .HasMany(c => c.Images)
+                .WithOne(i => i.Car)
+                .HasForeignKey(i => i.CarId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //builder
             //   .HasOne(c => c.Customer)
