@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230709102051_ModifyAddedOnCarProp")]
+    partial class ModifyAddedOnCarProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +99,7 @@ namespace AutoTrade.Data.Migrations
                     b.Property<DateTime>("AddedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 9, 12, 24, 50, 988, DateTimeKind.Utc).AddTicks(7828));
+                        .HasDefaultValue(new DateTime(2023, 7, 9, 10, 20, 50, 688, DateTimeKind.Utc).AddTicks(776));
 
                     b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
@@ -127,10 +129,9 @@ namespace AutoTrade.Data.Migrations
                     b.Property<int>("Horsepower")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
                         .IsRequired()
@@ -173,7 +174,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("27b768cc-fa3f-487b-9afb-2eacefee4ad8"),
+                            Id = new Guid("6a1b9174-c810-44a6-b157-d495c7de3e75"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
                             ConditionId = 1,
@@ -181,7 +182,7 @@ namespace AutoTrade.Data.Migrations
                             Description = "This is my favorite car and the first my app :)",
                             EngineId = 1,
                             Horsepower = 500,
-                            Image = "https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/f03a0277f53ad691e6ab18fad632edc6.jpg",
+                            ImageUrl = "https://i.ytimg.com/vi/i30EiaV-4_k/maxresdefault.jpg",
                             Make = "Mercedes",
                             Mileage = 0,
                             Model = "C 63 AMG",
@@ -603,9 +604,9 @@ namespace AutoTrade.Data.Migrations
             modelBuilder.Entity("AutoTrade.Data.Models.Image", b =>
                 {
                     b.HasOne("AutoTrade.Data.Models.Car", "Car")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -703,6 +704,8 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.Car", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Reviews");
                 });
 

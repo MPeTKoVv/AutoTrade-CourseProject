@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoTrade.Data.Models
 {
@@ -10,10 +11,10 @@ namespace AutoTrade.Data.Models
 		{
 			this.Id = Guid.NewGuid();
 			this.Reviews = new HashSet<Review>();
-			this.Images = new HashSet<Image>();
-		}
+            this.Images  = new HashSet<string>();
+        }
 
-		[Key]
+        [Key]
 		public Guid Id { get; set; }
 
 		[Required]
@@ -31,9 +32,6 @@ namespace AutoTrade.Data.Models
 		[MaxLength(DescriptionMaxLength)]
 		public string Description { get; set; } = null!;
 
-		[Required]
-		public string ImageUrl { get; set; } = null!;
-
 		[Range(HorsepowerMinValue, HorsepowerMaxValue)]
 		public int Horsepower { get; set; }
 
@@ -45,7 +43,7 @@ namespace AutoTrade.Data.Models
 
 		public DateTime AddedOn { get; set; }
 
-		public int ConditionId { get; set; }
+        public int ConditionId { get; set; }
 		public virtual Condition Condition { get; set; } = null!;
 
 		public int EngineId { get; set; }
@@ -60,7 +58,8 @@ namespace AutoTrade.Data.Models
 		public Guid? CustomerId { get; set; }
 		public virtual ApplicationUser? Customer { get; set; }
 
-        public virtual ICollection<Image> Images { get; set; }
+        [NotMapped]
+        public virtual ICollection<string> Images { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
     }

@@ -1,67 +1,80 @@
-﻿@*
+﻿@model IEnumerable<IndexViewModel>
 
+@{
+	ViewData["Title"] = "All Cars";
+}
+
+<!DOCTYPE html>
+<html>
 <head>
-    <title>Car Listings</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
+	<title>All Cars</title>
+	<style>
+		/* Custom CSS styles */
+		.car-list {
+			display: flex;
+			flex-wrap: wrap;
+		}
 
-        h1 {
-            color: #333;
-            text-align: center;
-        }
+		.car-section {
+			width: 400px;
+			margin: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 10px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+		.car-card {
+			text-align: center;
+		}
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+			.car-card h2 {
+				font-size: 20px;
+				margin-bottom: 15px;
+			}
 
-        th {
-            background-color: #f8f8f8;
-            font-weight: bold;
-            color: #555;
-        }
+			.car-card p {
+				margin-bottom: 15px;
+			}
 
-        tr:hover {
-            background-color: #f2f2f2;
-        }
-    </style>
+			.car-card img {
+				max-width: 100%;
+				height: auto;
+				border-radius: 5px;
+				margin-bottom: 10px;
+			}
+
+			.car-card button {
+				background-color: #3498db;
+				color: #fff;
+				border: none;
+				padding: 8px 12px;
+				font-size: 14px;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: background-color 0.3s;
+			}
+
+				.car-card button:hover {
+					background-color: #2980b9;
+				}
+	</style>
 </head>
 <body>
-    <h1>Car Listings</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Year</th>
-                <th>Price</th>
-                <!-- Add more table headers for additional car properties -->
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Loop through your cars data to populate the table rows -->
-            @foreach (var car in Model)
-            {
-                <tr>
-                    <td>@car.Make</td>
-                    <td>@car.Model</td>
-                    <td>@car.Year</td>
-                    <td>@car.Price</td>
-                    <!-- Add more table cells for additional car properties -->
-                </tr>
-            }
-        </tbody>
-    </table>
-</body>*@
+	<h1>All Cars</h1>
+
+	<div class="car-list">
+		@foreach (var car in Model)
+		{
+			<section class="car-section">
+				<div class="car-card">
+					<h2>@car.Make @car.Model</h2>
+					<img src="@car.ImageUrl" alt="@car.Make @car.Model">
+					<p>Price: @car.Price.ToString("N")$</p>
+					<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Cars/BuyCar">Buy</button>
+				</div>
+			</section>
+		}
+	</div>
+</body>
+</html>

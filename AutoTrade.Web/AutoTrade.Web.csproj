@@ -17,7 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoTrade.Common\AutoTrade.Common.csproj" />
+    <ProjectReference Include="..\AutoTrade.Data.Models\AutoTrade.Data.Models.csproj" />
     <ProjectReference Include="..\AutoTrade.Data\AutoTrade.Data.csproj" />
+    <ProjectReference Include="..\AutoTrade.Services.Data\AutoTrade.Services.Data.csproj" />
+    <ProjectReference Include="..\AutoTrade.Web.Infrstructure\AutoTrade.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\AutoTrade.Web.ViewModels\AutoTrade.Web.ViewModels.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using AutoTrade.Web.ViewModels.Home;
+﻿using AutoTrade.Services.Data.Interfaces;
+using AutoTrade.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,14 +7,19 @@ namespace AutoTrade.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ICarService carService;
 
-        public HomeController()
+        public HomeController(ICarService carService)
         {
+            this.carService = carService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<IndexViewModel> viewModel =
+                await this.carService.AllCarsOrderedByAddedOnDescendingAsync();
+
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

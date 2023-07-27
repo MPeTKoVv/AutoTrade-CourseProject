@@ -1,9 +1,12 @@
-using AutoTrade.Data.Models;
-using AutoTrade.Web.Data;
-using Microsoft.EntityFrameworkCore;
-
 namespace AutoTrade.Web
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Data;
+    using AutoTrade.Data.Models;
+    using AutoTrade.Web.Infrstructure.Extensions;
+    using Services.Data.Interfaces;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -24,6 +27,8 @@ namespace AutoTrade.Web
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
                 .AddEntityFrameworkStores<AutoTradeDbContext>();
+
+            builder.Services.AddApplicationServices(typeof(ICarService));
 
             builder.Services.AddControllersWithViews();
 
