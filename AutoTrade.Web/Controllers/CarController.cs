@@ -25,5 +25,17 @@ namespace AutoTrade.Web.Controllers
 
 			return View(viewModel);
 		}
+
+		public async Task<IActionResult> Add()
+		{
+			return View();
+		}
+			
+		public async Task<IActionResult> Buy()
+		{
+
+
+			return View();
+		}
 	}
 }

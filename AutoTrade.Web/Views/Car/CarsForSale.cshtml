@@ -66,14 +66,14 @@
 	<div class="car-list">
 		@foreach (var car in Model)
 		{
-				<section class="car-section">
-					<div class="car-card">
-						<h2>@car.Make @car.Model</h2>
-						<img src="@car.ImageUrl" alt="@car.Make @car.Model">
-						<p>Price: @car.Price.ToString("N")€</p>
-						<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Car/Edit">Edit</button>
-					</div>
-				</section>
+			<section class="car-section">
+				<div class="car-card">
+					<h2>@car.Make @car.Model</h2>
+					<img src="@car.ImageUrl" alt="@car.Make @car.Model">
+					<p>Price: @car.Price.ToString("N")€</p>
+					<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Car/Edit">Edit</button>
+				</div>
+			</section>
 		}
 	</div>
 </body>
