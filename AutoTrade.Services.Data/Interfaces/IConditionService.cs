@@ -1,4 +1,4 @@
-﻿using AutoTrade.Web.ViewModels.Category;
+﻿using AutoTrade.Web.ViewModels.Condition;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace AutoTrade.Services.Data.Interfaces
 {
-	public interface ICategoryService
+	public interface IConditionService
 	{
-		Task<IEnumerable<CarSelectCategoryViewModel>> AllCategoriesAsync();
+		Task<IEnumerable<CarSelectConditionViewModel>> AllConditoinsAsync();
 	}
 }

@@ -2,12 +2,8 @@
 using AutoTrade.Web.ViewModels.Category;
 using AutoTrade.Web.ViewModels.Condition;
 using AutoTrade.Web.ViewModels.Engine;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AutoTrade.Web.ViewModels.Car
 {
@@ -17,7 +13,11 @@ namespace AutoTrade.Web.ViewModels.Car
 	{
 		public CarViewModel()
 		{
+			this.Categories = new HashSet<CarSelectCategoryViewModel>();
+			this.Conditions = new HashSet<CarSelectConditionViewModel>();
 			this.EngineTypes = new HashSet<CarSelectEngineTypeViewModel>();
+
+			this.Images = new HashSet<Image>();
 		}
 
 		[Required]
@@ -47,9 +47,14 @@ namespace AutoTrade.Web.ViewModels.Car
 
         public ICollection<Image> Images { get; set; }
 
+		[Display(Name = "Category")]
         public int CategoryId { get; set; }
-        public int ConditionId { get; set; }
-        public int EngineTypeId { get; set; }
+
+		[Display(Name = "Condition")]
+		public int ConditionId { get; set; }
+
+		[Display(Name = "Engine Type")]
+		public int EngineTypeId { get; set; }
 
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }
         public IEnumerable<CarSelectConditionViewModel> Conditions { get; set; }
