@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoTrade.Common\AutoTrade.Common.csproj" />
+    <ProjectReference Include="..\AutoTrade.Data.Models\AutoTrade.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

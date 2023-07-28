@@ -52,7 +52,7 @@
             public const int DescriptionMaxLength = 500;
 
             public const string PriceMinValue = "0";
-            public const string PriceMaxValue = "99999999";
+            public const string PriceMaxValue = "999999999";
 
             public const int ColorMinLength = 2;
             public const int ColorMaxLength = 20;
