@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoTrade.Web.ViewModels.Seller;
 
 namespace AutoTrade.Services.Data.Interfaces
 {
     public interface ISellerService
     {
         Task<bool> SellerExistsByUserIdAsync(string userId);
-    }
+
+        Task<bool> SellerExistsByPhoneNumberAsync(string userId);
+
+		Task Create(string userId, BecomeSellerViewModel model);
+	}
 }
