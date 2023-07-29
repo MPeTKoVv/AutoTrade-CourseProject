@@ -6,8 +6,9 @@ namespace AutoTrade.Web
     using AutoTrade.Data.Models;
     using AutoTrade.Web.Infrstructure.Extensions;
     using Services.Data.Interfaces;
+	using HouseRentingSystem.Web.Infrastructure.ModelBinders;
 
-    public class Program
+	public class Program
     {
         public static void Main(string[] args)
         {
@@ -30,7 +31,12 @@ namespace AutoTrade.Web
 
             builder.Services.AddApplicationServices(typeof(ICarService));
 
-            builder.Services.AddControllersWithViews();
+            builder.Services
+                .AddControllersWithViews()
+                .AddMvcOptions(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                });
 
             WebApplication app = builder.Build();
 

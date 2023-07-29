@@ -1,51 +1,48 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Globalization;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿namespace HouseRentingSystem.Web.Infrastructure.ModelBinders
+{
+	using System.Globalization;
 
-//namespace AutoTrade.Web.Infrastructure.ModelBinders
-//{
-//    public class DecimalModelBinder :
-//    {
-//        public Task BindModelAsync(ModelBindingContext? bindingContext)
-//        {
-//            if (bindingContext == null)
-//            {
-//                throw new ArgumentNullException(nameof(bindingContext));
-//            }
+	using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-//            ValueProviderResult valueResult =
-//                bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-//            if (valueResult != ValueProviderResult.None && !string.IsNullOrWhiteSpace(valueResult.FirstValue))
-//            {
-//                decimal parsedValue = 0m;
-//                bool binderSucceeded = false;
+	public class DecimalModelBinder : IModelBinder
+	{
+		public Task BindModelAsync(ModelBindingContext? bindingContext)
+		{
+			if (bindingContext == null)
+			{
+				throw new ArgumentNullException(nameof(bindingContext));
+			}
 
-//                try
-//                {
-//                    string formDecValue = valueResult.FirstValue;
-//                    formDecValue = formDecValue.Replace(",",
-//                        CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-//                    formDecValue = formDecValue.Replace(".",
-//                        CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+			ValueProviderResult valueResult =
+				bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+			if (valueResult != ValueProviderResult.None && !string.IsNullOrWhiteSpace(valueResult.FirstValue))
+			{
+				decimal parsedValue = 0m;
+				bool binderSucceeded = false;
 
-//                    parsedValue = Convert.ToDecimal(formDecValue);
-//                    binderSucceeded = true;
-//                }
-//                catch (FormatException fe)
-//                {
-//                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, fe, bindingContext.ModelMetadata);
-//                }
+				try
+				{
+					string formDecValue = valueResult.FirstValue;
+					formDecValue = formDecValue.Replace(",",
+						CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+					formDecValue = formDecValue.Replace(".",
+						CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
-//                if (binderSucceeded)
-//                {
-//                    bindingContext.Result = ModelBindingResult.Success(parsedValue);
-//                }
-//            }
+					parsedValue = Convert.ToDecimal(formDecValue);
+					binderSucceeded = true;
+				}
+				catch (FormatException fe)
+				{
+					bindingContext.ModelState.AddModelError(bindingContext.ModelName, fe, bindingContext.ModelMetadata);
+				}
 
-//            return Task.CompletedTask;
-//        }
-//    }
-//}
+				if (binderSucceeded)
+				{
+					bindingContext.Result = ModelBindingResult.Success(parsedValue);
+				}
+			}
+
+			return Task.CompletedTask;
+		}
+	}
+}

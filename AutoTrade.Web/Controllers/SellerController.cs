@@ -71,5 +71,10 @@ namespace AutoTrade.Web.Controllers
 
 			return RedirectToAction("All", "Cars");
 		}
+
+		public async Task<IActionResult> CarsForSale()
+		{
+			return Ok();
+		}
 	}
 }

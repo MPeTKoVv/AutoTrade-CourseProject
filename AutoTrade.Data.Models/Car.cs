@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoTrade.Data.Models
@@ -32,7 +34,6 @@ namespace AutoTrade.Data.Models
 		[MaxLength(DescriptionMaxLength)]
 		public string Description { get; set; } = null!;
 
-		[Range(HorsepowerMinValue, HorsepowerMaxValue)]
 		public int Horsepower { get; set; }
 
 		public decimal Price { get; set; }

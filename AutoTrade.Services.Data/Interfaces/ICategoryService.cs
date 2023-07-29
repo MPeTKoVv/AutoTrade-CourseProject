@@ -10,5 +10,7 @@ namespace AutoTrade.Services.Data.Interfaces
 	public interface ICategoryService
 	{
 		Task<IEnumerable<CarSelectCategoryViewModel>> AllCategoriesAsync();
+
+		Task<bool>ExistsByIdAsync(int id);
 	}
 }

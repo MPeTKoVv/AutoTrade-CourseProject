@@ -2,6 +2,7 @@
 using AutoTrade.Web.ViewModels.Category;
 using AutoTrade.Web.ViewModels.Condition;
 using AutoTrade.Web.ViewModels.Engine;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -36,16 +37,17 @@ namespace AutoTrade.Web.ViewModels.Car
 		[StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
 		public string Description { get; set; } = null!;
 
+		[Range(typeof(int), HorsepowerMinValue, HorsepowerMaxValue)]
 		public int Horsepower { get; set; }
 
 		[Range(typeof(decimal), PriceMinValue, PriceMaxValue)]
 		public decimal Price { get; set; }
 
+		[Range(typeof(int), YearMinValue, YearMaxValue)]
 		public int Year { get; set; }
 
+		[Range(typeof(int), MileageMinValue, MileageMaxValue)]
 		public int Mileage { get; set; }
-
-        public ICollection<Image> Images { get; set; }
 
 		[Display(Name = "Category")]
         public int CategoryId { get; set; }
@@ -55,6 +57,9 @@ namespace AutoTrade.Web.ViewModels.Car
 
 		[Display(Name = "Engine Type")]
 		public int EngineTypeId { get; set; }
+
+		[Display(Name = "Image(s)")]
+		public ICollection<Image> Images { get; set; }
 
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }
         public IEnumerable<CarSelectConditionViewModel> Conditions { get; set; }

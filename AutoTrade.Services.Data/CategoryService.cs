@@ -14,12 +14,12 @@ namespace AutoTrade.Services.Data
 	{
 		private readonly AutoTradeDbContext dbContext;
 
-        public CategoryService(AutoTradeDbContext dbContext)
-        {
+		public CategoryService(AutoTradeDbContext dbContext)
+		{
 			this.dbContext = dbContext;
-        }
+		}
 
-        public async Task<IEnumerable<CarSelectCategoryViewModel>> AllCategoriesAsync()
+		public async Task<IEnumerable<CarSelectCategoryViewModel>> AllCategoriesAsync()
 		{
 			IEnumerable<CarSelectCategoryViewModel> allCategories = await this.dbContext
 				.Categories
@@ -31,6 +31,15 @@ namespace AutoTrade.Services.Data
 				.ToArrayAsync();
 
 			return allCategories;
+		}
+
+		public async Task<bool> ExistsByIdAsync(int id)
+		{
+			bool result = await dbContext
+				.Categories
+				.AnyAsync(c => c.Id == id);
+
+			return result;
 		}
 	}
 }

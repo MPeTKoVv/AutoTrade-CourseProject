@@ -45,20 +45,27 @@
             public const int CountryMinLength = 2;
             public const int CountryMaxLength = 100;
 
-            public const int HorsepowerMinValue = 1;
-            public const int HorsepowerMaxValue = 1500;
-
             public const int DescriptionMinLength = 50;
             public const int DescriptionMaxLength = 500;
 
-            public const string PriceMinValue = "0";
-            public const string PriceMaxValue = "999999999";
+			public const string PriceMinValue = "1";
+			public const string PriceMaxValue = "999999999";
 
-            public const int ColorMinLength = 2;
+			public const string HorsepowerMinValue = "1";
+			public const string HorsepowerMaxValue = "2000";
+
+			public const string YearMinValue = "1886";
+			public const string YearMaxValue = "2023";
+
+			public const string MileageMinValue = "0";
+			public const string MileageMaxValue = "9999999";
+
+			public const int ColorMinLength = 2;
             public const int ColorMaxLength = 20;
 
+            public const int UrlMinLength = 5;
             public const int UrlMaxLength = 2048;
-        }
+		}
 
         public static class Seller
         {
