@@ -9,6 +9,8 @@ namespace AutoTrade.Services.Data.Interfaces
 {
 	public interface IConditionService
 	{
-		Task<IEnumerable<CarSelectConditionViewModel>> AllConditoinsAsync();
+		Task<IEnumerable<CarSelectConditionViewModel>> AllConditionsAsync();
+
+		Task<bool> ExistsByIdAsync(int id);
 	}
 }

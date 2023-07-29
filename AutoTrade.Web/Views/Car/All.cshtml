@@ -70,8 +70,10 @@
 					<div class="car-card">
 						<h2>@car.Make @car.Model</h2>
 						<img src="@car.ImageUrl" alt="@car.Make @car.Model">
-						<p>Price: @car.Price.ToString("N")€</p>
-						<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Car/Edit">Edit</button>
+						<h6>Year: @car.Year<h6>
+						<h6>Horsepower: @car.Horsepower<h6>
+						<h6>Price: @car.Price.ToString("N")€<h6>
+						<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Car/Buy">Buy</button>
 					</div>
 				</section>
 		}

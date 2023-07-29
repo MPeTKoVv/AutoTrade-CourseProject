@@ -49,9 +49,21 @@
 						  placeholder="The car..."></textarea>
 				<span asp-validation-for="Description" class="small text-danger"></span>
 			</div>
-			<div class="mb-3">
-				<label for="Images" class="form-label">Image(s)</label>
-				<input class="form-control" type="file" id="formFileMultiple" multiple>
+			@*<div class="mb-3">
+			<label for="Images" class="form-label">Image(s)</label>
+			<input class="form-control" type="file" id="formFileMultiple" multiple>
+			<span asp-validation-for="Images" class="small text-danger"></span>
+			</div>*@
+@*			<div>
+				<select name="FacultyList" multiple class="sel form-control" asp-for="Images"
+						id="uniFaculties" asp-items="@(new MultiSelectList(Model.Images, "Name", "Name"))">
+				</select>
+			</div>*@
+			<div class="form-group">
+				<label asp-for="ImageUrl"></label>
+				<input asp-for="ImageUrl" class="form-control"
+					   placeholder="Image...">
+				<span asp-validation-for="ImageUrl" class="small text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CategoryId"></label>

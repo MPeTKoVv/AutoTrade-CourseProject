@@ -2,6 +2,7 @@
 using AutoTrade.Web.Data;
 using AutoTrade.Web.ViewModels.Condition;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace AutoTrade.Services.Data
 {
@@ -14,7 +15,7 @@ namespace AutoTrade.Services.Data
 			this.dbContext = dbContext;
 		}
 
-		public async Task<IEnumerable<CarSelectConditionViewModel>> AllConditoinsAsync()
+		public async Task<IEnumerable<CarSelectConditionViewModel>> AllConditionsAsync()
 		{
 			IEnumerable<CarSelectConditionViewModel> allConditoins = await this.dbContext
 				.Conditions
@@ -26,6 +27,15 @@ namespace AutoTrade.Services.Data
 				.ToArrayAsync();
 
 			return allConditoins;
+		}
+
+		public async Task<bool> ExistsByIdAsync(int id)
+		{
+			bool result = await dbContext
+				.Conditions
+				.AnyAsync(c => c.Id == id);
+
+			return result;
 		}
 	}
 }

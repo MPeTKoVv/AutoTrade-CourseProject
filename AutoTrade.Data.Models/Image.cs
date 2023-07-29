@@ -16,7 +16,7 @@ namespace AutoTrade.Data.Models
 
         [Required]
         [MaxLength(UrlMaxLength)]
-        public ByteArrayContent Bytes { get; set; } = null!;
+        public string Url { get; set; } = null!;
 
         public Guid CarId { get; set; }
         public virtual Car Car { get; set; } = null!;

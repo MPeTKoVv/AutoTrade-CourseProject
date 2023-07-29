@@ -9,5 +9,7 @@ namespace AutoTrade.Services.Data.Interfaces
         Task<bool> SellerExistsByPhoneNumberAsync(string userId);
 
 		Task Create(string userId, BecomeSellerViewModel model);
+
+        Task<string> GetSellerIdByUserIdAsync(string userId);
 	}
 }

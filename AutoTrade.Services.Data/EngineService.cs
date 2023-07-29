@@ -27,5 +27,14 @@ namespace AutoTrade.Services.Data
 
 			return allEngineTypes;
 		}
+
+		public async Task<bool> ExistsByIdAsync(int id)
+		{
+			bool result = await dbContext
+				.EngineTypes
+				.AnyAsync(e => e.Id == id);
+
+			return result;
+		}
 	}
 }

@@ -38,7 +38,7 @@ namespace AutoTrade.Web.Controllers
 		public async Task<IActionResult> Become(BecomeSellerViewModel model)
 		{
 			string? userId = User.GetId();
-			bool isAgent = await sellerService.SellerExistsByUserIdAsync(userId);
+			bool isAgent = await sellerService.SellerExistsByUserIdAsync(userId!);
 			if (isAgent)
 			{
 				//TempData[ErrorMessage] = "You are already an agent!";
@@ -60,7 +60,7 @@ namespace AutoTrade.Web.Controllers
 
 			try
 			{
-				await sellerService.Create(userId, model);
+				await sellerService.Create(userId!, model);
 			}
 			catch (Exception)
 			{
@@ -70,11 +70,6 @@ namespace AutoTrade.Web.Controllers
 			}
 
 			return RedirectToAction("All", "Cars");
-		}
-
-		public async Task<IActionResult> CarsForSale()
-		{
-			return Ok();
 		}
 	}
 }

@@ -4,7 +4,7 @@
 	ViewData["Title"] = "Home Page";
 	var cars = Model.ToList();
 }
-@if (cars.Any())
+@if (!cars.Any())
 {
 	<div class="mt-4 p-5 bg-light">
 		<h1 class="display-4">Welcome to the best place to buy your car!</h1>

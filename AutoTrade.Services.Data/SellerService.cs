@@ -27,11 +27,25 @@ namespace AutoTrade.Services.Data
             await dbContext.SaveChangesAsync();
 		}
 
+		public async Task<string> GetSellerIdByUserIdAsync(string userId)
+		{
+            Seller? seller = await dbContext
+                .Sellers
+                .FirstOrDefaultAsync(s => s.UserId.ToString() == userId);
+
+            if (seller == null)
+            {
+                return null;
+            }
+
+            return seller.Id.ToString();
+		}
+
 		public async Task<bool> SellerExistsByPhoneNumberAsync(string phoneNumber)
 		{
             bool result = await dbContext
                 .Sellers
-                .AllAsync(s => s.PhoneNumber == phoneNumber);
+                .AnyAsync(s => s.PhoneNumber == phoneNumber);
 
             return result;
 		}
