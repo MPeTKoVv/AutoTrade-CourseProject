@@ -1,5 +1,6 @@
 ﻿using AutoTrade.Data.Models;
 using AutoTrade.Services.Data.Interfaces;
+using AutoTrade.Services.Data.Models.Car;
 using AutoTrade.Web.Data;
 using AutoTrade.Web.Infrastructure.Extensions;
 using AutoTrade.Web.ViewModels.Car;
@@ -7,6 +8,7 @@ using AutoTrade.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Permissions;
 
 namespace AutoTrade.Web.Controllers
 {
@@ -29,13 +31,34 @@ namespace AutoTrade.Web.Controllers
 		}
 
 		[AllowAnonymous]
-		public async Task<IActionResult> All()
+		public async Task<IActionResult> All([FromQuery] AllCarsQueryModel queryModel)
 		{
-			IEnumerable<IndexViewModel> viewModel =
-				await this.carService.AllCarsOrderedByAddedOnDescendingAsync();
+			AllCarsFilteredAndPagedServiceModel serviceModel =
+			   await carService.AllAsync(queryModel);
+
+			queryModel.Cars = serviceModel.Cars;
+			queryModel.TotalCars = serviceModel.TotalCarsCount;
+			queryModel.Categories = await categoryService.AllCategoryNamesAsync();
+			queryModel.Conditions = await conditionService.AllConditionNamesAsync();
+			queryModel.EngineTypes = await engineService.AllEngineTypeNamesAsync();
+
+			return View(queryModel);
+		}
+
+		[AllowAnonymous]
+		public async Task<IActionResult> Details(string id)
+		{
+			CarDetailsViewModel? viewModel = await carService
+				.GetDetailsByIdAsync(id);
+
+			if (viewModel == null)
+			{
+				return RedirectToAction("All", "Car");
+			}
 
 			return View(viewModel);
 		}
+
 
 		[HttpGet]
 		public async Task<IActionResult> Add()
@@ -49,7 +72,7 @@ namespace AutoTrade.Web.Controllers
 				return RedirectToAction("Become", "Seller");
 			}
 
-			CarViewModel carViewModel = new CarViewModel()
+			CarFormModel carViewModel = new CarFormModel()
 			{
 				//Images = new HashSet<Image>(),
 				Categories = await this.categoryService.AllCategoriesAsync(),
@@ -61,7 +84,7 @@ namespace AutoTrade.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(CarViewModel carViewModel)
+		public async Task<IActionResult> Add(CarFormModel carViewModel)
 		{
 			bool isSeller =
 				await sellerService.SellerExistsByUserIdAsync(User.GetId()!);
@@ -119,25 +142,25 @@ namespace AutoTrade.Web.Controllers
 			}
 		}
 
-		public async Task<IActionResult> Buy()
-		{
-			return Ok();
-		}
+		//public async Task<IActionResult> Buy()
+		//{
+		//	return Ok();
+		//}
 
-		public async Task<IActionResult> Garage()
-		{
-			return Ok();
-		}
+		//public async Task<IActionResult> Garage()
+		//{
+		//	return Ok();
+		//}
 
-		public async Task<IActionResult> CarsForSale()
-		{
-			string sellerId =
-					await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
+		//public async Task<IActionResult> CarsForSale()
+		//{
+		//	string sellerId =
+		//			await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
 
-			IEnumerable<IndexViewModel> myCarsForSale = await carService
-				.AllMyCarsForSale(sellerId);
+		//	IEnumerable<IndexViewModel> myCarsForSale = await carService
+		//		.AllMyCarsForSale(sellerId);
 
-			return View(myCarsForSale);
-		}
+		//	return View(myCarsForSale);
+		//}
 	}
 }

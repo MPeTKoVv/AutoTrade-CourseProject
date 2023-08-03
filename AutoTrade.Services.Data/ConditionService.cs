@@ -29,6 +29,16 @@ namespace AutoTrade.Services.Data
 			return allConditoins;
 		}
 
+		public async Task<IEnumerable<string>> AllConditionNamesAsync()
+		{
+			IEnumerable<string> allNames = await dbContext
+				.Conditions
+				.Select(c => c.Name)
+				.ToArrayAsync();
+
+			return allNames;
+		}
+
 		public async Task<bool> ExistsByIdAsync(int id)
 		{
 			bool result = await dbContext

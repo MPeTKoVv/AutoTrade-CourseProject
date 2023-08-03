@@ -12,5 +12,7 @@ namespace AutoTrade.Services.Data.Interfaces
 		Task<IEnumerable<CarSelectEngineTypeViewModel>> AllEngineTypesAsync();
 
 		Task<bool> ExistsByIdAsync(int id);
+
+		Task<IEnumerable<string>> AllEngineTypeNamesAsync();
 	}
 }

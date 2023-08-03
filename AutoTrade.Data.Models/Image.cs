@@ -18,7 +18,7 @@ namespace AutoTrade.Data.Models
         [MaxLength(UrlMaxLength)]
         public string Url { get; set; } = null!;
 
-        public Guid CarId { get; set; }
+        public string CarId { get; set; } = null!;
         public virtual Car Car { get; set; } = null!;
     }
 }

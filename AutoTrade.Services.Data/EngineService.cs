@@ -14,7 +14,17 @@ namespace AutoTrade.Services.Data
 			this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<CarSelectEngineTypeViewModel>> AllEngineTypesAsync()
+		public async Task<IEnumerable<string>> AllEngineTypeNamesAsync()
+		{
+			IEnumerable<string> allNames = await dbContext
+				.EngineTypes
+				.Select(et => et.Type)
+				.ToArrayAsync();
+
+			return allNames;
+		}
+
+		public async Task<IEnumerable<CarSelectEngineTypeViewModel>> AllEngineTypesAsync()
 		{
 			IEnumerable<CarSelectEngineTypeViewModel> allEngineTypes = await this.dbContext
 				.EngineTypes

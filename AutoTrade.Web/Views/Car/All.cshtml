@@ -1,82 +1,145 @@
-﻿@model IEnumerable<IndexViewModel>
+﻿@model AllCarsQueryModel
 
 @{
-	ViewData["Title"] = "Cars For Sale";
+	ViewBag.Title = "All Cars";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Cars For Sale</title>
-	<style>
-		/* Custom CSS styles */
-		.car-list {
-			display: flex;
-			flex-wrap: wrap;
-		}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
 
-		.car-section {
-			width: 400px;
-			margin: 10px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			padding: 10px;
-			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		}
+<form method="get">
+	<div class="row">
+		<div class="form-group col-md-3 d-flex justify-content-between">
+			<div class="form-group">
+				<label asp-for="Category"></label>
+				<select asp-for="Category" class="form-control">
+					<option value="">All</option>
+					@foreach (var category in Model.Categories)
+					{
+						<option value="@category">@category</option>
+					}
+				</select>
+			</div>
+		</div>
+		<div class="form-group col-md-3 d-flex justify-content-between">
+			<div class="form-group">
+				<label asp-for="Condition"></label>
+				<select asp-for="Condition" class="form-control">
+					<option value="">All</option>
+					@foreach (var conditoin in Model.Conditions)
+					{
+						<option value="@conditoin">@conditoin</option>
+					}
+				</select>
+			</div>
+		</div class="form-group col-md-3 d-flex justify-content-between">
 
-		.car-card {
-			text-align: center;
-		}
+		<div class="form-group col-md-3 d-flex justify-content-between">
+			<div class="form-group">
+				<label asp-for="EngineType"></label>
+				<select asp-for="EngineType" class="form-control">
+					<option value="">All</option>
+					@foreach (var engineType in Model.EngineTypes)
+					{
+						<option value="@engineType">@engineType</option>
+					}
+				</select>
+			</div>
+		</div>
 
-			.car-card h2 {
-				font-size: 20px;
-				margin-bottom: 15px;
-			}
+		<div class="form-group col-md-3 d-flex justify-content-between">
 
-			.car-card p {
-				margin-bottom: 15px;
-			}
+			<div class="form-group">
+				<label asp-for="CarsPerPage"></label>
+				<select asp-for="CarsPerPage" class="form-control">
+					<option value="6">6</option>
+					<option value="9">9</option>
+					<option value="12">12</option>
+				</select>
+			</div>
+		</div>
 
-			.car-card img {
-				max-width: 100%;
-				height: auto;
-				border-radius: 5px;
-				margin-bottom: 10px;
-			}
+		<div class="form-group col-md-3">
+			<label asp-for="SearchString"></label>
+			<input asp-for="SearchString" class="form-control" placeholder="...">
+		</div>
 
-			.car-card button {
-				background-color: #3498db;
-				color: #fff;
-				border: none;
-				padding: 8px 12px;
-				font-size: 14px;
-				border-radius: 5px;
-				cursor: pointer;
-				transition: background-color 0.3s;
-			}
+		<div class="form-group col-md-3">
+			<div class="form-group">
+				<label asp-for="CarSorting"></label>
+				<select asp-for="CarSorting" class="form-control">
+					<option value="0">Newest</option>
+					<option value="1">Oldest</option>
+					<option value="2">Price (Ascending)</option>
+					<option value="3">Price (Descending)</option>
+					<option value="4">Year (Ascending)</option>
+					<option value="5">Year (Descending)</option>
+					<option value="6">Horsepower (Ascending)</option>
+					<option value="7">Horsepower (Descending)</option>
+				</select>
+			</div>
+		</div>
 
-				.car-card button:hover {
-					background-color: #2980b9;
-				}
-	</style>
-</head>
-<body>
-	<h1>All Cars</h1>
-
-	<div class="car-list">
-		@foreach (var car in Model)
-		{
-				<section class="car-section">
-					<div class="car-card">
-						<h2>@car.Make @car.Model</h2>
-						<img src="@car.ImageUrl" alt="@car.Make @car.Model">
-						<h6>Year: @car.Year<h6>
-						<h6>Horsepower: @car.Horsepower<h6>
-						<h6>Price: @car.Price.ToString("N")€<h6>
-						<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Car/Buy">Buy</button>
-					</div>
-				</section>
-		}
+		<div class="col-md-3">
+			<div class="form-group mt-4 p-2">
+				<input type="submit" value="Search" class="btn btn-primary" />
+			</div>
+		</div>
 	</div>
-</body>
-</html>
+</form>
+
+
+@{
+	int previousPage = Model.CurrentPage - 1;
+	if (previousPage < 1)
+	{
+		previousPage = 1;
+	}
+
+	int maxPage = (int)Math.Ceiling((double)Model.TotalCars /
+		Model.CarsPerPage);
+}
+
+<div class="row mb-5">
+	<div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+		<a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+		   asp-controller="Car"
+		   asp-action="All"
+		   asp-route-currentPage="@previousPage"
+		   asp-route-category="@Model.Category"
+		   asp-route-condition="@Model.Condition"
+		   asp-route-enginetype="@Model.EngineType"
+		   asp-route-searchTerm="@Model.SearchString"
+		   asp-route-sorting="@((int)Model.CarSorting)"><<</a>
+	</div>
+
+	@{
+		bool shouldNextPageBeDisabled = Model.CurrentPage == maxPage ||
+		!Model.Cars.Any();
+	}
+
+	<div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+		<a class="btn btn-primary
+           @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
+		   asp-controller="Car"
+		   asp-action="All"
+		   asp-route-currentPage="@(Model.CurrentPage + 1)"
+		   asp-route-category="@Model.Category"
+		   asp-route-condition="@Model.Condition"
+		   asp-route-enginetype="@Model.EngineType"
+		   asp-route-searchTerm="@Model.SearchString"
+		   asp-route-sorting="@((int)Model.CarSorting)">>></a>
+	</div>
+</div>
+
+@if (!Model.Cars.Any())
+{
+	<h2 class="text-center">No cars found by the given criteria!</h2>
+}
+
+<div class="row">
+	@foreach (var car in Model.Cars)
+	{
+		<partial name="_CarPartial" model="@car" />
+	}
+</div>

@@ -1,8 +1,7 @@
 ﻿namespace HouseRentingSystem.Web.Infrastructure.ModelBinders
 {
-	using System.Globalization;
-
 	using Microsoft.AspNetCore.Mvc.ModelBinding;
+	using System.Globalization;
 
 	public class DecimalModelBinder : IModelBinder
 	{
@@ -23,9 +22,9 @@
 				try
 				{
 					string formDecValue = valueResult.FirstValue;
-					formDecValue = formDecValue.Replace(",",
-						CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 					formDecValue = formDecValue.Replace(".",
+						CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+					formDecValue = formDecValue.Replace(",",
 						CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
 					parsedValue = Convert.ToDecimal(formDecValue);

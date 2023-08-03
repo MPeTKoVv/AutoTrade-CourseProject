@@ -10,9 +10,9 @@ namespace AutoTrade.Web.ViewModels.Car
 {
 	using static Common.EntityValidationConstants.Car;
 
-	public class CarViewModel
+	public class CarFormModel
 	{
-		public CarViewModel()
+		public CarFormModel()
 		{
 			this.Categories = new HashSet<CarSelectCategoryViewModel>();
 			this.Conditions = new HashSet<CarSelectConditionViewModel>();
@@ -58,8 +58,9 @@ namespace AutoTrade.Web.ViewModels.Car
 		[Display(Name = "Engine Type")]
 		public int EngineTypeId { get; set; }
 
+		[Required]
 		[StringLength(UrlMaxLength, MinimumLength = UrlMinLength)]
-		public string ImageUrl { get; set; }
+		public string ImageUrl { get; set; } = null!;
 
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }
         public IEnumerable<CarSelectConditionViewModel> Conditions { get; set; }

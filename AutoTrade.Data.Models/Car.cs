@@ -13,7 +13,7 @@ namespace AutoTrade.Data.Models
 		{
 			this.Id = Guid.NewGuid();
 			this.Reviews = new HashSet<Review>();
-			this.Images = new HashSet<Image>();
+			//this.Images = new HashSet<string>();
         }
 
         [Key]
@@ -44,7 +44,9 @@ namespace AutoTrade.Data.Models
 
 		public DateTime AddedOn { get; set; }
 
-        public int ConditionId { get; set; }
+		public bool IsActive { get; set; }
+
+		public int ConditionId { get; set; }
 		public virtual Condition Condition { get; set; } = null!;
 
 		public int EngineId { get; set; }
@@ -59,8 +61,10 @@ namespace AutoTrade.Data.Models
 		public Guid? CustomerId { get; set; }
 		public virtual ApplicationUser? Customer { get; set; }
 
-		public ICollection<Image> Images { get; set; }
+		//public ICollection<string> Images { get; set; }
 
-		public virtual ICollection<Review> Reviews { get; set; }
+        public string ImageUrl { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

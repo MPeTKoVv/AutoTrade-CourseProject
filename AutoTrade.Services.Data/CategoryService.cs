@@ -4,6 +4,7 @@ using AutoTrade.Web.ViewModels.Category;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,16 @@ namespace AutoTrade.Services.Data
 				.ToArrayAsync();
 
 			return allCategories;
+		}
+
+		public async Task<IEnumerable<string>> AllCategoryNamesAsync()
+		{
+			IEnumerable<string> allNames = await dbContext
+				.Categories
+				.Select(c => c.Name)
+				.ToArrayAsync();
+
+			return allNames;
 		}
 
 		public async Task<bool> ExistsByIdAsync(int id)

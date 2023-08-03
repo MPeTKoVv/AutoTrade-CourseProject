@@ -35,7 +35,7 @@ namespace AutoTrade.Services.Data
 
             if (seller == null)
             {
-                return null;
+                return null!;
             }
 
             return seller.Id.ToString();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoTrade.Data.Models
 {
@@ -13,6 +14,8 @@ namespace AutoTrade.Data.Models
         }
 
         public virtual ICollection<Car> Garage { get; set; }
+
+        [NotMapped]
         public virtual ICollection<Car> FavoriteCars { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
 	}

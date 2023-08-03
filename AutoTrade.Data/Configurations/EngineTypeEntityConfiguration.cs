@@ -8,7 +8,9 @@ namespace AutoTrade.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<EngineType> builder)
 		{
-			builder.HasData(GenerateEngineTypes());
+            
+
+            builder.HasData(GenerateEngineTypes());
 		}
 
 		private EngineType[] GenerateEngineTypes()
