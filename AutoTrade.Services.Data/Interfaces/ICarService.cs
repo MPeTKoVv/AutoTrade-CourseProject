@@ -8,8 +8,6 @@
 	{
 		Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync();
 
-		Task<IEnumerable<IndexViewModel>> AllCarsAsync();
-
 		Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId);
 
 		//Task<IEnumerable<IndexViewModel>> AllMyCarsForSale(string sellerId);

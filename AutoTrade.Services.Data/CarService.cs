@@ -81,6 +81,7 @@ namespace AutoTrade.Services.Data
 				.Take(queryModel.CarsPerPage)
 				.Select(c => new CarAllViewModel
 				{
+					Id = c.Id.ToString(),
 					Make = c.Make,
 					Model = c.Model,
 					Price = c.Price,
@@ -99,26 +100,6 @@ namespace AutoTrade.Services.Data
 				TotalCarsCount = totalCars,
 				Cars = allCars
 			};
-		}
-
-		public async Task<IEnumerable<IndexViewModel>> AllCarsAsync()
-		{
-			var orderedCars = await dbContext
-				.Cars
-				.OrderByDescending(c => c.AddedOn)
-				.Select(c => new IndexViewModel()
-				{
-					Id = c.Id.ToString(),
-					Make = c.Make,
-					Model = c.Model,
-					Year = c.Year,
-					Horsepower = c.Horsepower,
-					Price = c.Price,
-					ImageUrl = c.ImageUrl
-				})
-				.ToArrayAsync();
-
-			return orderedCars;
 		}
 
 		public async Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync()
@@ -191,6 +172,9 @@ namespace AutoTrade.Services.Data
 		{
 			Car? car = await dbContext
 				.Cars
+				.Include(c=>c.Category)
+				.Include(c=>c.Condition)
+				.Include(c=>c.EngineType)
 				.Include(c => c.Seller)
 				.ThenInclude(s => s.User)
 				.Where(c => c.IsActive)
@@ -210,6 +194,9 @@ namespace AutoTrade.Services.Data
 				Year = car.Year,
 				Horsepower = car.Horsepower,
 				ImageUrl = car.ImageUrl,
+				Category = car.Category.Name,
+				Condition = car.Condition.Name,
+				EngineType = car.EngineType.Type,
 				Description = car.Description,
 				Seller = new SellerInfoOnCarViewModel
 				{

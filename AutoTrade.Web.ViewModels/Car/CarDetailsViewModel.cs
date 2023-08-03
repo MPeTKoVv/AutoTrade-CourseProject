@@ -13,7 +13,9 @@ namespace AutoTrade.Web.ViewModels.Car
 
         public string Category { get; set; } = null!;
 
-		public string EngineType { get; set; } = null!;
+		public string Condition { get; set; } = null!;
+
+        public string EngineType { get; set; } = null!;
 
 		public int Mileage { get; set; }
 
