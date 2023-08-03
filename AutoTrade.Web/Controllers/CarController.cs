@@ -48,13 +48,16 @@ namespace AutoTrade.Web.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Details(string id)
 		{
-			CarDetailsViewModel? viewModel = await carService
-				.GetDetailsByIdAsync(id);
+			bool carExists = await carService
+				.ExistsByIdAsync(id);
 
-			if (viewModel == null)
+			if (!carExists)
 			{
-				return RedirectToAction("All", "Car");
-			}
+                return RedirectToAction("All", "Car");
+            }
+
+            CarDetailsViewModel viewModel = await carService
+				.GetDetailsByIdAsync(id);
 
 			return View(viewModel);
 		}

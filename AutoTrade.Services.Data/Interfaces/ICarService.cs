@@ -14,6 +14,10 @@
 
 		Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel);
 
-		Task<CarDetailsViewModel?> GetDetailsByIdAsync(string carId);
+		Task<CarDetailsViewModel> GetDetailsByIdAsync(string carId);
+
+		Task<bool> ExistsByIdAsync(string Id);
+
+		//Task<CarFormModel>
 	}
 }

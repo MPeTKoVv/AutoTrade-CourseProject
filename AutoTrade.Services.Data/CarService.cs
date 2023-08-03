@@ -168,7 +168,16 @@ namespace AutoTrade.Services.Data
 
 		}
 
-		public async Task<CarDetailsViewModel?> GetDetailsByIdAsync(string carId)
+        public async Task<bool> ExistsByIdAsync(string Id)
+        {
+			var result = await dbContext
+				.Cars
+				.AnyAsync(c => c.Id.ToString() == Id);
+
+			return result;
+        }
+
+        public async Task<CarDetailsViewModel> GetDetailsByIdAsync(string carId)
 		{
 			Car? car = await dbContext
 				.Cars
