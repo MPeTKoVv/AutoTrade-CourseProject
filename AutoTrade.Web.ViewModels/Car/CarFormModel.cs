@@ -1,6 +1,5 @@
 ﻿using AutoTrade.Data.Models;
 using AutoTrade.Web.ViewModels.Category;
-using AutoTrade.Web.ViewModels.Condition;
 using AutoTrade.Web.ViewModels.Engine;
 using AutoTrade.Web.ViewModels.Transmission;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +15,6 @@ namespace AutoTrade.Web.ViewModels.Car
 		public CarFormModel()
 		{
 			this.Categories = new HashSet<CarSelectCategoryViewModel>();
-			this.Conditions = new HashSet<CarSelectConditionViewModel>();
 			this.EngineTypes = new HashSet<CarSelectEngineTypeViewModel>();
 			this.Transmissions = new HashSet<CarSelectTransmissionViewModel>();
 		}
@@ -28,10 +26,6 @@ namespace AutoTrade.Web.ViewModels.Car
 		[Required]
 		[StringLength(ModelMaxLength, MinimumLength = ModelMinLength)]
 		public string Model { get; set; } = null!;
-
-		[Required]
-		[StringLength(CountryMaxLength, MinimumLength = CountryMinLength)]
-		public string Country { get; set; } = null!;
 
 		[Required]
 		[StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
@@ -52,9 +46,6 @@ namespace AutoTrade.Web.ViewModels.Car
 		[Display(Name = "Category")]
         public int CategoryId { get; set; }
 
-		[Display(Name = "Condition")]
-		public int ConditionId { get; set; }
-
 		[Display(Name = "Engine Type")]
 		public int EngineTypeId { get; set; }
 
@@ -63,7 +54,6 @@ namespace AutoTrade.Web.ViewModels.Car
 		public string ImageUrl { get; set; } = null!;
 
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }
-        public IEnumerable<CarSelectConditionViewModel> Conditions { get; set; }
 		public IEnumerable<CarSelectEngineTypeViewModel> EngineTypes { get; set; }
         public IEnumerable<CarSelectTransmissionViewModel> Transmissions { get; set; }
     }

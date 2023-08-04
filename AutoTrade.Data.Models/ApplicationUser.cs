@@ -8,19 +8,12 @@ namespace AutoTrade.Data.Models
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid();
-            this.Garage = new HashSet<Car>();
-            this.FavoriteCars = new HashSet<Car>();
-            this.Reviews = new HashSet<Review>();
 			this.Transactions = new HashSet<Transaction>();
 		}
 
         public Guid WalletId { get; set; }
         public Wallet Wallet { get; set; } = null!;
 
-        public virtual ICollection<Car> Garage { get; set; }
-
-        public virtual ICollection<Car> FavoriteCars { get; set; }
-        public virtual ICollection<Review> Reviews { get; set; }
 		public virtual ICollection<Transaction> Transactions { get; set; }
 
 	}

@@ -32,11 +32,11 @@ namespace AutoTrade.Services.Data
 					.Where(c => c.Category.Name == queryModel.Category);
 			}
 
-			if (!string.IsNullOrEmpty(queryModel.Condition))
-			{
-				carsQuery = carsQuery
-					.Where(c => c.Condition.Name == queryModel.Condition);
-			}
+			//if (!string.IsNullOrEmpty(queryModel.Condition))
+			//{
+			//	carsQuery = carsQuery
+			//		.Where(c => c.Condition.Name == queryModel.Condition);
+			//}
 
 			if (!string.IsNullOrEmpty(queryModel.EngineType))
 			{
@@ -109,7 +109,7 @@ namespace AutoTrade.Services.Data
 		{
 			IEnumerable<CarAllViewModel> usersCars = await dbContext
 				.Cars
-				.Where(c => c.CustomerId.ToString() == userId)
+				.Where(c => c.SellerId.ToString() == userId)
 				.Select(c => new CarAllViewModel
 				{
 					Id = c.Id.ToString(),
@@ -155,7 +155,6 @@ namespace AutoTrade.Services.Data
 			{
 				Make = carViewModel.Make,
 				Model = carViewModel.Model,
-				Country = carViewModel.Country,
 				Description = carViewModel.Description,
 				Horsepower = carViewModel.Horsepower,
 				Price = carViewModel.Price,
@@ -164,7 +163,6 @@ namespace AutoTrade.Services.Data
 				ImageUrl = carViewModel.ImageUrl,
 				AddedOn = DateTime.UtcNow,
 				CategoryId = carViewModel.CategoryId,
-				ConditionId = carViewModel.ConditionId,
 				EngineId = carViewModel.EngineTypeId,
 				SellerId = Guid.Parse(sellerId)
 			};
@@ -187,7 +185,6 @@ namespace AutoTrade.Services.Data
 			Car? car = await dbContext
 				.Cars
 				.Include(c=>c.Category)
-				.Include(c=>c.Condition)
 				.Include(c=>c.EngineType)
 				.Include(c => c.Seller)
 				.ThenInclude(s => s.User)
@@ -209,7 +206,6 @@ namespace AutoTrade.Services.Data
 				Horsepower = car.Horsepower,
 				ImageUrl = car.ImageUrl,
 				Category = car.Category.Name,
-				Condition = car.Condition.Name,
 				EngineType = car.EngineType.Type,
 				Description = car.Description,
 				Seller = new SellerInfoOnCarViewModel

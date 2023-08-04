@@ -20,16 +20,14 @@ namespace AutoTrade.Web.Controllers
 		private readonly ICarService carService;
 		private readonly ISellerService sellerService;
 		private readonly ICategoryService categoryService;
-		private readonly IConditionService conditionService;
 		private readonly IEngineService engineService;
 		private readonly ITransmissionService transmissionService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IConditionService conditionService, IEngineService engineService, ITransmissionService transmissionService)
+		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
 			this.categoryService = categoryService;
-			this.conditionService = conditionService;
 			this.engineService = engineService;
 			this.transmissionService = transmissionService;
 		}
@@ -44,10 +42,9 @@ namespace AutoTrade.Web.Controllers
 			queryModel.TotalCars = serviceModel.TotalCarsCount;
 
 			queryModel.Categories = await categoryService.AllCategoryNamesAsync();
-			queryModel.Conditions = await conditionService.AllConditionNamesAsync();
 			queryModel.EngineTypes = await engineService.AllEngineTypeNamesAsync();
 			queryModel.Transmissions = await transmissionService.AllTransmissionNamesAsync();
-
+			//
 			return View(queryModel);
 		}
 
@@ -84,7 +81,6 @@ namespace AutoTrade.Web.Controllers
 			CarFormModel carViewModel = new CarFormModel()
 			{
 				Categories = await this.categoryService.AllCategoriesAsync(),
-				Conditions = await this.conditionService.AllConditionsAsync(),
 				EngineTypes = await this.engineService.AllEngineTypesAsync(),
 				Transmissions = await this.transmissionService.AllTransmissionsAsync()
 			};
@@ -110,12 +106,6 @@ namespace AutoTrade.Web.Controllers
 				ModelState.AddModelError(nameof(carViewModel.CategoryId), "Selected category does not exist!");
 			}
 
-			bool conditionExists = await conditionService.ExistsByIdAsync(carViewModel.ConditionId);
-			if (!conditionExists)
-			{
-				ModelState.AddModelError(nameof(carViewModel.ConditionId), "Selected condition does not exist!");
-			}
-
 			bool engineTypeExists = await engineService.ExistsByIdAsync(carViewModel.EngineTypeId);
 			if (!engineTypeExists)
 			{
@@ -125,8 +115,8 @@ namespace AutoTrade.Web.Controllers
 			if (!ModelState.IsValid)
 			{
 				carViewModel.Categories = await categoryService.AllCategoriesAsync();
-				carViewModel.Conditions = await conditionService.AllConditionsAsync();
 				carViewModel.EngineTypes = await engineService.AllEngineTypesAsync();
+				carViewModel.Transmissions = await transmissionService.AllTransmissionsAsync();
 
 				return View(carViewModel);
 			}
@@ -167,9 +157,15 @@ namespace AutoTrade.Web.Controllers
 			return View(myCars);
 		}
 
-		//public async Task<IActionResult> CarsForSale()
-		//{
-		//}
+		public async Task<IActionResult> CarsForSale()
+		{
+			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
 
+			string userId = this.User.GetId()!;
+
+			myCars.AddRange(await this.carService.AllByUserIdAsync(userId));
+
+			return View(myCars);
+		}
 	}
 }

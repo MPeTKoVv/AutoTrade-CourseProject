@@ -12,7 +12,6 @@ namespace AutoTrade.Data.Models
 		public Car()
 		{
 			this.Id = Guid.NewGuid();
-			this.Reviews = new HashSet<Review>();
 			this.Transactions = new HashSet<Transaction>();
         }
 
@@ -26,9 +25,6 @@ namespace AutoTrade.Data.Models
 		[Required]
 		[MaxLength(ModelMaxLength)]
 		public string Model { get; set; } = null!;
-
-		[MaxLength(CountryMaxLength)]
-		public string Country { get; set; } = null!;
 
 		[Required]
 		[MaxLength(DescriptionMaxLength)]
@@ -52,9 +48,6 @@ namespace AutoTrade.Data.Models
 
         public bool IsForSale { get; set; }
 
-        public int ConditionId { get; set; }
-		public virtual Condition Condition { get; set; } = null!;
-
 		public int EngineId { get; set; }
 		public virtual EngineType EngineType { get; set; } = null!;
 
@@ -69,8 +62,6 @@ namespace AutoTrade.Data.Models
 
 		public Guid? CustomerId { get; set; }
 		public virtual ApplicationUser? Customer { get; set; }
-
-        public virtual ICollection<Review> Reviews { get; set; }
 
         public virtual ICollection<Transaction> Transactions { get; set; }
     }

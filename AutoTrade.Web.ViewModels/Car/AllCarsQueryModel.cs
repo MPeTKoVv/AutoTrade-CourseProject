@@ -20,14 +20,11 @@ namespace AutoTrade.Web.ViewModels.Car
             this.CarsPerPage = EntitiesPerPage;
 
             this.Categories = new HashSet<string>();
-            this.Conditions = new HashSet<string>();
             this.EngineTypes = new HashSet<string>();
             this.Transmissions = new HashSet<string>();
         }
 
 		public string? Category { get; set; }
-
-        public string? Condition { get; set; }
 
         [Display(Name = "Engine type")]
         public string? EngineType { get; set; }
@@ -48,8 +45,6 @@ namespace AutoTrade.Web.ViewModels.Car
         public int TotalCars { get; set; }
 
         public IEnumerable<string> Categories { get; set; }
-
-        public IEnumerable<string> Conditions { get; set; }
 
         public IEnumerable<string> EngineTypes { get; set; }
 
