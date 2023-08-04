@@ -1,5 +1,4 @@
 ﻿using AutoTrade.Data.Models;
-using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,12 +24,6 @@ namespace AutoTrade.Data.Configurations
 				.HasOne(c => c.EngineType)
 				.WithMany(et => et.Cars)
 				.HasForeignKey(car => car.EngineId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			builder
-				.HasOne(c => c.Seller)
-				.WithMany(s => s.CarsForSale)
-				.HasForeignKey(c => c.SellerId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			builder

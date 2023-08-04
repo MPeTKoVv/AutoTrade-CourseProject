@@ -1,7 +1,7 @@
 ﻿@model AllCarsQueryModel
 
 @{
-	ViewBag.Title = "All Cars";
+	ViewBag.Title = "My Cars";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -9,57 +9,6 @@
 
 <form method="get">
 	<div class="row">
-		<div class="form-group col-md-3 d-flex justify-content-between">
-			<div class="form-group">
-				<label asp-for="Category"></label>
-				<select asp-for="Category" class="form-control">
-					<option value="">All</option>
-					@foreach (var category in Model.Categories)
-					{
-						<option value="@category">@category</option>
-					}
-				</select>
-			</div>
-		</div>
-		<div class="form-group col-md-3 d-flex justify-content-between">
-			<div class="form-group">
-				<label asp-for="Condition"></label>
-				<select asp-for="Condition" class="form-control">
-					<option value="">All</option>
-					@foreach (var conditoin in Model.Conditions)
-					{
-						<option value="@conditoin">@conditoin</option>
-					}
-				</select>
-			</div>
-		</div class="form-group col-md-3 d-flex justify-content-between">
-
-		<div class="form-group col-md-3 d-flex justify-content-between">
-			<div class="form-group">
-				<label asp-for="EngineType"></label>
-				<select asp-for="EngineType" class="form-control">
-					<option value="">All</option>
-					@foreach (var engineType in Model.EngineTypes)
-					{
-						<option value="@engineType">@engineType</option>
-					}
-				</select>
-			</div>
-		</div>
-
-		<div class="form-group col-md-3 d-flex justify-content-between">
-			<div class="form-group">
-				<label asp-for="Transmission"></label>
-				<select asp-for="Transmission" class="form-control">
-					<option value="">All</option>
-					@foreach (var transmission in Model.Transmissions)
-					{
-						<option value="@transmission">@transmission</option>
-					}
-				</select>
-			</div>
-		</div>
-
 
 		<div class="form-group col-md-3 d-flex justify-content-between">
 
@@ -71,11 +20,6 @@
 					<option value="12">12</option>
 				</select>
 			</div>
-		</div>
-
-		<div class="form-group col-md-3">
-			<label asp-for="SearchString"></label>
-			<input asp-for="SearchString" class="form-control" placeholder="...">
 		</div>
 
 		<div class="form-group col-md-3">
@@ -123,7 +67,7 @@
 		   asp-route-category="@Model.Category"
 		   asp-route-condition="@Model.Condition"
 		   asp-route-enginetype="@Model.EngineType"
-		   asp-route-enginetype="@Model.Transmission"
+		   asp-route-enginetype="@Model.EngineType"
 		   asp-route-searchTerm="@Model.SearchString"
 		   asp-route-sorting="@((int)Model.CarSorting)"><<</a>
 	</div>
@@ -142,7 +86,6 @@
 		   asp-route-category="@Model.Category"
 		   asp-route-condition="@Model.Condition"
 		   asp-route-enginetype="@Model.EngineType"
-		   asp-route-searchTerm="@Model.Transmission"
 		   asp-route-searchTerm="@Model.SearchString"
 		   asp-route-sorting="@((int)Model.CarSorting)">>></a>
 	</div>

@@ -14,10 +14,10 @@ namespace AutoTrade.Data.Models
         public Seller()
         {
             this.Id = Guid.NewGuid();
-            this.CarsForSale = new HashSet<Car>();
-        }
+			this.Transactions = new HashSet<Transaction>();
+		}
 
-        [Key]
+		[Key]
         public Guid Id { get; set; }
 
         [Required]
@@ -28,6 +28,6 @@ namespace AutoTrade.Data.Models
 
         public virtual ApplicationUser User { get; set; } = null!;
 
-        public virtual ICollection<Car> CarsForSale { get; set; }
-    }
+		public virtual ICollection<Transaction> Transactions { get; set; }
+	}
 }

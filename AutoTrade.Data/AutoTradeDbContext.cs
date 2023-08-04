@@ -29,6 +29,8 @@ namespace AutoTrade.Web.Data
 
         public DbSet<Transmission> Transmissions { get; set; } = null!;
 
+        public DbSet<Transaction> Transactions { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             Assembly configAssebly = Assembly.GetAssembly(typeof(AutoTradeDbContext)) ??

@@ -94,7 +94,6 @@ namespace AutoTrade.Services.Data
 					Horsepower = c.Horsepower,
 					Year = c.Year,
 					ImageUrl = c.ImageUrl,
-					IsBought = c.CustomerId.HasValue
 				})
 				.ToArrayAsync();
 			int totalCars = carsQuery.Count();
@@ -104,6 +103,26 @@ namespace AutoTrade.Services.Data
 				TotalCarsCount = totalCars,
 				Cars = allCars
 			};
+		}
+
+		public async Task<IEnumerable<CarAllViewModel>> AllByUserIdAsync(string userId)
+		{
+			IEnumerable<CarAllViewModel> usersCars = await dbContext
+				.Cars
+				.Where(c => c.CustomerId.ToString() == userId)
+				.Select(c => new CarAllViewModel
+				{
+					Id = c.Id.ToString(),
+					Make = c.Make,
+					Model = c.Model,
+					Price = c.Price,
+					Year = c.Year,
+					Horsepower = c.Horsepower,
+					ImageUrl = c.ImageUrl
+				})
+				.ToListAsync();
+
+			return usersCars;
 		}
 
 		public async Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync()

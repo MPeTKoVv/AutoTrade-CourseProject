@@ -5,6 +5,7 @@ using AutoTrade.Web.Data;
 using AutoTrade.Web.Infrastructure.Extensions;
 using AutoTrade.Web.ViewModels.Car;
 using AutoTrade.Web.ViewModels.Home;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -89,7 +90,6 @@ namespace AutoTrade.Web.Controllers
 			};
 
 			return View(carViewModel);
-
 		}
 
 		[HttpPost]
@@ -156,14 +156,20 @@ namespace AutoTrade.Web.Controllers
 		//	return Ok();
 		//}
 
-		//public async Task<IActionResult> Garage()
-		//{
-		//	return Ok();
-		//}
+		public async Task<IActionResult> Mine()
+		{
+			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
+
+			string userId = this.User.GetId()!;
+
+			myCars.AddRange(await this.carService.AllByUserIdAsync(userId));
+
+			return View(myCars);
+		}
 
 		//public async Task<IActionResult> CarsForSale()
 		//{
 		//}
-		
+
 	}
 }

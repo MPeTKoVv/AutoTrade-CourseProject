@@ -21,10 +21,10 @@
                    class="btn btn-danger">Delete</a>
                 <p></p>
 
-                @if (!Model.IsBought)
+                @*@if (!Model.)
                 {
                     <form class="input-group-sm" asp-controller="Car"
-                          asp-action="Rent" asp-route-id="@Model.Id" method="post">
+                          asp-action="Buy" asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Rent" />
                     </form>
                 }
@@ -34,7 +34,7 @@
                           asp-route-id="@Model.Id" method="post">
                         <input class="btn btn-primary" type="submit" value="Leave" />
                     </form>
-                }
+                }*@
             }
         </div>
     </div>

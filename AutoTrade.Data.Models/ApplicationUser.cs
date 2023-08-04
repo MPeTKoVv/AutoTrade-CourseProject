@@ -11,12 +11,15 @@ namespace AutoTrade.Data.Models
             this.Garage = new HashSet<Car>();
             this.FavoriteCars = new HashSet<Car>();
             this.Reviews = new HashSet<Review>();
-        }
+			this.Transactions = new HashSet<Transaction>();
+		}
 
-        public virtual ICollection<Car> Garage { get; set; }
+		public virtual ICollection<Car> Garage { get; set; }
 
         [NotMapped]
         public virtual ICollection<Car> FavoriteCars { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
+		public virtual ICollection<Transaction> Transactions { get; set; }
+
 	}
 }

@@ -13,6 +13,7 @@ namespace AutoTrade.Data.Models
 		{
 			this.Id = Guid.NewGuid();
 			this.Reviews = new HashSet<Review>();
+			this.Transactions = new HashSet<Transaction>();
         }
 
         [Key]
@@ -70,5 +71,7 @@ namespace AutoTrade.Data.Models
 		public virtual ApplicationUser? Customer { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

@@ -23,7 +23,7 @@
             <p>Category: <b>@Model.Category</b></p>
             <p>Conditoin: <b>@Model.Condition</b></p>
             <p>Engine type: <b>@Model.EngineType</b></p>
-            <p><i>(@(Model.IsBought ? "Bought" : "Not Bought"))</i></p>
+            @*<p><i>(@(Model.IsBought ? "Bought" : "Not Bought"))</i></p>*@
             <div class="form-inline">
                 @if (this.User.Identity?.IsAuthenticated ?? false)
                 {
@@ -32,7 +32,7 @@
                     <a class="ml-2 btn btn-danger" asp-controller="Car" asp-action="Delete"
                        asp-route-id="@Model.Id">Delete</a>
 
-                    @if (!Model.IsBought)
+                    @*@if (!Model.IsBought)
                     {
                             <form class="ml-2" asp-controller="Car"
                           asp-action="Buy" asp-route-id="@Model.Id" method="post">
@@ -45,7 +45,7 @@
                           asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit" value="Sell" />
                             </form>
-                    }
+                    }*@
                 }
             </div>
             <p></p>
