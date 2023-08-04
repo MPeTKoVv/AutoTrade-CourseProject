@@ -14,9 +14,11 @@ namespace AutoTrade.Data.Models
 			this.Transactions = new HashSet<Transaction>();
 		}
 
-		public virtual ICollection<Car> Garage { get; set; }
+        public Guid WalletId { get; set; }
+        public Wallet Wallet { get; set; } = null!;
 
-        [NotMapped]
+        public virtual ICollection<Car> Garage { get; set; }
+
         public virtual ICollection<Car> FavoriteCars { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
 		public virtual ICollection<Transaction> Transactions { get; set; }

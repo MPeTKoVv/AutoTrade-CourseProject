@@ -25,7 +25,6 @@ namespace AutoTrade.Data.Configurations
 				.WithMany(au => au.Transactions)
 				.HasForeignKey(t => t.Id)
 				.OnDelete(DeleteBehavior.Restrict);
-
 		}
 	}
 }

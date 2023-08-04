@@ -21,10 +21,10 @@ namespace AutoTrade.Data.Models
 		public int CarId { get; set; }
 		public virtual Car Car { get; set; } = null!;
 
-		public string BuyerId { get; set; } = null!;
+		public Guid BuyerId { get; set; }
         public virtual ApplicationUser Buyer { get; set; } = null!;
 
-		public string SellerId { get; set; } = null!;
+		public Guid SellerId { get; set; }
         public virtual Seller Seller { get; set; } = null!;
 	}
 }

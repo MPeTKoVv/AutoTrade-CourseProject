@@ -31,7 +31,9 @@ namespace AutoTrade.Web.Data
 
         public DbSet<Transaction> Transactions { get; set; } = null!;
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<Wallet> Wallets { get; set; } = null!;
+
+		protected override void OnModelCreating(ModelBuilder builder)
         {
             Assembly configAssebly = Assembly.GetAssembly(typeof(AutoTradeDbContext)) ??
                                      Assembly.GetExecutingAssembly();
