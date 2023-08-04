@@ -1,4 +1,4 @@
-﻿using AutoTrade.Web.ViewModels.Dealer;
+﻿using AutoTrade.Web.ViewModels.Seller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,6 @@ namespace AutoTrade.Web.ViewModels.Car
 
 		public int Mileage { get; set; }
 
-		public DealerInfoOnCarViewModel Dealer { get; set; } = null!;
+		public SellerInfoOnCarViewModel Seller { get; set; } = null!;
 	}
 }

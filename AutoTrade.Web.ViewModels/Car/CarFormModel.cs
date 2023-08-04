@@ -17,6 +17,8 @@ namespace AutoTrade.Web.ViewModels.Car
 			this.Categories = new HashSet<CarSelectCategoryViewModel>();
 			this.Conditions = new HashSet<CarSelectConditionViewModel>();
 			this.EngineTypes = new HashSet<CarSelectEngineTypeViewModel>();
+
+			//this.Images = new HashSet<Image>();
 		}
 
 		[Required]

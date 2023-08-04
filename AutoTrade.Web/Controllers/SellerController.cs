@@ -1,7 +1,6 @@
-﻿using AutoTrade.Services.Data;
-using AutoTrade.Services.Data.Interfaces;
+﻿using AutoTrade.Services.Data.Interfaces;
 using AutoTrade.Web.Infrastructure.Extensions;
-using AutoTrade.Web.ViewModels.Dealer;
+using AutoTrade.Web.ViewModels.Seller;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,21 +10,21 @@ namespace AutoTrade.Web.Controllers
 	//using static Common.NotificationMessagesConstants;
 
 	[Authorize]
-	public class DealerController : Controller
+	public class SellerController : Controller
 	{
-		private readonly IDealerService dealerService;
+		private readonly ISellerService sellerService;
 
-		public DealerController(IDealerService dealerService)
+		public SellerController(ISellerService sellerService)
 		{
-			this.dealerService = dealerService;
+			this.sellerService = sellerService;
 		}
 
 		public async Task<IActionResult> Become()
 		{
 			string? userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-			bool isDealer = await dealerService.DealerExistsByUserIdAsync(userId);
+			bool isSeller = await sellerService.SellerExistsByUserIdAsync(userId);
 
-			if (isDealer)
+			if (isSeller)
 			{
 				//TempData[ErrorMessage] = "You are already an agent!";
 
@@ -36,10 +35,10 @@ namespace AutoTrade.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Become(BecomeDealerViewModel model)
+		public async Task<IActionResult> Become(BecomeSellerViewModel model)
 		{
 			string? userId = User.GetId();
-			bool isAgent = await dealerService.DealerExistsByUserIdAsync(userId!);
+			bool isAgent = await sellerService.SellerExistsByUserIdAsync(userId!);
 			if (isAgent)
 			{
 				//TempData[ErrorMessage] = "You are already an agent!";
@@ -48,10 +47,10 @@ namespace AutoTrade.Web.Controllers
 			}
 
 			bool isPhoneNumberTaken =
-				await dealerService.DealerExistsByPhoneNumberAsync(model.PhoneNumber);
+				await sellerService.SellerExistsByPhoneNumberAsync(model.PhoneNumber);
 			if (isPhoneNumberTaken)
 			{
-				ModelState.AddModelError(nameof(model.PhoneNumber), "Dealer with the provided phone number already exists!");
+				ModelState.AddModelError(nameof(model.PhoneNumber), "Agent with the provided phone number already exists!");
 			}
 
 			if (!ModelState.IsValid)
@@ -61,7 +60,7 @@ namespace AutoTrade.Web.Controllers
 
 			try
 			{
-				await dealerService.Create(userId!, model);
+				await sellerService.Create(userId!, model);
 			}
 			catch (Exception)
 			{

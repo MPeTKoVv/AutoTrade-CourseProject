@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230803102526_ChangeCollectionOfImagesToImageUrlPropCarEntity")]
+    partial class ChangeCollectionOfImagesToImageUrlPropCarEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,16 +128,12 @@ namespace AutoTrade.Data.Migrations
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
-
-                    b.Property<bool>("IsForSale")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Make")
                         .IsRequired()
@@ -176,7 +174,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("551e372c-2ff0-4f67-9e66-a1f8c4b94e2f"),
+                            Id = new Guid("45da5b78-7a91-4c58-ac8a-ec9e0f4571b4"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
                             ConditionId = 1,
@@ -186,7 +184,6 @@ namespace AutoTrade.Data.Migrations
                             Horsepower = 500,
                             ImageUrl = "https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/f03a0277f53ad691e6ab18fad632edc6.jpg",
                             IsActive = false,
-                            IsForSale = false,
                             Make = "Mercedes",
                             Mileage = 0,
                             Model = "C63 AMG",
@@ -344,6 +341,33 @@ namespace AutoTrade.Data.Migrations
                             Id = 5,
                             Type = "Hydrogen Fuel Cell"
                         });
+                });
+
+            modelBuilder.Entity("AutoTrade.Data.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CarId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CarId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId1");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Review", b =>
@@ -576,6 +600,17 @@ namespace AutoTrade.Data.Migrations
                     b.Navigation("EngineType");
 
                     b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("AutoTrade.Data.Models.Image", b =>
+                {
+                    b.HasOne("AutoTrade.Data.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Review", b =>

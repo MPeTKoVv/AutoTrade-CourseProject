@@ -60,9 +60,9 @@
 
             public const int ImageUrlMinLength = 5;
             public const int ImageUrlMaxLength = 2048;
-        }
+		}
 
-        public static class Dealer
+        public static class Seller
         {
             public const int PhoneNumberMinLength = 7;
             public const int PhoneNumberMaxLength = 15;
