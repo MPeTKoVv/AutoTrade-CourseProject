@@ -10,14 +10,16 @@
 
 		Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId);
 
-		//Task<IEnumerable<IndexViewModel>> AllMyCarsForSale(string sellerId);
-
 		Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel);
+
+		Task<IEnumerable<CarAllViewModel>> AllByUserIdAsync(string userId);
 
 		Task<CarDetailsViewModel> GetDetailsByIdAsync(string carId);
 
-		Task<bool> ExistsByIdAsync(string Id);
+		Task<bool> ExistsByIdAsync(string id);
 
-		//Task<CarFormModel>
+		Task<CarFormModel> GetCarForEditByIdAsync(string id);
+
+		Task<bool> IsDealerWithIdOwnerOfCarWiithIdAsync(string carId, string sellerId);
 	}
 }

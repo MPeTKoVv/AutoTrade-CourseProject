@@ -27,30 +27,13 @@ namespace AutoTrade.Data.Configurations
 				.HasForeignKey(car => car.EngineId)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			builder
-				.HasOne(c => c.Seller)
-				.WithMany(s => s.CarsForSale)
-				.HasForeignKey(c => c.SellerId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			builder
-			   .HasOne(c => c.Customer)
-			   .WithMany(c => c.Garage)
-			   .HasForeignKey(c => c.CustomerId)
-			   .OnDelete(DeleteBehavior.Restrict);
-
-			//builder
-			//	.HasMany(c => c.Images)
-			//	.WithOne(i => i.Car)
-			//	.HasForeignKey(i => i.CarId)
-			//	.OnDelete(DeleteBehavior.Restrict);
 
 			builder
 				.Property(c => c.AddedOn)
 				.HasDefaultValueSql("GETDATE()");
 
 			builder
-				.Property(c => c.IsActive)
+				.Property(c => c.IsForSale)
 				.HasDefaultValue(true);
 
 			//builder
@@ -82,7 +65,7 @@ namespace AutoTrade.Data.Configurations
 				EngineId = 1,
 				ConditionId = 1,
 				CategoryId = 5,
-				SellerId = Guid.Parse("CDB33D65-5B4B-4DEC-899B-32E2B843F801"),
+				OwnerId = Guid.Parse("CDB33D65-5B4B-4DEC-899B-32E2B843F801"),
 			};
 
 			//Image image = new Image

@@ -1,23 +1,23 @@
 ﻿using AutoTrade.Data.Models;
 using AutoTrade.Services.Data.Interfaces;
 using AutoTrade.Web.Data;
-using AutoTrade.Web.ViewModels.Seller;
+using AutoTrade.Web.ViewModels.Dealer;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoTrade.Services.Data
 {
-    public class SellerService : ISellerService
+    public class DealerService : IDealerService
     {
         private readonly AutoTradeDbContext dbContext;
 
-        public SellerService(AutoTradeDbContext dbContext)
+        public DealerService(AutoTradeDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-		public async Task Create(string userId, BecomeSellerViewModel model)
+		public async Task Create(string userId, BecomeDealerViewModel model)
 		{
-            Seller seller = new Seller
+            Dealer seller = new Dealer
             {
                 UserId = Guid.Parse(userId),
                 PhoneNumber = model.PhoneNumber
@@ -27,9 +27,9 @@ namespace AutoTrade.Services.Data
             await dbContext.SaveChangesAsync();
 		}
 
-		public async Task<string> GetSellerIdByUserIdAsync(string userId)
+		public async Task<string> GetDealerIdByUserIdAsync(string userId)
 		{
-            Seller? seller = await dbContext
+            Dealer? seller = await dbContext
                 .Sellers
                 .FirstOrDefaultAsync(s => s.UserId.ToString() == userId);
 
@@ -41,7 +41,7 @@ namespace AutoTrade.Services.Data
             return seller.Id.ToString();
 		}
 
-		public async Task<bool> SellerExistsByPhoneNumberAsync(string phoneNumber)
+		public async Task<bool> DealerExistsByPhoneNumberAsync(string phoneNumber)
 		{
             bool result = await dbContext
                 .Sellers
@@ -50,7 +50,7 @@ namespace AutoTrade.Services.Data
             return result;
 		}
 
-		public async Task<bool> SellerExistsByUserIdAsync(string userId)
+		public async Task<bool> DealerExistsByUserIdAsync(string userId)
         {
             bool result = await dbContext
                 .Sellers

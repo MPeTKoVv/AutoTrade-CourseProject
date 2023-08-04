@@ -13,7 +13,7 @@ namespace AutoTrade.Data.Models
 		{
 			this.Id = Guid.NewGuid();
 			this.Reviews = new HashSet<Review>();
-			//this.Images = new HashSet<string>();
+			this.Owners = new HashSet<Dealer>();
         }
 
         [Key]
@@ -34,7 +34,11 @@ namespace AutoTrade.Data.Models
 		[MaxLength(DescriptionMaxLength)]
 		public string Description { get; set; } = null!;
 
-		public int Horsepower { get; set; }
+		[Required]
+		[MaxLength(ImageUrlMaxLength)]
+		public string ImageUrl { get; set; } = null!;
+
+        public int Horsepower { get; set; }
 
 		public decimal Price { get; set; }
 
@@ -46,7 +50,9 @@ namespace AutoTrade.Data.Models
 
 		public bool IsActive { get; set; }
 
-		public int ConditionId { get; set; }
+        public bool IsForSale { get; set; }
+
+        public int ConditionId { get; set; }
 		public virtual Condition Condition { get; set; } = null!;
 
 		public int EngineId { get; set; }
@@ -55,16 +61,15 @@ namespace AutoTrade.Data.Models
 		public int CategoryId { get; set; }
 		public virtual Category Category { get; set; } = null!;
 
-		public Guid SellerId { get; set; }
-		public virtual Seller Seller { get; set; } = null!;
+		public Guid? DealerId { get; set; }
+		public virtual Dealer? Dealer { get; set; }
 
-		public Guid? CustomerId { get; set; }
-		public virtual ApplicationUser? Customer { get; set; }
-
-		//public ICollection<string> Images { get; set; }
-
-        public string ImageUrl { get; set; }
+		public Guid OwnerId { get; set; }
+		public virtual ApplicationUser Owner { get; set; } = null!;
 
         public virtual ICollection<Review> Reviews { get; set; }
+
+		[NotMapped]
+        public virtual ICollection<Dealer> Owners { get; set; }
     }
 }

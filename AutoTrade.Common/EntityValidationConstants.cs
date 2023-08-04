@@ -29,11 +29,6 @@
             public const int RatingMaxValue = 5;
 		}
 
-        public static class Image
-        {
-            public const int UrlMaxLength = 2048;
-        }
-
         public static class Car
         {
             public const int MakeMinLength = 2;
@@ -63,11 +58,11 @@
 			public const int ColorMinLength = 2;
             public const int ColorMaxLength = 20;
 
-            public const int UrlMinLength = 5;
-            public const int UrlMaxLength = 2048;
-		}
+            public const int ImageUrlMinLength = 5;
+            public const int ImageUrlMaxLength = 2048;
+        }
 
-        public static class Seller
+        public static class Dealer
         {
             public const int PhoneNumberMinLength = 7;
             public const int PhoneNumberMaxLength = 15;

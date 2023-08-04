@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrade.Data.Models
 {
-    using static Common.EntityValidationConstants.Image;
+    using static Common.EntityValidationConstants.Car;
 
     public class Image
     {
@@ -15,7 +15,7 @@ namespace AutoTrade.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(UrlMaxLength)]
+        [MaxLength(ImageUrlMaxLength)]
         public string Url { get; set; } = null!;
 
         public string CarId { get; set; } = null!;

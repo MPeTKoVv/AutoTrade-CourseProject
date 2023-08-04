@@ -97,7 +97,10 @@ namespace AutoTrade.Data.Migrations
                     b.Property<DateTime>("AddedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValue(new DateTime(2023, 7, 28, 19, 52, 26, 204, DateTimeKind.Utc).AddTicks(577));
+
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -124,15 +127,6 @@ namespace AutoTrade.Data.Migrations
                     b.Property<int>("Horsepower")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
                     b.Property<string>("Make")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -157,6 +151,8 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ConditionId");
@@ -167,12 +163,12 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("45da5b78-7a91-4c58-ac8a-ec9e0f4571b4"),
+                            Id = new Guid("c042cf67-bdc6-48b4-881f-7face0154c22"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
                             ConditionId = 1,
@@ -180,8 +176,6 @@ namespace AutoTrade.Data.Migrations
                             Description = "This is my favorite car and the first in my app :)",
                             EngineId = 1,
                             Horsepower = 500,
-                            ImageUrl = "https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/f03a0277f53ad691e6ab18fad632edc6.jpg",
-                            IsActive = false,
                             Make = "Mercedes",
                             Mileage = 0,
                             Model = "C63 AMG",
@@ -206,7 +200,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -276,7 +270,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conditions");
+                    b.ToTable("Conditions", (string)null);
 
                     b.HasData(
                         new
@@ -311,7 +305,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EngineTypes");
+                    b.ToTable("EngineTypes", (string)null);
 
                     b.HasData(
                         new
@@ -349,11 +343,7 @@ namespace AutoTrade.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CarId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("CarId1")
+                    b.Property<Guid>("CarId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Url")
@@ -363,9 +353,9 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId1");
+                    b.HasIndex("CarId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Review", b =>
@@ -399,7 +389,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Seller", b =>
@@ -420,7 +410,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Sellers");
+                    b.ToTable("Sellers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -560,6 +550,10 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.Car", b =>
                 {
+                    b.HasOne("AutoTrade.Data.Models.ApplicationUser", null)
+                        .WithMany("FavoriteCars")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("AutoTrade.Data.Models.Category", "Category")
                         .WithMany("Cars")
                         .HasForeignKey("CategoryId")
@@ -603,9 +597,9 @@ namespace AutoTrade.Data.Migrations
             modelBuilder.Entity("AutoTrade.Data.Models.Image", b =>
                 {
                     b.HasOne("AutoTrade.Data.Models.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId1")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Images")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -694,6 +688,8 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("FavoriteCars");
+
                     b.Navigation("Garage");
 
                     b.Navigation("Reviews");
@@ -701,6 +697,8 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.Car", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Reviews");
                 });
 

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrade.Web.ViewModels.Seller
+namespace AutoTrade.Web.ViewModels.Dealer
 {
-	public class SellerInfoOnCarViewModel
-	{
+	public class DealerInfoOnCarViewModel
+    {
         public string Email{ get; set; }
 
         [Display(Name = "Phone")]

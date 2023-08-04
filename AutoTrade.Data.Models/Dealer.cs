@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace AutoTrade.Data.Models
 {
-    using static Common.EntityValidationConstants.Seller;
+    using static Common.EntityValidationConstants.Dealer;
 
-    public class Seller
+    public class Dealer
     {
-        public Seller()
+        public Dealer()
         {
             this.Id = Guid.NewGuid();
-            this.CarsForSale = new HashSet<Car>();
         }
 
         [Key]
@@ -27,7 +22,5 @@ namespace AutoTrade.Data.Models
         public Guid UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; } = null!;
-
-        public virtual ICollection<Car> CarsForSale { get; set; }
     }
 }

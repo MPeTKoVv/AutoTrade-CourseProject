@@ -1,5 +1,7 @@
-﻿@{
-	const int releaseYear = 2023;
+﻿@using static AutoTrade.Common.GeneralApplicationConstants
+
+@{
+	const int releaseYear = ReleaseYear;
 }
 
 <!DOCTYPE html>
@@ -33,7 +35,7 @@
 						@if (this.User.Identity?.IsAuthenticated ?? false)
 						{
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Garage">My Garage</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Garage">My Cars</a>
 							</li>
 							
 								<li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="CarsForSale">My Cars For Sale</a></li>

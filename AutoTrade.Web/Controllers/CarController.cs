@@ -16,12 +16,12 @@ namespace AutoTrade.Web.Controllers
 	public class CarController : Controller
 	{
 		private readonly ICarService carService;
-		private readonly ISellerService sellerService;
+		private readonly IDealerService sellerService;
 		private readonly ICategoryService categoryService;
 		private readonly IConditionService conditionService;
 		private readonly IEngineService engineService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IConditionService conditionService, IEngineService engineService)
+		public CarController(ICarService carService, IDealerService sellerService, ICategoryService categoryService, IConditionService conditionService, IEngineService engineService)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
@@ -62,17 +62,53 @@ namespace AutoTrade.Web.Controllers
 			return View(viewModel);
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> Edit(string id)
+		{
+            bool carExists = await carService
+                .ExistsByIdAsync(id);
+
+            if (!carExists)
+            {
+                return RedirectToAction("All", "Car");
+            }
+
+			bool isUserSeller = await sellerService
+				.DealerExistsByUserIdAsync(User.GetId()!);
+
+			if (!isUserSeller)
+			{
+                return RedirectToAction("Become", "Dealer");
+            }
+
+			string sellerId = await sellerService.GetDealerIdByUserIdAsync(User.GetId()!);
+			bool isSellerOwner = await carService.IsDealerWithIdOwnerOfCarWiithIdAsync(id, sellerId);
+
+			if (!isSellerOwner)
+			{
+				return RedirectToAction("Garage", "Car");
+			}
+
+			CarFormModel formModel = await carService
+				.GetCarForEditByIdAsync(id);
+
+			formModel.Categories = await categoryService.AllCategoriesAsync();
+			formModel.Conditions = await conditionService.AllConditionsAsync();
+			formModel.EngineTypes = await engineService.AllEngineTypesAsync();
+
+			return View(formModel);
+        }
 
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
 			bool isAgent =
-				await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+				await this.sellerService.DealerExistsByUserIdAsync(this.User.GetId()!);
 
 			if (!isAgent)
 			{
 
-				return RedirectToAction("Become", "Seller");
+				return RedirectToAction("Become", "Dealer");
 			}
 
 			CarFormModel carViewModel = new CarFormModel()
@@ -90,12 +126,12 @@ namespace AutoTrade.Web.Controllers
 		public async Task<IActionResult> Add(CarFormModel carViewModel)
 		{
 			bool isSeller =
-				await sellerService.SellerExistsByUserIdAsync(User.GetId()!);
+				await sellerService.DealerExistsByUserIdAsync(User.GetId()!);
 			if (!isSeller)
 			{
 				//TempData[ErrorMessage] = "You must become an agent in order to add new houses!";
 
-				return RedirectToAction("Become", "Seller");
+				return RedirectToAction("Become", "Dealer");
 			}
 
 			bool categoryExists = await categoryService.ExistsByIdAsync(carViewModel.CategoryId);
@@ -128,7 +164,7 @@ namespace AutoTrade.Web.Controllers
 			try
 			{
 				string? sellerId =
-					await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
+					await sellerService.GetDealerIdByUserIdAsync(User.GetId()!);
 
 
 				await carService.CreateAndReturnIdAsync(carViewModel, sellerId!);
@@ -150,20 +186,9 @@ namespace AutoTrade.Web.Controllers
 		//	return Ok();
 		//}
 
-		//public async Task<IActionResult> Garage()
-		//{
-		//	return Ok();
-		//}
-
-		//public async Task<IActionResult> CarsForSale()
-		//{
-		//	string sellerId =
-		//			await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
-
-		//	IEnumerable<IndexViewModel> myCarsForSale = await carService
-		//		.AllMyCarsForSale(sellerId);
-
-		//	return View(myCarsForSale);
-		//}
+		public async Task<IActionResult> Garage()
+		{
+			return Ok();
+		}
 	}
 }

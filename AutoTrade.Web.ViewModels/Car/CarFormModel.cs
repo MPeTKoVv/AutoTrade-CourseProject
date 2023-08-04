@@ -17,8 +17,6 @@ namespace AutoTrade.Web.ViewModels.Car
 			this.Categories = new HashSet<CarSelectCategoryViewModel>();
 			this.Conditions = new HashSet<CarSelectConditionViewModel>();
 			this.EngineTypes = new HashSet<CarSelectEngineTypeViewModel>();
-
-			//this.Images = new HashSet<Image>();
 		}
 
 		[Required]
@@ -59,7 +57,7 @@ namespace AutoTrade.Web.ViewModels.Car
 		public int EngineTypeId { get; set; }
 
 		[Required]
-		[StringLength(UrlMaxLength, MinimumLength = UrlMinLength)]
+		[StringLength(ImageUrlMaxLength, MinimumLength = ImageUrlMinLength)]
 		public string ImageUrl { get; set; } = null!;
 
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }

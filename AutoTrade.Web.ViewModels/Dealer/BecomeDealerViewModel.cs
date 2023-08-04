@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoTrade.Web.ViewModels.Seller
+namespace AutoTrade.Web.ViewModels.Dealer
 {
-	using static Common.EntityValidationConstants.Seller;
+	using static Common.EntityValidationConstants.Dealer;
 
-	public class BecomeSellerViewModel
+	public class BecomeDealerViewModel
 	{
 		[Required]
 		[StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]

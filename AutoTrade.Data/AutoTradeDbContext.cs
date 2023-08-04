@@ -27,7 +27,7 @@ namespace AutoTrade.Web.Data
 
         public DbSet<Car> Cars { get; set; } = null!;
 
-        public DbSet<Seller> Sellers { get; set; } = null!;
+        public DbSet<Dealer> Sellers { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
