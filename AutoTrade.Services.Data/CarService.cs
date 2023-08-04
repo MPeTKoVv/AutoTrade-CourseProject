@@ -44,6 +44,12 @@ namespace AutoTrade.Services.Data
 					.Where(c => c.EngineType.Type == queryModel.EngineType);
 			}
 
+			if (!string.IsNullOrEmpty(queryModel.Transmission))
+			{
+                carsQuery = carsQuery
+                    .Where(c => c.Transmission.Name == queryModel.Transmission);
+            }
+
 			if (!string.IsNullOrEmpty(queryModel.SearchString))
 			{
 				string wildCard = $"%{queryModel.SearchString}%";
@@ -93,8 +99,6 @@ namespace AutoTrade.Services.Data
 				.ToArrayAsync();
 			int totalCars = carsQuery.Count();
 
-
-
 			return new AllCarsFilteredAndPagedServiceModel
 			{
 				TotalCarsCount = totalCars,
@@ -124,21 +128,6 @@ namespace AutoTrade.Services.Data
 
 		//public async Task<IEnumerable<IndexViewModel>> AllMyCarsForSale(string sellerId)
 		//{
-		//	IEnumerable<IndexViewModel> allMyCarsForSale = await dbContext
-		//		.OrderByDescending(c => c.AddedOn)
-		//		.Where(c => c.SellerId.ToString() == sellerId)
-		//		.Select(c => new IndexViewModel()
-		//		{
-		//			Make = c.Make,
-		//			Model = c.Model,
-		//			Year = c.Year,
-		//			Horsepower = c.Horsepower,
-		//			Price = c.Price,
-		//			ImageUrl = c.ImageUrl
-		//              })
-		//		.ToArrayAsync();
-
-		//	return allMyCarsForSale;
 		//}
 
 		public async Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId)
@@ -160,12 +149,9 @@ namespace AutoTrade.Services.Data
 				EngineId = carViewModel.EngineTypeId,
 				SellerId = Guid.Parse(sellerId)
 			};
-			//car.Images.Add(new Image { Url = carViewModel.ImageUrl, CarId = car.Id.ToString() });
-			//car.Images.Add(carViewModel.ImageUrl);
-
+			
 			await dbContext.Cars.AddAsync(car);
 			await dbContext.SaveChangesAsync();
-
 		}
 
         public async Task<bool> ExistsByIdAsync(string Id)

@@ -2,6 +2,7 @@
 using AutoTrade.Web.ViewModels.Category;
 using AutoTrade.Web.ViewModels.Condition;
 using AutoTrade.Web.ViewModels.Engine;
+using AutoTrade.Web.ViewModels.Transmission;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,8 +18,7 @@ namespace AutoTrade.Web.ViewModels.Car
 			this.Categories = new HashSet<CarSelectCategoryViewModel>();
 			this.Conditions = new HashSet<CarSelectConditionViewModel>();
 			this.EngineTypes = new HashSet<CarSelectEngineTypeViewModel>();
-
-			//this.Images = new HashSet<Image>();
+			this.Transmissions = new HashSet<CarSelectTransmissionViewModel>();
 		}
 
 		[Required]
@@ -65,5 +65,6 @@ namespace AutoTrade.Web.ViewModels.Car
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }
         public IEnumerable<CarSelectConditionViewModel> Conditions { get; set; }
 		public IEnumerable<CarSelectEngineTypeViewModel> EngineTypes { get; set; }
-	}
+        public IEnumerable<CarSelectTransmissionViewModel> Transmissions { get; set; }
+    }
 }

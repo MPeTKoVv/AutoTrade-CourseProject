@@ -8,6 +8,7 @@ using AutoTrade.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 using System.Security.Permissions;
 
 namespace AutoTrade.Web.Controllers
@@ -20,14 +21,16 @@ namespace AutoTrade.Web.Controllers
 		private readonly ICategoryService categoryService;
 		private readonly IConditionService conditionService;
 		private readonly IEngineService engineService;
+		private readonly ITransmissionService transmissionService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IConditionService conditionService, IEngineService engineService)
+		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IConditionService conditionService, IEngineService engineService, ITransmissionService transmissionService)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
 			this.categoryService = categoryService;
 			this.conditionService = conditionService;
 			this.engineService = engineService;
+			this.transmissionService = transmissionService;
 		}
 
 		[AllowAnonymous]
@@ -38,9 +41,11 @@ namespace AutoTrade.Web.Controllers
 
 			queryModel.Cars = serviceModel.Cars;
 			queryModel.TotalCars = serviceModel.TotalCarsCount;
+
 			queryModel.Categories = await categoryService.AllCategoryNamesAsync();
 			queryModel.Conditions = await conditionService.AllConditionNamesAsync();
 			queryModel.EngineTypes = await engineService.AllEngineTypeNamesAsync();
+			queryModel.Transmissions = await transmissionService.AllTransmissionNamesAsync();
 
 			return View(queryModel);
 		}
@@ -53,10 +58,10 @@ namespace AutoTrade.Web.Controllers
 
 			if (!carExists)
 			{
-                return RedirectToAction("All", "Car");
-            }
+				return RedirectToAction("All", "Car");
+			}
 
-            CarDetailsViewModel viewModel = await carService
+			CarDetailsViewModel viewModel = await carService
 				.GetDetailsByIdAsync(id);
 
 			return View(viewModel);
@@ -77,13 +82,14 @@ namespace AutoTrade.Web.Controllers
 
 			CarFormModel carViewModel = new CarFormModel()
 			{
-				//Images = new HashSet<Image>(),
 				Categories = await this.categoryService.AllCategoriesAsync(),
 				Conditions = await this.conditionService.AllConditionsAsync(),
 				EngineTypes = await this.engineService.AllEngineTypesAsync(),
+				Transmissions = await this.transmissionService.AllTransmissionsAsync()
 			};
 
 			return View(carViewModel);
+
 		}
 
 		[HttpPost]
@@ -157,13 +163,7 @@ namespace AutoTrade.Web.Controllers
 
 		//public async Task<IActionResult> CarsForSale()
 		//{
-		//	string sellerId =
-		//			await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
-
-		//	IEnumerable<IndexViewModel> myCarsForSale = await carService
-		//		.AllMyCarsForSale(sellerId);
-
-		//	return View(myCarsForSale);
 		//}
+		
 	}
 }
