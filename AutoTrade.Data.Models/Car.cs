@@ -60,6 +60,9 @@ namespace AutoTrade.Data.Models
 		public int CategoryId { get; set; }
 		public virtual Category Category { get; set; } = null!;
 
+		public int TransmissionId { get; set; }
+		public virtual Transmission Transmission { get; set; }
+
 		public Guid SellerId { get; set; }
 		public virtual Seller Seller { get; set; } = null!;
 

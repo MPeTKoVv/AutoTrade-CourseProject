@@ -21,7 +21,7 @@ namespace AutoTrade.Services.Data
 
 		public async Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel)
 		{
-			IQueryable<Car> carsQuery = this.dbContext
+            IQueryable<Car> carsQuery = this.dbContext
 				.Cars
 				.Include(c => c.EngineType)
 				.AsQueryable();

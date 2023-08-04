@@ -67,5 +67,11 @@
             public const int PhoneNumberMinLength = 7;
             public const int PhoneNumberMaxLength = 15;
         }
+
+        public static class Transmission
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 50;
+        }
     }
 }

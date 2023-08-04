@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230804201353_AddTransmissionInCar")]
+    partial class AddTransmissionInCar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +160,7 @@ namespace AutoTrade.Data.Migrations
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TransmissionId")
+                    b.Property<int?>("TransmissionId")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
@@ -183,7 +185,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b337459a-546a-4ddb-a622-81023b911d2c"),
+                            Id = new Guid("a6c1020e-f7bf-463d-880b-6ad3e51dfa4a"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
                             ConditionId = 1,
@@ -199,7 +201,6 @@ namespace AutoTrade.Data.Migrations
                             Model = "C63 AMG",
                             Price = 150000m,
                             SellerId = new Guid("cdb33d65-5b4b-4dec-899b-32e2b843f801"),
-                            TransmissionId = 2,
                             Year = 2023
                         });
                 });
@@ -607,9 +608,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasOne("AutoTrade.Data.Models.Transmission", "Transmission")
                         .WithMany("Cars")
-                        .HasForeignKey("TransmissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("TransmissionId");
 
                     b.Navigation("Category");
 
