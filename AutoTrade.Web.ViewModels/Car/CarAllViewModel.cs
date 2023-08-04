@@ -15,5 +15,6 @@ namespace AutoTrade.Web.ViewModels.Car
         public int Year { get; set; }
         public int Horsepower { get; set; }
         public string ImageUrl { get; set; } = null!;
+        public bool IsForSale { get; set; }
     }
 }

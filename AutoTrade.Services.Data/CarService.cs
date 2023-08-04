@@ -82,7 +82,7 @@ namespace AutoTrade.Services.Data
 			};
 
 			IEnumerable<CarAllViewModel> allCars = await carsQuery
-				.Where(c => c.IsActive)
+				.Where(c => c.IsActive && c.IsForSale)
 				.Skip((queryModel.CurrentPage - 1) * queryModel.CarsPerPage)
 				.Take(queryModel.CarsPerPage)
 				.Select(c => new CarAllViewModel
