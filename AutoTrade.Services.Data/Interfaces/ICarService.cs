@@ -23,5 +23,9 @@
 		Task<bool> IsSellerWithIdOwnerOfCarWithIdAsync(string carId, string sellerId);
 
 		Task EditCarByIdAndFormModel(string carId, CarFormModel formModel);
+
+		Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string id);
+
+		Task DeleteCarByIdAsync(string carId);
 	}
 }

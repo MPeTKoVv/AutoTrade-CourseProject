@@ -23,9 +23,16 @@
 		</div>
 		<div class="form-group col-md-3 d-flex justify-content-between">
 			<div class="form-group">
+				<label asp-for="Transmission"></label>
+				<select asp-for="Transmission" class="form-control">
+					<option value="">All</option>
+					@foreach (var transmission in Model.Transmissions)
+					{
+						<option value="@transmission">@transmission</option>
+					}
+				</select>
 			</div>
-		</div class="form-group col-md-3 d-flex justify-content-between">
-
+		</div>
 		<div class="form-group col-md-3 d-flex justify-content-between">
 			<div class="form-group">
 				<label asp-for="EngineType"></label>
@@ -38,23 +45,7 @@
 				</select>
 			</div>
 		</div>
-
 		<div class="form-group col-md-3 d-flex justify-content-between">
-			<div class="form-group">
-				<label asp-for="Transmission"></label>
-				<select asp-for="Transmission" class="form-control">
-					<option value="">All</option>
-					@foreach (var transmission in Model.Transmissions)
-					{
-						<option value="@transmission">@transmission</option>
-					}
-				</select>
-			</div>
-		</div>
-
-
-		<div class="form-group col-md-3 d-flex justify-content-between">
-
 			<div class="form-group">
 				<label asp-for="CarsPerPage"></label>
 				<select asp-for="CarsPerPage" class="form-control">
