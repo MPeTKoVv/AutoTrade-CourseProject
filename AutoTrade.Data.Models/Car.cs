@@ -13,6 +13,7 @@ namespace AutoTrade.Data.Models
 		{
 			this.Id = Guid.NewGuid();
 			this.Transactions = new HashSet<Transaction>();
+			//this.OwnerId = SellerId;
         }
 
         [Key]
@@ -58,11 +59,11 @@ namespace AutoTrade.Data.Models
 		public virtual Transmission Transmission { get; set; }
 
 		public Guid SellerId { get; set; }
-		public virtual Seller Seller { get; set; } = null!;
+		public virtual Seller Seller { get; set; }
 
-		public Guid? CustomerId { get; set; }
-		public virtual ApplicationUser? Customer { get; set; }
+		//public Guid OwnerId { get; set; }
+		//public virtual ApplicationUser Owner { get; set; } = null!;
 
-        public virtual ICollection<Transaction> Transactions { get; set; }
+		public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

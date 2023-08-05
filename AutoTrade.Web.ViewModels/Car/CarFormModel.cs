@@ -49,6 +49,9 @@ namespace AutoTrade.Web.ViewModels.Car
 		[Display(Name = "Engine Type")]
 		public int EngineTypeId { get; set; }
 
+		[Display(Name = "Transmission")]
+		public int TransmissionId { get; set; }
+
 		[Required]
 		[StringLength(ImageUrlMaxLength, MinimumLength = ImageUrlMinLength)]
 		public string ImageUrl { get; set; } = null!;

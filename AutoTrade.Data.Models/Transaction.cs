@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -14,6 +15,7 @@ namespace AutoTrade.Data.Models
             this.Id = Guid.NewGuid();
         }
 
+		[Key]
         public Guid Id { get; set; }
 		public DateTime TransactionDate { get; set; }
 		public decimal Amount { get; set; }

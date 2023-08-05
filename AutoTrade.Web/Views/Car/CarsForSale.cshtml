@@ -1,84 +1,19 @@
-﻿@model IEnumerable<IndexViewModel>
+﻿@model List<CarAllViewModel>
 
 @{
-	ViewData["Title"] = "Cars For Sale";
+	ViewBag.Title = "My Cars For Sale";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Cars For Sale</title>
-	<style>
-		/* Custom CSS styles */
-		.car-list {
-			display: flex;
-			flex-wrap: wrap;
-		}
+<h2 class="text-center">@ViewBag.Title</h2>
 
-		.car-section {
-			width: 400px;
-			margin: 10px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			padding: 10px;
-			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		}
+@if (!Model.Any())
+{
+	<h2 class="text-center">No cars for sale!</h2>
+}
 
-		.car-card {
-			text-align: center;
-		}
-
-			.car-card h2 {
-				font-size: 20px;
-				margin-bottom: 15px;
-			}
-
-			.car-card p {
-				margin-bottom: 15px;
-			}
-
-			.car-card img {
-				max-width: 100%;
-				height: auto;
-				border-radius: 5px;
-				margin-bottom: 10px;
-			}
-
-			.car-card button {
-				background-color: #3498db;
-				color: #fff;
-				border: none;
-				padding: 8px 12px;
-				font-size: 14px;
-				border-radius: 5px;
-				cursor: pointer;
-				transition: background-color 0.3s;
-			}
-
-				.car-card button:hover {
-					background-color: #2980b9;
-				}
-	</style>
-</head>
-<body>
-	<h1>My Cars For Sale</h1>
-
-	<div class="car-list">
-		@foreach (var car in Model)
-		{
-			<section class="car-section">
-				<div class="car-card">
-					<img src="@car.ImageUrl" alt="@car.Make @car.Model">
-					<h2>@car.Make @car.Model</h2>
-					<p>
-						Year: @car.Year
-						Horsepower: @car.Horsepower
-						Price: @car.Price.ToString("N")€
-					</p>
-					<button type="submit" name="selectedCarId" value="@car.Id" formaction="/Car/Edit">Edit</button>
-				</div>
-			</section>
-		}
-	</div>
-</body>
-</html>
+<div class="row">
+	@foreach (var car in Model)
+	{
+		<partial name="_CarPartial" model="@car" />
+	}
+</div>

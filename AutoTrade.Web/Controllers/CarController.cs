@@ -44,7 +44,7 @@ namespace AutoTrade.Web.Controllers
 			queryModel.Categories = await categoryService.AllCategoryNamesAsync();
 			queryModel.EngineTypes = await engineService.AllEngineTypeNamesAsync();
 			queryModel.Transmissions = await transmissionService.AllTransmissionNamesAsync();
-			//
+			
 			return View(queryModel);
 		}
 
@@ -161,9 +161,9 @@ namespace AutoTrade.Web.Controllers
 		{
 			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
 
-			string userId = this.User.GetId()!;
+			string sellerId = this.User.GetId()!;
 
-			myCars.AddRange(await this.carService.AllByUserIdAsync(userId));
+			myCars.AddRange(await this.carService.AllByUserIdAsync(sellerId));
 
 			return View(myCars);
 		}

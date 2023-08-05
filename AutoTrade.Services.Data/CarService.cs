@@ -21,7 +21,7 @@ namespace AutoTrade.Services.Data
 
 		public async Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel)
 		{
-            IQueryable<Car> carsQuery = this.dbContext
+			IQueryable<Car> carsQuery = this.dbContext
 				.Cars
 				.Include(c => c.EngineType)
 				.AsQueryable();
@@ -31,12 +31,6 @@ namespace AutoTrade.Services.Data
 				carsQuery = carsQuery
 					.Where(c => c.Category.Name == queryModel.Category);
 			}
-
-			//if (!string.IsNullOrEmpty(queryModel.Condition))
-			//{
-			//	carsQuery = carsQuery
-			//		.Where(c => c.Condition.Name == queryModel.Condition);
-			//}
 
 			if (!string.IsNullOrEmpty(queryModel.EngineType))
 			{
@@ -109,7 +103,7 @@ namespace AutoTrade.Services.Data
 		{
 			IEnumerable<CarAllViewModel> usersCars = await dbContext
 				.Cars
-				.Where(c => c.SellerId.ToString() == userId)
+				.Where(c => c.Seller.UserId.ToString() == userId)
 				.Select(c => new CarAllViewModel
 				{
 					Id = c.Id.ToString(),
