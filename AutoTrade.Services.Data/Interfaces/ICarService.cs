@@ -24,8 +24,12 @@
 
 		Task EditCarByIdAndFormModel(string carId, CarFormModel formModel);
 
-		Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string id);
+		Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string carId);
 
 		Task DeleteCarByIdAsync(string carId);
+
+		Task<bool> IsForSaleByIdAsync(string carId);
+
+		Task BuyCarAsync(string carId, string userId);
 	}
 }

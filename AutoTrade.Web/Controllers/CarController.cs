@@ -14,7 +14,9 @@ using System.Security.Permissions;
 
 namespace AutoTrade.Web.Controllers
 {
-    [Authorize]
+	using static Common.NotificationMessagesConstants;
+
+	[Authorize]
     public class CarController : Controller
     {
         private readonly ICarService carService;
@@ -64,7 +66,6 @@ namespace AutoTrade.Web.Controllers
 
             return View(viewModel);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -311,10 +312,26 @@ namespace AutoTrade.Web.Controllers
             return View(myCars);
         }
 
-        //public async Task<IActionResult> Buy()
-        //{
-        //	return Ok();
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Buy(string carId)
+        {
+            bool carExists = await this.carService.ExistsByIdAsync(carId);
+            if (!carExists)
+            {
+                TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with valid Id!";
 
+                return this.RedirectToAction("All", "Car");
+            }
+
+            bool isCarForSale = await this.carService.IsForSaleByIdAsync(carId);
+            if (isCarForSale)
+            {
+
+
+				return this.RedirectToAction("All", "Car");
+			}
+
+            return Ok();
+		}
     }
 }
