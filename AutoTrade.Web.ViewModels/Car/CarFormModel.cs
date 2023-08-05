@@ -41,7 +41,8 @@ namespace AutoTrade.Web.ViewModels.Car
 		public int Year { get; set; }
 
 		[Range(typeof(int), MileageMinValue, MileageMaxValue)]
-		public int Mileage { get; set; }
+        [Display(Name = "Mileage(km)")]
+        public int Mileage { get; set; }
 
 		[Display(Name = "Category")]
         public int CategoryId { get; set; }

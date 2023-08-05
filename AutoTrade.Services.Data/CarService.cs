@@ -40,9 +40,9 @@ namespace AutoTrade.Services.Data
 
 			if (!string.IsNullOrEmpty(queryModel.Transmission))
 			{
-                carsQuery = carsQuery
-                    .Where(c => c.Transmission.Name == queryModel.Transmission);
-            }
+				carsQuery = carsQuery
+					.Where(c => c.Transmission.Name == queryModel.Transmission);
+			}
 
 			if (!string.IsNullOrEmpty(queryModel.SearchString))
 			{
@@ -139,10 +139,6 @@ namespace AutoTrade.Services.Data
 			return orderedCars;
 		}
 
-		//public async Task<IEnumerable<IndexViewModel>> AllMyCarsForSale(string sellerId)
-		//{
-		//}
-
 		public async Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId)
 		{
 			Car car = new Car
@@ -160,26 +156,74 @@ namespace AutoTrade.Services.Data
 				EngineId = carViewModel.EngineTypeId,
 				SellerId = Guid.Parse(sellerId)
 			};
-			
+
 			await dbContext.Cars.AddAsync(car);
 			await dbContext.SaveChangesAsync();
 		}
 
-        public async Task<bool> ExistsByIdAsync(string Id)
-        {
+		public async Task EditCarByIdAndFormModel(string carId, CarFormModel formModel)
+		{
+			Car car = await dbContext
+				.Cars
+				.Where(c => c.IsActive)
+				.FirstAsync(c => c.Id.ToString() == carId);
+
+			car.Make = formModel.Make;
+			car.Model = formModel.Model;
+			car.Price = formModel.Price;
+			car.Year = formModel.Year;
+			car.Horsepower = formModel.Horsepower;
+			car.Mileage = formModel.Mileage;
+			car.Description = formModel.Description;
+			car.ImageUrl = formModel.ImageUrl;
+			car.CategoryId = formModel.CategoryId;
+			car.TransmissionId = formModel.TransmissionId;
+			car.EngineId = formModel.EngineTypeId;
+
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task<bool> ExistsByIdAsync(string carId)
+		{
 			var result = await dbContext
 				.Cars
-				.AnyAsync(c => c.Id.ToString() == Id);
-
+				.AnyAsync(c => c.Id.ToString() == carId);
 			return result;
-        }
+		}
 
-        public async Task<CarDetailsViewModel> GetDetailsByIdAsync(string carId)
+		public async Task<CarFormModel> GetCarForEditByCarIdAsync(string carId)
+		{
+			Car car = await dbContext
+			   .Cars
+			   .Include(c => c.Category)
+			   .Include(c => c.Transmission)
+			   .Include(c => c.EngineType)
+			   .Where(c => c.IsActive)
+			   .FirstAsync(c => c.Id.ToString() == carId);
+
+			return new CarFormModel
+			{
+				Make = car.Make,
+				Model = car.Model,
+				Price = car.Price,
+				Year = car.Year,
+				Horsepower = car.Horsepower,
+				Mileage = car.Mileage,
+				Description = car.Description,
+				ImageUrl = car.ImageUrl,
+				CategoryId = car.CategoryId,
+				TransmissionId = car.TransmissionId,
+				EngineTypeId = car.EngineId
+			};
+		}
+
+		public async Task<CarDetailsViewModel> GetDetailsByIdAsync(string carId)
 		{
 			Car? car = await dbContext
 				.Cars
-				.Include(c=>c.Category)
-				.Include(c=>c.EngineType)
+				.Include(c => c.Category)
+				.Include(c => c.Transmission)
+				.Include(c => c.EngineType)
 				.Include(c => c.Seller)
 				.ThenInclude(s => s.User)
 				.Where(c => c.IsActive)
@@ -200,6 +244,7 @@ namespace AutoTrade.Services.Data
 				Horsepower = car.Horsepower,
 				ImageUrl = car.ImageUrl,
 				Category = car.Category.Name,
+				Transmission = car.Transmission.Name,
 				EngineType = car.EngineType.Type,
 				Description = car.Description,
 				Seller = new SellerInfoOnCarViewModel
@@ -208,6 +253,16 @@ namespace AutoTrade.Services.Data
 					PhoneNumber = car.Seller.PhoneNumber
 				}
 			};
+		}
+
+		public async Task<bool> IsSellerWithIdOwnerOfCarWithIdAsync(string carId, string sellerId)
+		{
+			Car car = await dbContext
+				.Cars
+				.Where(c => c.IsActive)
+				.FirstAsync(c => c.Id.ToString() == carId);
+
+			return car.SellerId.ToString() == sellerId;
 		}
 	}
 }

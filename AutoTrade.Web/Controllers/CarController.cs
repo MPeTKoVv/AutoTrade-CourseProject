@@ -44,7 +44,7 @@ namespace AutoTrade.Web.Controllers
 			queryModel.Categories = await categoryService.AllCategoryNamesAsync();
 			queryModel.EngineTypes = await engineService.AllEngineTypeNamesAsync();
 			queryModel.Transmissions = await transmissionService.AllTransmissionNamesAsync();
-			
+
 			return View(queryModel);
 		}
 
@@ -78,21 +78,22 @@ namespace AutoTrade.Web.Controllers
 				return RedirectToAction("Become", "Seller");
 			}
 
-			CarFormModel carViewModel = new CarFormModel()
+			CarFormModel carFormModel = new CarFormModel()
 			{
 				Categories = await this.categoryService.AllCategoriesAsync(),
 				EngineTypes = await this.engineService.AllEngineTypesAsync(),
 				Transmissions = await this.transmissionService.AllTransmissionsAsync()
 			};
 
-			return View(carViewModel);
+			return View(carFormModel);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(CarFormModel carViewModel)
+		public async Task<IActionResult> Add(CarFormModel carFormModel)
 		{
 			bool isSeller =
 				await sellerService.SellerExistsByUserIdAsync(User.GetId()!);
+
 			if (!isSeller)
 			{
 				//TempData[ErrorMessage] = "You must become an agent in order to add new houses!";
@@ -100,25 +101,25 @@ namespace AutoTrade.Web.Controllers
 				return RedirectToAction("Become", "Seller");
 			}
 
-			bool categoryExists = await categoryService.ExistsByIdAsync(carViewModel.CategoryId);
+			bool categoryExists = await categoryService.ExistsByIdAsync(carFormModel.CategoryId);
 			if (!categoryExists)
 			{
-				ModelState.AddModelError(nameof(carViewModel.CategoryId), "Selected category does not exist!");
+				ModelState.AddModelError(nameof(carFormModel.CategoryId), "Selected category does not exist!");
 			}
 
-			bool engineTypeExists = await engineService.ExistsByIdAsync(carViewModel.EngineTypeId);
+			bool engineTypeExists = await engineService.ExistsByIdAsync(carFormModel.EngineTypeId);
 			if (!engineTypeExists)
 			{
-				ModelState.AddModelError(nameof(carViewModel.EngineTypeId), "Selected engine type does not exist!");
+				ModelState.AddModelError(nameof(carFormModel.EngineTypeId), "Selected engine type does not exist!");
 			}
 
 			if (!ModelState.IsValid)
 			{
-				carViewModel.Categories = await categoryService.AllCategoriesAsync();
-				carViewModel.EngineTypes = await engineService.AllEngineTypesAsync();
-				carViewModel.Transmissions = await transmissionService.AllTransmissionsAsync();
+				carFormModel.Categories = await categoryService.AllCategoriesAsync();
+				carFormModel.EngineTypes = await engineService.AllEngineTypesAsync();
+				carFormModel.Transmissions = await transmissionService.AllTransmissionsAsync();
 
-				return View(carViewModel);
+				return View(carFormModel);
 			}
 
 			try
@@ -126,8 +127,7 @@ namespace AutoTrade.Web.Controllers
 				string? sellerId =
 					await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
 
-
-				await carService.CreateAndReturnIdAsync(carViewModel, sellerId!);
+				await carService.CreateAndReturnIdAsync(carFormModel, sellerId!);
 
 				//TempData[SuccessMessage] = "House was added successfully!";
 				return RedirectToAction("All", "Car");
@@ -135,16 +135,85 @@ namespace AutoTrade.Web.Controllers
 			catch (Exception)
 			{
 				ModelState.AddModelError(string.Empty, "Unexpected error occurred while trying to add your new house! Please try again later or contact administrator!");
-				carViewModel.Categories = await categoryService.AllCategoriesAsync();
+				carFormModel.Categories = await categoryService.AllCategoriesAsync();
 
-				return View(carViewModel);
+				return View(carFormModel);
 			}
 		}
 
-		//public async Task<IActionResult> Buy()
-		//{
-		//	return Ok();
-		//}
+		[HttpGet]
+		public async Task<IActionResult> Edit(string id)
+		{
+			bool carExists = await carService.ExistsByIdAsync(id);
+
+			if (!carExists)
+			{
+				return RedirectToAction("All", "Car");
+			}
+
+			bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+
+			if (!isUserSeller)
+			{
+				return RedirectToAction("Become", "Seller");
+			}
+
+			string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
+			bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
+
+			if (!isSellerOwner)
+			{
+				return RedirectToAction("Mine", "Car");
+			}
+
+			try
+			{
+				CarFormModel formModel = await carService
+					.GetCarForEditByCarIdAsync(id);
+
+				formModel.Categories = await this.categoryService.AllCategoriesAsync();
+				formModel.Transmissions = await this.transmissionService.AllTransmissionsAsync();
+				formModel.EngineTypes = await this.engineService.AllEngineTypesAsync();
+
+				return View(formModel);
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(string id, CarFormModel formModel)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				formModel.Categories = await this.categoryService.AllCategoriesAsync();
+				formModel.Transmissions = await this.transmissionService.AllTransmissionsAsync();
+				formModel.EngineTypes = await this.engineService.AllEngineTypesAsync();
+
+				return View(formModel);
+			}
+
+			try
+			{
+				await this.carService.EditCarByIdAndFormModel(id, formModel);
+			}
+			catch (Exception)
+			{
+				this.ModelState.AddModelError(string.Empty, "Unexoected error occured while trying update the car.");
+
+				formModel.Categories = await categoryService.AllCategoriesAsync();
+				formModel.Transmissions = await transmissionService.AllTransmissionsAsync();
+				formModel.EngineTypes = await engineService.AllEngineTypesAsync();
+
+				return View(formModel);
+			}
+
+			return RedirectToAction("Details", "Car", new { id });
+		}
+
 
 		public async Task<IActionResult> Mine()
 		{
@@ -167,5 +236,11 @@ namespace AutoTrade.Web.Controllers
 
 			return View(myCars);
 		}
+
+		//public async Task<IActionResult> Buy()
+		//{
+		//	return Ok();
+		//}
+
 	}
 }

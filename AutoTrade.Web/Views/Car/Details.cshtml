@@ -19,8 +19,12 @@
                 Price:
                 <b>@($"{Model.Price:f2}") BGN</b>
             </p>
+            <p>Horsepowr: <b>@Model.Horsepower</b></p>
+            <p>Year: <b>@Model.Year</b></p>
+            <p>Mileage: <b>@Model.Mileage km</b></p>
             <p>@Model.Description</p>
             <p>Category: <b>@Model.Category</b></p>
+            <p>Transmission: <b>@Model.Transmission</b></p>
             <p>Engine type: <b>@Model.EngineType</b></p>
             @*<p><i>(@(Model.IsBought ? "Bought" : "Not Bought"))</i></p>*@
             <div class="form-inline">
