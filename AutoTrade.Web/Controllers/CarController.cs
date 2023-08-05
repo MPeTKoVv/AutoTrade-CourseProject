@@ -57,8 +57,10 @@ namespace AutoTrade.Web.Controllers
                 .ExistsByIdAsync(id);
 
             if (!carExists)
-            {
-                return RedirectToAction("All", "Car");
+			{
+				TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
+
+				return RedirectToAction("All", "Car");
             }
 
             CarDetailsViewModel viewModel = await carService
@@ -75,8 +77,9 @@ namespace AutoTrade.Web.Controllers
 
             if (!isAgent)
             {
+				TempData[ErrorMessage] = "You must become a seller in order to add new cars!";
 
-                return RedirectToAction("Become", "Seller");
+				return RedirectToAction("Become", "Seller");
             }
 
             CarFormModel carFormModel = new CarFormModel()
@@ -97,7 +100,7 @@ namespace AutoTrade.Web.Controllers
 
             if (!isSeller)
             {
-                //TempData[ErrorMessage] = "You must become an agent in order to add new houses!";
+                TempData[ErrorMessage] = "You must become a seller in order to add new cars!";
 
                 return RedirectToAction("Become", "Seller");
             }
@@ -108,7 +111,13 @@ namespace AutoTrade.Web.Controllers
                 ModelState.AddModelError(nameof(carFormModel.CategoryId), "Selected category does not exist!");
             }
 
-            bool engineTypeExists = await engineService.ExistsByIdAsync(carFormModel.EngineTypeId);
+			bool transmissionExists = await transmissionService.ExistsByIdAsync(carFormModel.TransmissionId);
+			if (!transmissionExists)
+			{
+				ModelState.AddModelError(nameof(carFormModel.TransmissionId), "Selected transmission does not exist!");
+			}
+
+			bool engineTypeExists = await engineService.ExistsByIdAsync(carFormModel.EngineTypeId);
             if (!engineTypeExists)
             {
                 ModelState.AddModelError(nameof(carFormModel.EngineTypeId), "Selected engine type does not exist!");
@@ -117,8 +126,8 @@ namespace AutoTrade.Web.Controllers
             if (!ModelState.IsValid)
             {
                 carFormModel.Categories = await categoryService.AllCategoriesAsync();
-                carFormModel.EngineTypes = await engineService.AllEngineTypesAsync();
                 carFormModel.Transmissions = await transmissionService.AllTransmissionsAsync();
+                carFormModel.EngineTypes = await engineService.AllEngineTypesAsync();
 
                 return View(carFormModel);
             }
@@ -130,7 +139,8 @@ namespace AutoTrade.Web.Controllers
 
                 await carService.CreateAndReturnIdAsync(carFormModel, sellerId!);
 
-                //TempData[SuccessMessage] = "House was added successfully!";
+                TempData[SuccessMessage] = "Car was added successfully!";
+
                 return RedirectToAction("All", "Car");
             }
             catch (Exception)
@@ -148,23 +158,29 @@ namespace AutoTrade.Web.Controllers
             bool carExists = await carService.ExistsByIdAsync(id);
 
             if (!carExists)
-            {
-                return RedirectToAction("All", "Car");
+			{
+				TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
+
+				return RedirectToAction("All", "Car");
             }
 
             bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 
             if (!isUserSeller)
-            {
-                return RedirectToAction("Become", "Seller");
+			{
+				TempData[ErrorMessage] = "In order to edit cars you have to be a seller!";
+
+				return RedirectToAction("Become", "Seller");
             }
 
             string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
             bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
 
             if (!isSellerOwner)
-            {
-                return RedirectToAction("Mine", "Car");
+			{
+				TempData[ErrorMessage] = "You can only edit your cars!";
+
+				return RedirectToAction("Mine", "Car");
             }
 
             try
@@ -176,7 +192,7 @@ namespace AutoTrade.Web.Controllers
                 formModel.Transmissions = await this.transmissionService.AllTransmissionsAsync();
                 formModel.EngineTypes = await this.engineService.AllEngineTypesAsync();
 
-                return View(formModel);
+				return View(formModel);
             }
             catch (Exception)
             {
@@ -188,7 +204,35 @@ namespace AutoTrade.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string id, CarFormModel formModel)
         {
-            if (!this.ModelState.IsValid)
+			bool carExists = await carService.ExistsByIdAsync(id);
+
+			if (!carExists)
+			{
+				TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
+
+				return RedirectToAction("All", "Car");
+			}
+
+			bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+
+			if (!isUserSeller)
+			{
+				TempData[ErrorMessage] = "In order to edit cars you have to be a seller!";
+
+				return RedirectToAction("Become", "Seller");
+			}
+
+			string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
+			bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
+
+			if (!isSellerOwner)
+			{
+				TempData[ErrorMessage] = "You can only edit your cars!";
+
+				return RedirectToAction("Mine", "Car");
+			}
+
+			if (!this.ModelState.IsValid)
             {
                 formModel.Categories = await this.categoryService.AllCategoriesAsync();
                 formModel.Transmissions = await this.transmissionService.AllTransmissionsAsync();
@@ -211,8 +255,8 @@ namespace AutoTrade.Web.Controllers
 
                 return View(formModel);
             }
-
-            return RedirectToAction("Details", "Car", new { id });
+			TempData[SuccessMessage] = "Car was edited successfully!";
+			return RedirectToAction("Details", "Car", new { id });
         }
 
         [HttpGet]
@@ -221,23 +265,29 @@ namespace AutoTrade.Web.Controllers
             bool carExists = await carService.ExistsByIdAsync(id);
 
             if (!carExists)
-            {
-                return RedirectToAction("All", "Car");
+			{
+				TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
+
+				return RedirectToAction("All", "Car");
             }
 
             bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 
             if (!isUserSeller)
-            {
-                return RedirectToAction("Become", "Seller");
+			{
+				TempData[ErrorMessage] = "In order to delete cars you have to be a seller!";
+
+				return RedirectToAction("Become", "Seller");
             }
 
             string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
             bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
 
             if (!isSellerOwner)
-            {
-                return RedirectToAction("Mine", "Car");
+			{
+				TempData[ErrorMessage] = "You can only delete your cars!";
+
+				return RedirectToAction("Mine", "Car");
             }
 
             try
@@ -260,29 +310,37 @@ namespace AutoTrade.Web.Controllers
 
             if (!carExists)
             {
-                return RedirectToAction("All", "Car");
+				TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
+
+				return RedirectToAction("All", "Car");
             }
 
             bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 
             if (!isUserSeller)
-            {
-                return RedirectToAction("Become", "Seller");
+			{
+				TempData[ErrorMessage] = "In order to delete cars you have to be a seller!";
+
+				return RedirectToAction("Become", "Seller");
             }
 
             string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
             bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
 
             if (!isSellerOwner)
-            {
-                return RedirectToAction("Mine", "Car");
+			{
+				TempData[ErrorMessage] = "You can only delete your cars!";
+
+				return RedirectToAction("Mine", "Car");
             }
 
             try
             {
                 await this.carService.DeleteCarByIdAsync(id);
 
-                return RedirectToAction("Mine", "Car");
+				TempData[WarningMessage] = "The car was successfully deleted!";
+
+				return RedirectToAction("Mine", "Car");
             }
             catch (Exception)
             {
@@ -318,7 +376,7 @@ namespace AutoTrade.Web.Controllers
             bool carExists = await this.carService.ExistsByIdAsync(carId);
             if (!carExists)
             {
-                TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with valid Id!";
+                TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
 
                 return this.RedirectToAction("All", "Car");
             }
@@ -326,7 +384,7 @@ namespace AutoTrade.Web.Controllers
             bool isCarForSale = await this.carService.IsForSaleByIdAsync(carId);
             if (isCarForSale)
             {
-
+				TempData[ErrorMessage] = "Car with the given Id is not for sale! Please, try with another Id!";
 
 				return this.RedirectToAction("All", "Car");
 			}
