@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace AutoTrade.Web.Controllers
 {
-	//using static Common.NotificationMessagesConstants;
+	using static Common.NotificationMessagesConstants;
 
 	[Authorize]
 	public class SellerController : Controller
@@ -26,7 +26,7 @@ namespace AutoTrade.Web.Controllers
 
 			if (isSeller)
 			{
-				//TempData[ErrorMessage] = "You are already an agent!";
+				TempData[ErrorMessage] = "You are already a seller!";
 
 				return RedirectToAction("Index", "Home");
 			}
@@ -41,7 +41,7 @@ namespace AutoTrade.Web.Controllers
 			bool isAgent = await sellerService.SellerExistsByUserIdAsync(userId!);
 			if (isAgent)
 			{
-				//TempData[ErrorMessage] = "You are already an agent!";
+				TempData[ErrorMessage] = "You are already a seller!";
 
 				return RedirectToAction("Index", "Home");
 			}
@@ -50,7 +50,7 @@ namespace AutoTrade.Web.Controllers
 				await sellerService.SellerExistsByPhoneNumberAsync(model.PhoneNumber);
 			if (isPhoneNumberTaken)
 			{
-				ModelState.AddModelError(nameof(model.PhoneNumber), "Agent with the provided phone number already exists!");
+				ModelState.AddModelError(nameof(model.PhoneNumber), "Seller with the provided phone number already exists!");
 			}
 
 			if (!ModelState.IsValid)
@@ -64,12 +64,12 @@ namespace AutoTrade.Web.Controllers
 			}
 			catch (Exception)
 			{
-				//TempData[ErrorMessage] = "Unexpected error occurred while registering you as an agent! Please try again later or contact administrator.";
+				TempData[ErrorMessage] = "Unexpected error occurred while registering you as a seller! Please try again later or contact administrator.";
 
 				return RedirectToAction("Index", "Home");
 			}
 
-			return RedirectToAction("All", "Cars");
+			return RedirectToAction("All", "Car");
 		}
 	}
 }
