@@ -274,14 +274,14 @@ namespace AutoTrade.Services.Data
 			};
 		}
 
-		public async Task<bool> IsSellerWithIdOwnerOfCarWithIdAsync(string carId, string sellerId)
+		public async Task<bool> IsSellerWithIdOwnerOfCarWithIdAsync(string carId, string ownerId)
 		{
 			Car car = await dbContext
 				.Cars
 				.Where(c => c.IsActive)
 				.FirstAsync(c => c.Id.ToString() == carId);
 
-			return car.SellerId.ToString() == sellerId;
+			return car.OwnerId.ToString() == ownerId;
 		}
 
 		public async Task DeleteCarByIdAsync(string carId)

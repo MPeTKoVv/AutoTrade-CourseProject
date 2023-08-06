@@ -423,8 +423,8 @@ namespace AutoTrade.Web.Controllers
 				return RedirectToAction("Become", "Seller");
 			}
 
-			string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
-			bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
+			string ownerId = this.User.GetId()!;
+			bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, ownerId);
 
 			if (!isSellerOwner)
 			{
@@ -440,6 +440,8 @@ namespace AutoTrade.Web.Controllers
 
 				return this.RedirectToAction("CarsForSale", "Car");
 			}
+
+			string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(ownerId);
 
 			try
 			{
