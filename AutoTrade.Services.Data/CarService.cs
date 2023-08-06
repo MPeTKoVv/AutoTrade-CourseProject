@@ -57,9 +57,9 @@ namespace AutoTrade.Services.Data
 			carsQuery = queryModel.CarSorting switch
 			{
 				CarSorting.Newest => carsQuery
-					.OrderByDescending(c => c.AddedOn),
+					.OrderByDescending(c => c.AddedOnForSale),
 				CarSorting.Oldest => carsQuery
-					.OrderBy(c => c.AddedOn),
+					.OrderBy(c => c.AddedOnForSale),
 				CarSorting.PriceDescending => carsQuery
 					.OrderByDescending(c => c.Price),
 				CarSorting.PriceAscending => carsQuery
@@ -358,6 +358,7 @@ namespace AutoTrade.Services.Data
 
 			car.IsForSale = true;
 			car.SellerId = Guid.Parse(sellerId);
+			car.AddedOnForSale = DateTime.UtcNow;
 
 			dbContext.SaveChanges();
 		}

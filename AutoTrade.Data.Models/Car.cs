@@ -44,7 +44,9 @@ namespace AutoTrade.Data.Models
 
 		public DateTime AddedOn { get; set; }
 
-		public bool IsActive { get; set; }
+        public DateTime AddedOnForSale { get; set; }
+
+        public bool IsActive { get; set; }
 
         public bool IsForSale { get; set; }
 

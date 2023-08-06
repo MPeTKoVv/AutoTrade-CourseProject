@@ -44,6 +44,10 @@ namespace AutoTrade.Data.Configurations
 				.Property(c => c.IsForSale)
 				.HasDefaultValue(true);
 
+			builder
+				.Property(c=>c.AddedOnForSale)
+				.HasDefaultValueSql("GETDATE()");
+
 			builder.HasData(this.GenerateCars());
 		}
 
