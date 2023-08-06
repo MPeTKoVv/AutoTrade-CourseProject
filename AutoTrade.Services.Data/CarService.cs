@@ -105,7 +105,7 @@ namespace AutoTrade.Services.Data
 		{
 			IEnumerable<CarAllViewModel> usersCars = await dbContext
 				.Cars
-				.Where(c => c.IsActive && c.OwnerId.ToString() == userId)
+				.Where(c => c.IsActive && !c.IsForSale && c.OwnerId.ToString() == userId)
 				.Select(c => new CarAllViewModel
 				{
 					Id = c.Id.ToString(),
@@ -391,6 +391,18 @@ namespace AutoTrade.Services.Data
 				TotalCars = await dbContext.Cars.CountAsync(),
 				TotalSales = await dbContext.Transactions.CountAsync()
 			};
+		}
+
+		public async Task ReturnCarToGarageAsync(string id)
+		{
+			Car car = await dbContext
+				.Cars
+				.FirstAsync(c => c.Id.ToString() == id);
+
+			car.IsForSale = false;
+			car.SellerId = null;
+
+			dbContext.SaveChanges();
 		}
 	}
 }

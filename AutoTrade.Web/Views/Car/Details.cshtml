@@ -43,6 +43,13 @@
 							<input class="btn btn-primary" type="submit" value="For Sale" />
 						</form>
 					}
+					else
+					{
+						<form class="input-group-sm" asp-area="" asp-controller="Car"
+							  asp-action="ReturnToGarage" asp-route-id="@Model.Id" method="post">
+							<input class="btn btn-primary" type="submit" value="Return to garage" />
+						</form>
+					}
 					<a class="ml-2 btn btn-danger" asp-controller="Car" asp-action="Delete"
 					asp-route-id="@Model.Id">Delete</a>
 				}

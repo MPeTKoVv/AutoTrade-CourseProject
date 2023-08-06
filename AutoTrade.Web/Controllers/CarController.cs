@@ -450,11 +450,10 @@ namespace AutoTrade.Web.Controllers
 				return this.RedirectToAction("CarsForSale", "Car");
 			}
 
-			string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(ownerId);
-
 			try
 			{
-				 await this.carService.CarForSaleAsync(id, sellerId);
+			string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(ownerId);
+				await this.carService.CarForSaleAsync(id, sellerId);
 
 				TempData[SuccessMessage] = "The car was successfully added for sale!";
 			}
@@ -464,6 +463,57 @@ namespace AutoTrade.Web.Controllers
 			}
 
 			return RedirectToAction("CarsForSale", "Car");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ReturnToGarage(string id)
+		{
+			bool carExists = await this.carService.ExistsByIdAsync(id);
+			if (!carExists)
+			{
+				TempData[ErrorMessage] = "Selected car does not exist! Please, try with another car!";
+
+				return this.RedirectToAction("Mine", "Car");
+			}
+
+			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+			if (!sellerExists)
+			{
+				TempData[ErrorMessage] = "You have to be a seller in order to add your car for sale!";
+
+				return RedirectToAction("Become", "Seller");
+			}
+
+			string ownerId = this.User.GetId()!;
+			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, ownerId);
+
+			if (!isUserOwner)
+			{
+				TempData[ErrorMessage] = "You can only add for sell your cars!";
+
+				return RedirectToAction("Mine", "Car");
+			}
+
+			bool isCarForSale = await this.carService.IsForSaleByIdAsync(id);
+			if (!isCarForSale)
+			{
+				TempData[ErrorMessage] = "Selected car is already in your garage! Please, try with another car!";
+
+				return this.RedirectToAction("Mine", "Car");
+			}
+
+			try
+			{
+				await this.carService.ReturnCarToGarageAsync(id);
+
+				TempData[SuccessMessage] = "The car was successfully returned to your garage!";
+			}
+			catch (Exception)
+			{
+				GeneralError();
+			}
+
+			return RedirectToAction("Mine", "Car");
 		}
 
 		private IActionResult GeneralError()

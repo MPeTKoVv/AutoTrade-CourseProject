@@ -38,5 +38,7 @@
 		Task<IEnumerable<CarAllViewModel>> AllCarsForSaleBySellerIdAsync(string sellerId);
 
 		Task<StatisticsServiceModel> GetStatisticsAsync();
+
+		Task ReturnCarToGarageAsync(string id);
 	}
 }
