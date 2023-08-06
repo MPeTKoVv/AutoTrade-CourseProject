@@ -190,6 +190,7 @@ namespace AutoTrade.Services.Data
 		{
 			var result = await dbContext
 				.Cars
+				.Where(c => c.IsActive)
 				.AnyAsync(c => c.Id.ToString() == carId);
 
 			return result;
@@ -278,7 +279,7 @@ namespace AutoTrade.Services.Data
 				};
 			}
 
-			
+
 		}
 
 		public async Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string carId)
@@ -297,7 +298,7 @@ namespace AutoTrade.Services.Data
 			};
 		}
 
-		public async Task<bool> IsSellerWithIdOwnerOfCarWithIdAsync(string carId, string ownerId)
+		public async Task<bool> IsUserWithIdOwnerOfCarWithIdAsync(string carId, string ownerId)
 		{
 			Car car = await dbContext
 				.Cars
@@ -351,7 +352,7 @@ namespace AutoTrade.Services.Data
 			Car car = await dbContext
 				.Cars
 				.FirstAsync(c => c.Id.ToString() == carId);
-			
+
 			car.IsForSale = true;
 			car.SellerId = Guid.Parse(sellerId);
 
@@ -365,6 +366,7 @@ namespace AutoTrade.Services.Data
 				.Where(c => c.IsActive && c.IsForSale && c.SellerId.ToString() == sellerId)
 				.Select(c => new CarAllViewModel
 				{
+					Id = c.Id.ToString(),
 					Make = c.Make,
 					Model = c.Model,
 					Price = c.Price,
@@ -378,13 +380,13 @@ namespace AutoTrade.Services.Data
 			return carsForSale;
 		}
 
-        public async Task<StatisticsServiceModel> GetStatisticsAsync()
-        {
+		public async Task<StatisticsServiceModel> GetStatisticsAsync()
+		{
 			return new StatisticsServiceModel
 			{
 				TotalCars = await dbContext.Cars.CountAsync(),
 				TotalSales = await dbContext.Transactions.CountAsync()
 			};
-        }
-    }
+		}
+	}
 }

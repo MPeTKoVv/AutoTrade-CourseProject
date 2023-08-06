@@ -21,7 +21,7 @@
 
 		Task<CarFormModel> GetCarForEditByCarIdAsync(string carId);
 
-		Task<bool> IsSellerWithIdOwnerOfCarWithIdAsync(string carId, string ownerId);
+		Task<bool> IsUserWithIdOwnerOfCarWithIdAsync(string carId, string ownerId);
 
 		Task EditCarByIdAndFormModel(string carId, CarFormModel formModel);
 

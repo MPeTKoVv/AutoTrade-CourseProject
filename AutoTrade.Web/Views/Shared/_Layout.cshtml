@@ -1,5 +1,10 @@
-﻿@{
-	const int releaseYear = 2023;
+﻿@using static AutoTrade.Common.GeneralApplicationConstants;
+@using AutoTrade.Services.Data.Interfaces;
+@using AutoTrade.Web.Infrastructure.Extensions;
+
+@inject ISellerService SellerService
+@{
+	bool isUserSeller = await SellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 }
 
 <!DOCTYPE html>
@@ -17,7 +22,7 @@
 
 </head>
 <body>
-	<partial name = "_NotificationsPartial"/>
+	<partial name="_NotificationsPartial" />
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
@@ -36,12 +41,14 @@
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Mine">My Garage</a>
 							</li>
-							
+
+							@if (isUserSeller)
+							{
 								<li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="CarsForSale">My Cars For Sale</a></li>
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Add">Add Car</a>
 								</li>
-
+							}
 						}
 					</ul>
 					<partial name="_LoginPartial" />
@@ -57,8 +64,8 @@
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			&copy; AutoTrade @releaseYear
-			@if (DateTime.UtcNow.Year != releaseYear)
+			&copy; AutoTrade @ReleaseYear
+			@if (DateTime.UtcNow.Year != ReleaseYear)
 			{
 				@Html.Raw($" - {DateTime.UtcNow.Year}")
 				;

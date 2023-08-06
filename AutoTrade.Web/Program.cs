@@ -7,6 +7,7 @@ namespace AutoTrade.Web
     using AutoTrade.Web.Infrstructure.Extensions;
     using Services.Data.Interfaces;
 	using AutoTrade.Web.Infrastructure.ModelBinders;
+	using Microsoft.AspNetCore.Mvc;
 
 	public class Program
     {
@@ -36,6 +37,7 @@ namespace AutoTrade.Web
                 .AddMvcOptions(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
             WebApplication app = builder.Build();
