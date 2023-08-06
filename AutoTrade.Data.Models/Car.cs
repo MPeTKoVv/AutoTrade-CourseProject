@@ -60,6 +60,9 @@ namespace AutoTrade.Data.Models
 		public Guid SellerId { get; set; }
 		public virtual Seller Seller { get; set; }
 
+		public Guid OwnerId { get; set; }
+		public virtual ApplicationUser Owner { get; set; }
+
 		public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

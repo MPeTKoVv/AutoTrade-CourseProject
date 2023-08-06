@@ -404,6 +404,57 @@ namespace AutoTrade.Web.Controllers
 			return RedirectToAction("Mine", "Car");
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> ForSale(string id)
+		{
+			bool carExists = await this.carService.ExistsByIdAsync(id);
+			if (!carExists)
+			{
+				TempData[ErrorMessage] = "Car with the given Id does not exist! Please, try with another Id!";
+
+				return this.RedirectToAction("All", "Car");
+			}
+
+			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+			if (!sellerExists)
+			{
+				TempData[ErrorMessage] = "You have to be a seller in order to add your car for sale!";
+
+				return RedirectToAction("Become", "Seller");
+			}
+
+			string sellerId = await sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
+			bool isSellerOwner = await carService.IsSellerWithIdOwnerOfCarWithIdAsync(id, sellerId);
+
+			if (!isSellerOwner)
+			{
+				TempData[ErrorMessage] = "You can only add for sell your cars!";
+
+				return RedirectToAction("Mine", "Car");
+			}
+
+			bool isCarForSale = await this.carService.IsForSaleByIdAsync(id);
+			if (isCarForSale)
+			{
+				TempData[ErrorMessage] = "Car with the given Id is already for sale! Please, try with another Id!";
+
+				return this.RedirectToAction("CarsForSale", "Car");
+			}
+
+			try
+			{
+				await this.carService.CarForSaleAsync(id, this.User.GetId()!);
+
+				TempData[SuccessMessage] = "The car was successfully added for sale!";
+			}
+			catch (Exception)
+			{
+				GeneralError();
+			}
+
+			return RedirectToAction("CarsForSale", "Car");
+		}
+
 		private IActionResult GeneralError()
 		{
 			TempData[ErrorMessage] =

@@ -102,13 +102,9 @@ namespace AutoTrade.Services.Data
 
 		public async Task<IEnumerable<CarAllViewModel>> AllByUserIdAsync(string userId)
 		{
-			ApplicationUser user = dbContext
-				.Users
-				.First(u => u.Id.ToString() == userId);
-
-			IEnumerable<CarAllViewModel> usersCars = user
-				.OwnedCars
-				.Where(c => c.IsActive)
+			IEnumerable<CarAllViewModel> usersCars = await dbContext
+				.Cars
+				.Where(c => c.IsActive && c.OwnerId.ToString() == userId)
 				.Select(c => new CarAllViewModel
 				{
 					Id = c.Id.ToString(),
@@ -119,7 +115,7 @@ namespace AutoTrade.Services.Data
 					Horsepower = c.Horsepower,
 					ImageUrl = c.ImageUrl
 				})
-				.ToList();
+				.ToListAsync();
 
 			return usersCars;
 		}
@@ -320,7 +316,20 @@ namespace AutoTrade.Services.Data
 				.FirstAsync(u => u.Id.ToString() == userId);
 
 			car.IsForSale = false;
+			car.OwnerId = Guid.Parse(userId);
 			user.OwnedCars.Add(car);
+
+			dbContext.SaveChanges();
+		}
+
+		public async Task CarForSaleAsync(string carId, string sellerId)
+		{
+			Car car = await dbContext
+				.Cars
+				.FirstAsync(c => c.Id.ToString() == carId);
+			
+			car.IsForSale = true;
+			car.SellerId = Guid.Parse(sellerId);
 
 			dbContext.SaveChanges();
 		}

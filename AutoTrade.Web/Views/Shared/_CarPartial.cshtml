@@ -24,8 +24,10 @@
 					<input class="btn btn-primary" type="submit" value="Buy" />
 				</form>
 
-				<a asp-controller="Car" asp-action="ForSale" asp-route-id="@Model.Id"
-				   class="btn btn-primary">For Sale</a>
+				<form class="input-group-sm" asp-area="" asp-controller="Car"
+					  asp-action="ForSale" asp-route-id="@Model.Id" method="post">
+					<input class="btn btn-primary" type="submit" value="For Sale" />
+				</form>
 			}
 		</div>
 	</div>

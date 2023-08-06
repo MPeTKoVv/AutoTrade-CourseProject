@@ -26,11 +26,11 @@ namespace AutoTrade.Data.Configurations
 				.HasForeignKey(c => c.TransmissionId)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			//builder
-			//	.HasOne(c => c.Owner)
-			//	.WithMany(o => o.OwnedCars)
-			//	.HasForeignKey(c => c.OwnerId)
-			//	.OnDelete(DeleteBehavior.Restrict);
+			builder
+				.HasOne(c => c.Owner)
+				.WithMany(o => o.OwnedCars)
+				.HasForeignKey(c => c.OwnerId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			builder
 				.Property(c => c.AddedOn)
@@ -43,12 +43,6 @@ namespace AutoTrade.Data.Configurations
 			builder
 				.Property(c => c.IsForSale)
 				.HasDefaultValue(true);
-
-			//builder
-			//   .HasOne(c => c.Customer)
-			//   .WithMany(c => c.FavoriteCars)
-			//   .HasForeignKey(c => c.CustomerId)
-			//   .OnDelete(DeleteBehavior.Restrict);
 
 			builder.HasData(this.GenerateCars());
 		}
@@ -73,7 +67,7 @@ namespace AutoTrade.Data.Configurations
 				CategoryId = 5,
 				TransmissionId = 2,
 				SellerId = Guid.Parse("CDB33D65-5B4B-4DEC-899B-32E2B843F801"),
-				//OwnerId = Guid.Parse("E44E2759-94B3-4441-B2D4-4D9DD3260CB6"),
+				OwnerId = Guid.Parse("E44E2759-94B3-4441-B2D4-4D9DD3260CB6"),
 			};
 
 			cars.Add(car);

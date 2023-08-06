@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    [Migration("20230805180420_AddOwnerInCar")]
-    partial class AddOwnerInCar
+    [Migration("20230806125516_AddOwner")]
+    partial class AddOwner
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -146,13 +146,13 @@ namespace AutoTrade.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<Guid?>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("SellerId")
+                    b.Property<Guid>("SellerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransmissionId")
@@ -178,7 +178,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fcb2a71f-f809-4155-b39e-e8e90f092159"),
+                            Id = new Guid("e520542b-5b05-4f5f-a515-299dd2c14905"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
                             Description = "This is my favorite car and the first in my app :)",
@@ -190,7 +190,7 @@ namespace AutoTrade.Data.Migrations
                             Make = "Mercedes",
                             Mileage = 0,
                             Model = "C63 AMG",
-                            OwnerId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            OwnerId = new Guid("e44e2759-94b3-4441-b2d4-4d9dd3260cb6"),
                             Price = 150000m,
                             SellerId = new Guid("cdb33d65-5b4b-4dec-899b-32e2b843f801"),
                             TransmissionId = 2,
@@ -559,12 +559,13 @@ namespace AutoTrade.Data.Migrations
                     b.HasOne("AutoTrade.Data.Models.ApplicationUser", "Owner")
                         .WithMany("OwnedCars")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("AutoTrade.Data.Models.Seller", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId");
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AutoTrade.Data.Models.Transmission", "Transmission")
                         .WithMany("Cars")
