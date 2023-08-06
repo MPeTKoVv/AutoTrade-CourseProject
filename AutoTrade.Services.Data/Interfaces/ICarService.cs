@@ -3,8 +3,9 @@
 	using Data.Models.Car;
 	using Web.ViewModels.Home;
 	using Web.ViewModels.Car;
+    using AutoTrade.Services.Data.Models.Statistics;
 
-	public interface ICarService
+    public interface ICarService
 	{
 		Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync();
 
@@ -35,5 +36,7 @@
 		Task CarForSaleAsync(string carId, string sellerId);
 
 		Task<IEnumerable<CarAllViewModel>> AllCarsForSaleBySellerIdAsync(string sellerId);
+
+		Task<StatisticsServiceModel> GetStatisticsAsync();
 	}
 }

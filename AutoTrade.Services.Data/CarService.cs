@@ -1,6 +1,7 @@
 ﻿using AutoTrade.Data.Models;
 using AutoTrade.Services.Data.Interfaces;
 using AutoTrade.Services.Data.Models.Car;
+using AutoTrade.Services.Data.Models.Statistics;
 using AutoTrade.Web.Data;
 using AutoTrade.Web.ViewModels.Car;
 using AutoTrade.Web.ViewModels.Car.Enums;
@@ -237,25 +238,47 @@ namespace AutoTrade.Services.Data
 				return null;
 			}
 
-			return new CarDetailsViewModel
+			if (car.IsForSale)
 			{
-				Id = car.Id.ToString(),
-				Make = car.Make,
-				Model = car.Model,
-				Price = car.Price,
-				Year = car.Year,
-				Horsepower = car.Horsepower,
-				ImageUrl = car.ImageUrl,
-				Category = car.Category.Name,
-				Transmission = car.Transmission.Name,
-				EngineType = car.EngineType.Type,
-				Description = car.Description,
-				Seller = new SellerInfoOnCarViewModel
+				return new CarDetailsViewModel
 				{
-					Email = car.Seller.User.Email,
-					PhoneNumber = car.Seller.PhoneNumber
-				}
-			};
+					Id = car.Id.ToString(),
+					Make = car.Make,
+					Model = car.Model,
+					Price = car.Price,
+					Year = car.Year,
+					Horsepower = car.Horsepower,
+					ImageUrl = car.ImageUrl,
+					Category = car.Category.Name,
+					Transmission = car.Transmission.Name,
+					EngineType = car.EngineType.Type,
+					Description = car.Description,
+					Seller = new SellerInfoOnCarViewModel
+					{
+						Email = car.Seller!.User.Email,
+						PhoneNumber = car.Seller.PhoneNumber
+					}
+				};
+			}
+			else
+			{
+				return new CarDetailsViewModel
+				{
+					Id = car.Id.ToString(),
+					Make = car.Make,
+					Model = car.Model,
+					Price = car.Price,
+					Year = car.Year,
+					Horsepower = car.Horsepower,
+					ImageUrl = car.ImageUrl,
+					Category = car.Category.Name,
+					Transmission = car.Transmission.Name,
+					EngineType = car.EngineType.Type,
+					Description = car.Description
+				};
+			}
+
+			
 		}
 
 		public async Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string carId)
@@ -354,5 +377,14 @@ namespace AutoTrade.Services.Data
 
 			return carsForSale;
 		}
-	}
+
+        public async Task<StatisticsServiceModel> GetStatisticsAsync()
+        {
+			return new StatisticsServiceModel
+			{
+				TotalCars = await dbContext.Cars.CountAsync(),
+				TotalSales = await dbContext.Transactions.CountAsync()
+			};
+        }
+    }
 }

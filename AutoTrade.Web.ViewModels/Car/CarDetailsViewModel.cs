@@ -19,6 +19,6 @@ namespace AutoTrade.Web.ViewModels.Car
 
 		public int Mileage { get; set; }
 
-		public SellerInfoOnCarViewModel Seller { get; set; } = null!;
+		public SellerInfoOnCarViewModel? Seller { get; set; }
 	}
 }
