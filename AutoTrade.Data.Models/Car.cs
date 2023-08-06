@@ -57,8 +57,8 @@ namespace AutoTrade.Data.Models
 		public int TransmissionId { get; set; }
 		public virtual Transmission Transmission { get; set; }
 
-		public Guid SellerId { get; set; }
-		public virtual Seller Seller { get; set; }
+		public Guid? SellerId { get; set; }
+		public virtual Seller? Seller { get; set; }
 
 		public Guid OwnerId { get; set; }
 		public virtual ApplicationUser Owner { get; set; }

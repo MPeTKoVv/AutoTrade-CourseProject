@@ -316,6 +316,7 @@ namespace AutoTrade.Services.Data
 				.FirstAsync(u => u.Id.ToString() == userId);
 
 			car.IsForSale = false;
+			car.SellerId = null;
 			car.OwnerId = Guid.Parse(userId);
 			user.OwnedCars.Add(car);
 
