@@ -1,7 +1,12 @@
-﻿@model CarDetailsViewModel
+﻿@using AutoTrade.Services.Data.Interfaces;
+@using AutoTrade.Web.Infrastructure.Extensions;
+@model CarDetailsViewModel
+@inject ICarService CarService
 
 @{
 	ViewBag.Title = "Car Details";
+
+	bool isUserOwnerOfCar = await CarService.IsUserWithIdOwnerOfCarWithIdAsync(Model.Id, this.User.GetId()!);
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -19,7 +24,7 @@
 				Price:
 				<b>@($"{Model.Price:f2}") BGN</b>
 			</p>
-			<p>Horsepowr: <b>@Model.Horsepower</b></p>
+			<p>Horsepower: <b>@Model.Horsepower</b></p>
 			<p>Year: <b>@Model.Year</b></p>
 			<p>Mileage: <b>@Model.Mileage km</b></p>
 			<p>@Model.Description</p>
@@ -27,7 +32,7 @@
 			<p>Transmission: <b>@Model.Transmission</b></p>
 			<p>Engine type: <b>@Model.EngineType</b></p>
 			<div class="form-inline">
-				@if (this.User.Identity?.IsAuthenticated ?? false)
+				@if (isUserOwnerOfCar)
 				{
 					<a class="btn btn-warning" asp-controller="Car" asp-action="Edit"
 					   asp-route-id="@Model.Id">Edit</a>
@@ -39,7 +44,14 @@
 						</form>
 					}
 					<a class="ml-2 btn btn-danger" asp-controller="Car" asp-action="Delete"
-					   asp-route-id="@Model.Id">Delete</a>
+					asp-route-id="@Model.Id">Delete</a>
+				}
+				else
+				{
+					<form class="input-group-sm" asp-area="" asp-controller="Car"
+						  asp-action="Buy" asp-route-id="@Model.Id" method="post">
+						<input class="btn btn-primary" type="submit" value="Buy" />
+					</form>
 				}
 			</div>
 			<p></p>

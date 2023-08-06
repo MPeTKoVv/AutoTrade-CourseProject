@@ -3,7 +3,7 @@
 @model CarAllViewModel
 @inject ICarService CarService
 @{
-	//bool isUserOwnerOfCar = await CarService.IsSellerWithIdOwnerOfCarWithIdAsync(Model.Id, this.User.GetId()!);
+	bool isUserOwnerOfCar = await CarService.IsUserWithIdOwnerOfCarWithIdAsync(Model.Id, this.User.GetId()!);
 }
 
 
@@ -15,12 +15,13 @@
 			<h6>Horsepower: <b>@Model.Horsepower</b></h6>
 			<h6>Year: <b>@Model.Year</b></h6>
 			<h6>Price: <b>@($"{Model.Price:f2}") €</b></h6>
+
 			<a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id"
 			   class="btn btn-success">Details</a>
 
 			@if (this.User.Identity?.IsAuthenticated ?? false)
 			{
-				//@if (isUserOwnerOfCar)
+				@if (isUserOwnerOfCar)
 				{
 					<a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id"
 					   class="btn btn-warning">Edit</a>
@@ -28,13 +29,15 @@
 					<a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id"
 					   class="btn btn-danger">Delete</a>
 
-					<form class="input-group-sm" asp-area="" asp-controller="Car"
-						  asp-action="ForSale" asp-route-id="@Model.Id" method="post">
-						<input class="btn btn-primary" type="submit" value="For Sale" />
-					</form>
+					@if (!Model.IsForSale)
+					{
+						<form class="input-group-sm" asp-area="" asp-controller="Car"
+							  asp-action="ForSale" asp-route-id="@Model.Id" method="post">
+							<input class="btn btn-primary" type="submit" value="For Sale" />
+						</form>
+					}
 				}
-
-				@if (!Model.IsForSale)
+				else
 				{
 					<form class="input-group-sm" asp-area="" asp-controller="Car"
 						  asp-action="Buy" asp-route-id="@Model.Id" method="post">

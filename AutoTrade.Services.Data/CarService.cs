@@ -8,7 +8,6 @@ using AutoTrade.Web.ViewModels.Car.Enums;
 using AutoTrade.Web.ViewModels.Home;
 using AutoTrade.Web.ViewModels.Seller;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AutoTrade.Services.Data
 {
@@ -90,6 +89,7 @@ namespace AutoTrade.Services.Data
 					Horsepower = c.Horsepower,
 					Year = c.Year,
 					ImageUrl = c.ImageUrl,
+					IsForSale = c.IsForSale
 				})
 				.ToArrayAsync();
 			int totalCars = carsQuery.Count();
@@ -114,7 +114,8 @@ namespace AutoTrade.Services.Data
 					Price = c.Price,
 					Year = c.Year,
 					Horsepower = c.Horsepower,
-					ImageUrl = c.ImageUrl
+					ImageUrl = c.ImageUrl,
+					IsForSale = c.IsForSale
 				})
 				.ToListAsync();
 
@@ -135,7 +136,7 @@ namespace AutoTrade.Services.Data
 					Year = c.Year,
 					Horsepower = c.Horsepower,
 					Price = c.Price,
-					ImageUrl = c.ImageUrl
+					ImageUrl = c.ImageUrl,
 				})
 				.ToArrayAsync();
 
@@ -254,6 +255,7 @@ namespace AutoTrade.Services.Data
 					Transmission = car.Transmission.Name,
 					EngineType = car.EngineType.Type,
 					Description = car.Description,
+					IsForSale = car.IsForSale,
 					Seller = new SellerInfoOnCarViewModel
 					{
 						Email = car.Seller!.User.Email,
@@ -275,7 +277,8 @@ namespace AutoTrade.Services.Data
 					Category = car.Category.Name,
 					Transmission = car.Transmission.Name,
 					EngineType = car.EngineType.Type,
-					Description = car.Description
+					Description = car.Description,
+					IsForSale = car.IsForSale
 				};
 			}
 
@@ -372,8 +375,8 @@ namespace AutoTrade.Services.Data
 					Price = c.Price,
 					Horsepower = c.Horsepower,
 					Year = c.Year,
-					ImageUrl = c.ImageUrl
-
+					ImageUrl = c.ImageUrl,
+					IsForSale = c.IsForSale
 				})
 				.ToListAsync();
 

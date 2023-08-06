@@ -1,4 +1,5 @@
 ﻿using AutoTrade.Web.ViewModels.Seller;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace AutoTrade.Web.ViewModels.Car
 
 		public int Mileage { get; set; }
 
-		public SellerInfoOnCarViewModel? Seller { get; set; }
+        public bool IsForSale { get; set; }
+
+        public SellerInfoOnCarViewModel? Seller { get; set; }
 	}
 }
