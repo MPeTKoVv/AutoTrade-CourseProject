@@ -333,5 +333,25 @@ namespace AutoTrade.Services.Data
 
 			dbContext.SaveChanges();
 		}
+
+		public async Task<IEnumerable<CarAllViewModel>> AllCarsForSaleBySellerIdAsync(string sellerId)
+		{
+			IEnumerable<CarAllViewModel> carsForSale = await dbContext
+				.Cars
+				.Where(c => c.IsActive && c.IsForSale && c.SellerId.ToString() == sellerId)
+				.Select(c => new CarAllViewModel
+				{
+					Make = c.Make,
+					Model = c.Model,
+					Price = c.Price,
+					Horsepower = c.Horsepower,
+					Year = c.Year,
+					ImageUrl = c.ImageUrl
+
+				})
+				.ToListAsync();
+
+			return carsForSale;
+		}
 	}
 }

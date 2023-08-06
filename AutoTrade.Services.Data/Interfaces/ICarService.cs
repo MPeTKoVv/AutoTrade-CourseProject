@@ -33,5 +33,7 @@
 		Task BuyCarAsync(string carId, string userId);
 
 		Task CarForSaleAsync(string carId, string sellerId);
+
+		Task<IEnumerable<CarAllViewModel>> AllCarsForSaleBySellerIdAsync(string sellerId);
 	}
 }

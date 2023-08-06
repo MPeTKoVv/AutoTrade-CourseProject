@@ -363,9 +363,9 @@ namespace AutoTrade.Web.Controllers
 		{
 			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
 
-			string sellerId = this.User.GetId()!;
+			string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
 
-			myCars.AddRange(await this.carService.AllByUserIdAsync(sellerId));
+			myCars.AddRange(await this.carService.AllCarsForSaleBySellerIdAsync(sellerId));
 
 			return View(myCars);
 		}
@@ -443,7 +443,7 @@ namespace AutoTrade.Web.Controllers
 
 			try
 			{
-				await this.carService.CarForSaleAsync(id, this.User.GetId()!);
+				 await this.carService.CarForSaleAsync(id, sellerId);
 
 				TempData[SuccessMessage] = "The car was successfully added for sale!";
 			}
