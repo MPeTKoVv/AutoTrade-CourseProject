@@ -71,7 +71,7 @@ namespace AutoTrade.Services.Data
 				CarSorting.HorsepowerDescending => carsQuery
 					.OrderByDescending(c => c.Horsepower),
 				CarSorting.HorsepowerAscending => carsQuery
-					.OrderByDescending(c => c.Horsepower),
+					.OrderBy(c => c.Horsepower),
 				_ => carsQuery
 					.OrderByDescending(c => c.AddedOn)
 			};
@@ -102,9 +102,13 @@ namespace AutoTrade.Services.Data
 
 		public async Task<IEnumerable<CarAllViewModel>> AllByUserIdAsync(string userId)
 		{
-			IEnumerable<CarAllViewModel> usersCars = await dbContext
-				.Cars
-				.Where(c => c.Seller.UserId.ToString() == userId && c.IsActive)
+			ApplicationUser user = dbContext
+				.Users
+				.First(u => u.Id.ToString() == userId);
+
+			IEnumerable<CarAllViewModel> usersCars = user
+				.OwnedCars
+				.Where(c => c.IsActive)
 				.Select(c => new CarAllViewModel
 				{
 					Id = c.Id.ToString(),
@@ -115,7 +119,7 @@ namespace AutoTrade.Services.Data
 					Horsepower = c.Horsepower,
 					ImageUrl = c.ImageUrl
 				})
-				.ToListAsync();
+				.ToList();
 
 			return usersCars;
 		}
@@ -190,6 +194,7 @@ namespace AutoTrade.Services.Data
 			var result = await dbContext
 				.Cars
 				.AnyAsync(c => c.Id.ToString() == carId);
+
 			return result;
 		}
 
@@ -310,7 +315,12 @@ namespace AutoTrade.Services.Data
 				.Cars
 				.FirstAsync(c => c.Id.ToString() == carId);
 
+			ApplicationUser user = await dbContext
+				.Users
+				.FirstAsync(u => u.Id.ToString() == userId);
+
 			car.IsForSale = false;
+			user.OwnedCars.Add(car);
 
 			dbContext.SaveChanges();
 		}

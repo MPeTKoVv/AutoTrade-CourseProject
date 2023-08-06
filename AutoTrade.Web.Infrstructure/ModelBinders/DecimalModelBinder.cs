@@ -1,4 +1,4 @@
-﻿namespace HouseRentingSystem.Web.Infrastructure.ModelBinders
+﻿namespace AutoTrade.Web.Infrastructure.ModelBinders
 {
 	using Microsoft.AspNetCore.Mvc.ModelBinding;
 	using System.Globalization;

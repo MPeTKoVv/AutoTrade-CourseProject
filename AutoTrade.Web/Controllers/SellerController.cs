@@ -38,8 +38,9 @@ namespace AutoTrade.Web.Controllers
 		public async Task<IActionResult> Become(BecomeSellerViewModel model)
 		{
 			string? userId = User.GetId();
-			bool isAgent = await sellerService.SellerExistsByUserIdAsync(userId!);
-			if (isAgent)
+			bool isSeller = await sellerService.SellerExistsByUserIdAsync(userId!);
+
+			if (isSeller)
 			{
 				TempData[ErrorMessage] = "You are already a seller!";
 
@@ -48,6 +49,7 @@ namespace AutoTrade.Web.Controllers
 
 			bool isPhoneNumberTaken =
 				await sellerService.SellerExistsByPhoneNumberAsync(model.PhoneNumber);
+
 			if (isPhoneNumberTaken)
 			{
 				ModelState.AddModelError(nameof(model.PhoneNumber), "Seller with the provided phone number already exists!");

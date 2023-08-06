@@ -6,7 +6,7 @@ namespace AutoTrade.Web
     using AutoTrade.Data.Models;
     using AutoTrade.Web.Infrstructure.Extensions;
     using Services.Data.Interfaces;
-	using HouseRentingSystem.Web.Infrastructure.ModelBinders;
+	using AutoTrade.Web.Infrastructure.ModelBinders;
 
 	public class Program
     {
