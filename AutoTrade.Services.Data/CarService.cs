@@ -393,7 +393,9 @@ namespace AutoTrade.Services.Data
 			return new StatisticsServiceModel
 			{
 				TotalCars = await dbContext.Cars.CountAsync(),
-				TotalSales = await dbContext.Transactions.CountAsync()
+				TotalSales = await dbContext.Transactions.CountAsync(),
+				TotalUsers = await dbContext.Users.CountAsync(),
+				TotalSellers = await dbContext.Sellers.CountAsync()
 			};
 		}
 

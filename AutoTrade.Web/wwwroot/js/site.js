@@ -8,6 +8,8 @@
             $.get('https://localhost:7114/api/statistics', function (data) {
                 $('#total_cars').text(data.totalCars + " Cars");
                 $('#total_sales').text(data.totalSales + " Sales");
+                $('#total_users').text(data.totalUsers + " Users");
+                $('#total_sellers').text(data.totalSellers + " Sellers");
 
                 $('#statistics_box').removeClass('d-none');
 

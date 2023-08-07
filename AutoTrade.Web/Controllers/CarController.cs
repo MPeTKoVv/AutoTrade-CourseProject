@@ -403,9 +403,6 @@ namespace AutoTrade.Web.Controllers
 
 			try
 			{
-				//string sellerId = await carService.GetSellerIdAsync(id);
-				//await this.transactionService.RecordTransaction(id, userId, sellerId);
-
 				await this.carService.BuyCarAsync(id, userId);
 
 				TempData[SuccessMessage] = "The car was successfully bought!";
