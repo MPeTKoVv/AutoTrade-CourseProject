@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoTrade.Data.Models
 {
+	using static Common.EntityValidationConstants.User;
+
 	public class ApplicationUser : IdentityUser<Guid>
 	{
 		public ApplicationUser()
@@ -12,6 +14,15 @@ namespace AutoTrade.Data.Models
 			this.BoughtCarsHistory = new HashSet<Transaction>();
 			this.OwnedCars = new HashSet<Car>();
 		}
+
+		[Required]
+		[MaxLength(FirstNameMaxLength)]
+		public string FirstName { get; set; } = null!;
+
+
+		[Required]
+		[MaxLength(LastNameMaxLength)]
+		public string LastName { get; set; } = null!;
 
 		public Guid WalletId { get; set; }
 		public Wallet Wallet { get; set; } = null!;
