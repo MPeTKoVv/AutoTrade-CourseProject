@@ -14,7 +14,7 @@ namespace AutoTrade.Data.Models
         public Seller()
         {
             this.Id = Guid.NewGuid();
-			this.Transactions = new HashSet<Transaction>();
+			this.SoldCarHistory = new HashSet<Transaction>();
 		}
 
 		[Key]
@@ -28,6 +28,6 @@ namespace AutoTrade.Data.Models
 
         public virtual ApplicationUser User { get; set; } = null!;
 
-		public virtual ICollection<Transaction> Transactions { get; set; }
+		public virtual ICollection<Transaction> SoldCarHistory { get; set; }
 	}
 }

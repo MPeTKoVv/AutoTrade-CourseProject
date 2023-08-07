@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoTrade.Data.Models
 {
-    public class ApplicationUser : IdentityUser<Guid>
-    {
-        public ApplicationUser()
-        {
-            Id = Guid.NewGuid();
-			Transactions = new HashSet<Transaction>();
-            OwnedCars = new HashSet<Car>();
-        }
+	public class ApplicationUser : IdentityUser<Guid>
+	{
+		public ApplicationUser()
+		{
+			this.Id = Guid.NewGuid();
+			this.BoughtCarsHistory = new HashSet<Transaction>();
+			this.OwnedCars = new HashSet<Car>();
+		}
 
-        public Guid WalletId { get; set; }
-        public Wallet Wallet { get; set; } = null!;
+		public Guid WalletId { get; set; }
+		public Wallet Wallet { get; set; } = null!;
 
-        public virtual ICollection<Car> OwnedCars { get; set; }
+		public virtual ICollection<Car> OwnedCars { get; set; }
 
-        public virtual ICollection<Transaction> Transactions { get; set; }
+		public virtual ICollection<Transaction> BoughtCarsHistory { get; set; }
 
 	}
 }

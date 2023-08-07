@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230807080250_RemoveCarIdColumnInTransaction")]
+    partial class RemoveCarIdColumnInTransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,7 +183,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3a553240-c71a-4020-a465-58a116ff25e0"),
+                            Id = new Guid("097a1a90-eb12-45de-a1cb-01b984b5409b"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AddedOnForSale = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
@@ -347,9 +349,6 @@ namespace AutoTrade.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("BuyerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CarId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SellerId")

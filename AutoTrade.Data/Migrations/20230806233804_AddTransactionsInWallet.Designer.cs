@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230806233804_AddTransactionsInWallet")]
+    partial class AddTransactionsInWallet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,7 +183,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3a553240-c71a-4020-a465-58a116ff25e0"),
+                            Id = new Guid("ff2ac97c-83e8-4e64-8951-78f940fb8d1b"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AddedOnForSale = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
@@ -349,8 +351,8 @@ namespace AutoTrade.Data.Migrations
                     b.Property<Guid>("BuyerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CarId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uniqueidentifier");

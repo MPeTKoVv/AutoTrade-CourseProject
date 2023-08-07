@@ -17,10 +17,11 @@ namespace AutoTrade.Data.Models
 
 		[Key]
         public Guid Id { get; set; }
+
 		public DateTime TransactionDate { get; set; }
 		public decimal Amount { get; set; }
 
-		public int CarId { get; set; }
+		public Guid CarId { get; set; }
 		public virtual Car Car { get; set; } = null!;
 
 		public Guid BuyerId { get; set; }
