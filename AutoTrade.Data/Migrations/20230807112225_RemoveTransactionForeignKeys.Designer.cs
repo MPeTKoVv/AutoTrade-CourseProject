@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230807112225_RemoveTransactionForeignKeys")]
+    partial class RemoveTransactionForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,7 +183,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7e99fc67-5ac0-421b-b0df-795eedb99184"),
+                            Id = new Guid("71ae824f-575a-47f8-a940-d3e40cda58b2"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AddedOnForSale = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
@@ -364,11 +366,7 @@ namespace AutoTrade.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
                     b.HasIndex("CarId");
-
-                    b.HasIndex("SellerId");
 
                     b.HasIndex("WalletId");
 
@@ -612,33 +610,17 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.Transaction", b =>
                 {
-                    b.HasOne("AutoTrade.Data.Models.ApplicationUser", "Buyer")
-                        .WithMany("BoughtCarsHistory")
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("AutoTrade.Data.Models.Car", "Car")
                         .WithMany("Transactions")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AutoTrade.Data.Models.Seller", "Seller")
-                        .WithMany("SoldCarHistory")
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AutoTrade.Data.Models.Wallet", null)
                         .WithMany("Transactions")
                         .HasForeignKey("WalletId");
 
-                    b.Navigation("Buyer");
-
                     b.Navigation("Car");
-
-                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Wallet", b =>
@@ -705,8 +687,6 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("BoughtCarsHistory");
-
                     b.Navigation("OwnedCars");
 
                     b.Navigation("Wallet")
@@ -726,11 +706,6 @@ namespace AutoTrade.Data.Migrations
             modelBuilder.Entity("AutoTrade.Data.Models.EngineType", b =>
                 {
                     b.Navigation("Cars");
-                });
-
-            modelBuilder.Entity("AutoTrade.Data.Models.Seller", b =>
-                {
-                    b.Navigation("SoldCarHistory");
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Transmission", b =>

@@ -14,10 +14,12 @@ namespace AutoTrade.Services.Data
 	public class CarService : ICarService
 	{
 		private readonly AutoTradeDbContext dbContext;
+		private readonly ITransactionService transactionService;
 
-		public CarService(AutoTradeDbContext dbContext)
+		public CarService(AutoTradeDbContext dbContext, ITransactionService transactionService)
 		{
 			this.dbContext = dbContext;
+			this.transactionService = transactionService;
 		}
 
 		public async Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel)
@@ -342,6 +344,8 @@ namespace AutoTrade.Services.Data
 				.Users
 				.FirstAsync(u => u.Id.ToString() == userId);
 
+			await transactionService.RecordTransaction(carId, userId, car.SellerId.ToString()!);
+
 			car.IsForSale = false;
 			car.SellerId = null;
 			car.OwnerId = Guid.Parse(userId);
@@ -403,6 +407,17 @@ namespace AutoTrade.Services.Data
 			car.SellerId = null;
 
 			dbContext.SaveChanges();
+		}
+
+		public async Task<string> GetSellerIdAsync(string carId)
+		{
+			Car car = await dbContext
+				.Cars
+				.FirstAsync(c => c.Id.ToString() == carId);
+
+			string sellerId = car.SellerId.ToString()!;
+
+			return sellerId;
 		}
 	}
 }

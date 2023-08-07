@@ -19,6 +19,5 @@ namespace AutoTrade.Data.Models
 		public virtual ICollection<Car> OwnedCars { get; set; }
 
 		public virtual ICollection<Transaction> BoughtCarsHistory { get; set; }
-
 	}
 }

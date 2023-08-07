@@ -40,5 +40,7 @@
 		Task<StatisticsServiceModel> GetStatisticsAsync();
 
 		Task ReturnCarToGarageAsync(string id);
+
+		Task<string> GetSellerIdAsync(string carId);
 	}
 }

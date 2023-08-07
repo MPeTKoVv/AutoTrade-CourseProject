@@ -1,13 +1,7 @@
 ﻿using AutoTrade.Data.Models;
 using AutoTrade.Services.Data.Interfaces;
 using AutoTrade.Web.Data;
-using AutoTrade.Web.ViewModels.Transaction;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoTrade.Services.Data
 {
@@ -20,16 +14,34 @@ namespace AutoTrade.Services.Data
 			this.dbContext = dbContext;
 		}
 
-		public Task RecordTransaction(string carId, string buyerId, string sellerId, decimal amout)
+		public async Task RecordTransaction(string carId, string buyerId, string sellerId)
 		{
-			//Transaction transaction = new Transaction
-			//{
-			//	CarId = Guid.Parse(carId),
-			//	BuyerId = Guid.Parse(buyerId),
+			Car car = await dbContext
+				.Cars
+				.FirstAsync(c => c.Id.ToString() == carId);
 
-			//}
+			ApplicationUser buyer = await dbContext
+				.Users
+				.FirstAsync(b => b.Id.ToString() == buyerId);
 
-			return Task.CompletedTask;
+			Seller seller = await dbContext
+				.Sellers
+				.FirstAsync(s => s.Id.ToString() == sellerId);
+
+			Transaction transaction = new Transaction
+			{
+				CarId = car.Id,
+				BuyerId =buyer.Id,
+				SellerId = seller.Id,
+				Amount = car.Price,
+				TransactionDate = DateTime.Now
+			};
+
+			buyer.BoughtCarsHistory.Add(transaction);
+			seller.SoldCarHistory.Add(transaction);
+
+			await dbContext.Transactions.AddAsync(transaction);
+			await dbContext.SaveChangesAsync();
 		}
 	}
 }

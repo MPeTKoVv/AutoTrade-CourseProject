@@ -11,19 +11,19 @@ namespace AutoTrade.Data.Configurations
 			builder
 				.HasOne(t => t.Car)
 				.WithMany(c => c.Transactions)
-				.HasForeignKey(t => t.Id)
+				.HasForeignKey(t => t.CarId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			builder
 				.HasOne(t => t.Buyer)
 				.WithMany(au => au.BoughtCarsHistory)
-				.HasForeignKey(t => t.Id)
+				.HasForeignKey(t => t.BuyerId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			builder
 				.HasOne(t => t.Seller)
 				.WithMany(au => au.SoldCarHistory)
-				.HasForeignKey(t => t.Id)
+				.HasForeignKey(t => t.SellerId)
 				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}

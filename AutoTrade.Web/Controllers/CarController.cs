@@ -24,14 +24,16 @@ namespace AutoTrade.Web.Controllers
 		private readonly ICategoryService categoryService;
 		private readonly IEngineService engineService;
 		private readonly ITransmissionService transmissionService;
+		private readonly ITransactionService transactionService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService)
+		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
 			this.categoryService = categoryService;
 			this.engineService = engineService;
 			this.transmissionService = transmissionService;
+			this.transactionService = transactionService;
 		}
 
 		[AllowAnonymous]
@@ -401,7 +403,10 @@ namespace AutoTrade.Web.Controllers
 
 			try
 			{
-				await this.carService.BuyCarAsync(id, this.User.GetId()!);
+				//string sellerId = await carService.GetSellerIdAsync(id);
+				//await this.transactionService.RecordTransaction(id, userId, sellerId);
+
+				await this.carService.BuyCarAsync(id, userId);
 
 				TempData[SuccessMessage] = "The car was successfully bought!";
 			}
@@ -452,7 +457,7 @@ namespace AutoTrade.Web.Controllers
 
 			try
 			{
-			string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(ownerId);
+				string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(ownerId);
 				await this.carService.CarForSaleAsync(id, sellerId);
 
 				TempData[SuccessMessage] = "The car was successfully added for sale!";
