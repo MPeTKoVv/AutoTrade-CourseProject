@@ -1,12 +1,16 @@
 namespace AutoTrade.Web
 {
+	using System.Reflection;
+
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.AspNetCore.Identity;
 
 	using Data;
 	using AutoTrade.Data.Models;
+	using Services.Mapping;
 	using Services.Data.Interfaces;
+	using Web.ViewModels.Home;
 	using Web.Infrstructure.Extensions;
 	using Web.Infrastructure.ModelBinders;
 
@@ -48,8 +52,10 @@ namespace AutoTrade.Web
 					options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
 					options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 				});
-
+			
 			WebApplication app = builder.Build();
+
+			AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
 			if (app.Environment.IsDevelopment())
 			{

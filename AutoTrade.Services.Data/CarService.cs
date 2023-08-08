@@ -1,16 +1,18 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Services.Data.Interfaces;
-using AutoTrade.Services.Data.Models.Car;
-using AutoTrade.Services.Data.Models.Statistics;
-using AutoTrade.Web.Data;
-using AutoTrade.Web.ViewModels.Car;
-using AutoTrade.Web.ViewModels.Car.Enums;
-using AutoTrade.Web.ViewModels.Home;
-using AutoTrade.Web.ViewModels.Seller;
-using Microsoft.EntityFrameworkCore;
-
-namespace AutoTrade.Services.Data
+﻿namespace AutoTrade.Services.Data
 {
+	using Microsoft.EntityFrameworkCore;
+
+	using AutoTrade.Data.Models;
+	using Interfaces;
+	using Mapping;
+	using Models.Car;
+	using Models.Statistics;
+	using Web.Data;
+	using Web.ViewModels.Car;
+	using Web.ViewModels.Car.Enums;
+	using Web.ViewModels.Home;
+	using Web.ViewModels.Seller;
+
 	public class CarService : ICarService
 	{
 		private readonly AutoTradeDbContext dbContext;
@@ -82,17 +84,7 @@ namespace AutoTrade.Services.Data
 				.Where(c => c.IsActive && c.IsForSale)
 				.Skip((queryModel.CurrentPage - 1) * queryModel.CarsPerPage)
 				.Take(queryModel.CarsPerPage)
-				.Select(c => new CarAllViewModel
-				{
-					Id = c.Id.ToString(),
-					Make = c.Make,
-					Model = c.Model,
-					Price = c.Price,
-					Horsepower = c.Horsepower,
-					Year = c.Year,
-					ImageUrl = c.ImageUrl,
-					IsForSale = c.IsForSale
-				})
+				.To<CarAllViewModel>()
 				.ToArrayAsync();
 			int totalCars = carsQuery.Count();
 
@@ -108,17 +100,7 @@ namespace AutoTrade.Services.Data
 			IEnumerable<CarAllViewModel> usersCars = await dbContext
 				.Cars
 				.Where(c => c.IsActive && !c.IsForSale && c.OwnerId.ToString() == userId)
-				.Select(c => new CarAllViewModel
-				{
-					Id = c.Id.ToString(),
-					Make = c.Make,
-					Model = c.Model,
-					Price = c.Price,
-					Year = c.Year,
-					Horsepower = c.Horsepower,
-					ImageUrl = c.ImageUrl,
-					IsForSale = c.IsForSale
-				})
+				.To<CarAllViewModel>()
 				.ToListAsync();
 
 			return usersCars;
@@ -128,42 +110,22 @@ namespace AutoTrade.Services.Data
 		{
 			IEnumerable<IndexViewModel> orderedCars = await dbContext
 				.Cars
-				.Where(c => c.IsActive)
-				.OrderByDescending(c => c.AddedOn)
-				.Select(c => new IndexViewModel()
-				{
-					Id = c.Id.ToString(),
-					Make = c.Make,
-					Model = c.Model,
-					Year = c.Year,
-					Horsepower = c.Horsepower,
-					Price = c.Price,
-					ImageUrl = c.ImageUrl,
-				})
+				.Where(c => c.IsActive && c.IsForSale)
+				.OrderByDescending(c => c.AddedOnForSale)
+				.Take(5)
+				.To<IndexViewModel>()
 				.ToArrayAsync();
 
 			return orderedCars;
 		}
 
-		public async Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId)
+		public async Task CreateAndReturnIdAsync(CarFormModel formModel, string sellerId)
 		{
-			Car car = new Car
-			{
-				Make = carViewModel.Make,
-				Model = carViewModel.Model,
-				Description = carViewModel.Description,
-				Horsepower = carViewModel.Horsepower,
-				Price = carViewModel.Price,
-				Year = carViewModel.Year,
-				Mileage = carViewModel.Mileage,
-				ImageUrl = carViewModel.ImageUrl,
-				AddedOn = DateTime.UtcNow,
-				CategoryId = carViewModel.CategoryId,
-				EngineId = carViewModel.EngineTypeId,
-				SellerId = Guid.Parse(sellerId)
-			};
+			Car newCar = AutoMapperConfig.MapperInstance.Map<Car>(formModel);
+			newCar.AddedOn = DateTime.UtcNow;
+			newCar.SellerId = Guid.Parse(sellerId);
 
-			await dbContext.Cars.AddAsync(car);
+			await dbContext.Cars.AddAsync(newCar);
 			await dbContext.SaveChangesAsync();
 		}
 
@@ -174,17 +136,7 @@ namespace AutoTrade.Services.Data
 				.Where(c => c.IsActive)
 				.FirstAsync(c => c.Id.ToString() == carId);
 
-			car.Make = formModel.Make;
-			car.Model = formModel.Model;
-			car.Price = formModel.Price;
-			car.Year = formModel.Year;
-			car.Horsepower = formModel.Horsepower;
-			car.Mileage = formModel.Mileage;
-			car.Description = formModel.Description;
-			car.ImageUrl = formModel.ImageUrl;
-			car.CategoryId = formModel.CategoryId;
-			car.TransmissionId = formModel.TransmissionId;
-			car.EngineId = formModel.EngineTypeId;
+			car = AutoMapperConfig.MapperInstance.Map<Car>(formModel);
 
 			await dbContext.SaveChangesAsync();
 		}
@@ -209,20 +161,9 @@ namespace AutoTrade.Services.Data
 			   .Where(c => c.IsActive)
 			   .FirstAsync(c => c.Id.ToString() == carId);
 
-			return new CarFormModel
-			{
-				Make = car.Make,
-				Model = car.Model,
-				Price = car.Price,
-				Year = car.Year,
-				Horsepower = car.Horsepower,
-				Mileage = car.Mileage,
-				Description = car.Description,
-				ImageUrl = car.ImageUrl,
-				CategoryId = car.CategoryId,
-				TransmissionId = car.TransmissionId,
-				EngineTypeId = car.EngineId
-			};
+			CarFormModel formModel = AutoMapperConfig.MapperInstance.Map<CarFormModel>(car);
+
+			return formModel;
 		}
 
 		public async Task<CarDetailsViewModel> GetDetailsByIdAsync(string carId)
@@ -242,7 +183,10 @@ namespace AutoTrade.Services.Data
 			{
 				return null;
 			}
-			
+
+			//CarDetailsViewModel viewModel = AutoMapperConfig.MapperInstance.Map<CarDetailsViewModel>(car);
+
+
 			CarDetailsViewModel viewModel = new CarDetailsViewModel
 			{
 				Id = car.Id.ToString(),
@@ -267,6 +211,7 @@ namespace AutoTrade.Services.Data
 
 			return viewModel;
 		}
+
 		public async Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string carId)
 		{
 			Car car = await dbContext
@@ -274,13 +219,9 @@ namespace AutoTrade.Services.Data
 				.Where(c => c.IsActive)
 				.FirstAsync(c => c.Id.ToString() == carId);
 
-			return new CarDeleteDetailsViewModel
-			{
-				Make = car.Make,
-				Model = car.Model,
-				Price = car.Price,
-				ImageUrl = car.ImageUrl
-			};
+			CarDeleteDetailsViewModel viewModel = AutoMapperConfig.MapperInstance.Map<CarDeleteDetailsViewModel>(car);
+
+			return viewModel;
 		}
 
 		public async Task<bool> IsUserWithIdOwnerOfCarWithIdAsync(string carId, string ownerId)
@@ -352,17 +293,7 @@ namespace AutoTrade.Services.Data
 			IEnumerable<CarAllViewModel> carsForSale = await dbContext
 				.Cars
 				.Where(c => c.IsActive && c.IsForSale && c.SellerId.ToString() == sellerId)
-				.Select(c => new CarAllViewModel
-				{
-					Id = c.Id.ToString(),
-					Make = c.Make,
-					Model = c.Model,
-					Price = c.Price,
-					Horsepower = c.Horsepower,
-					Year = c.Year,
-					ImageUrl = c.ImageUrl,
-					IsForSale = c.IsForSale
-				})
+				.To<CarAllViewModel>()
 				.ToListAsync();
 
 			return carsForSale;

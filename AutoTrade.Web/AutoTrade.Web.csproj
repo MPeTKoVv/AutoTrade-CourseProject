@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.20" />
@@ -24,6 +25,7 @@
     <ProjectReference Include="..\AutoTrade.Data.Models\AutoTrade.Data.Models.csproj" />
     <ProjectReference Include="..\AutoTrade.Data\AutoTrade.Data.csproj" />
     <ProjectReference Include="..\AutoTrade.Services.Data\AutoTrade.Services.Data.csproj" />
+    <ProjectReference Include="..\AutoTrade.Services.Mapping\AutoTrade.Services.Mapping.csproj" />
     <ProjectReference Include="..\AutoTrade.Web.Infrstructure\AutoTrade.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\AutoTrade.Web.ViewModels\AutoTrade.Web.ViewModels.csproj" />
   </ItemGroup>

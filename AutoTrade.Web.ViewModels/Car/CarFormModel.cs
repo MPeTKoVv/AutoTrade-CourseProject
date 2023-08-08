@@ -1,16 +1,16 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Web.ViewModels.Category;
-using AutoTrade.Web.ViewModels.Engine;
-using AutoTrade.Web.ViewModels.Transmission;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-
-namespace AutoTrade.Web.ViewModels.Car
+﻿namespace AutoTrade.Web.ViewModels.Car
 {
+	using System.ComponentModel.DataAnnotations;
+	using AutoMapper;
+	using AutoTrade.Data.Models;
+	using AutoTrade.Services.Mapping;
+	using AutoTrade.Web.ViewModels.Category;
+	using AutoTrade.Web.ViewModels.Engine;
+	using AutoTrade.Web.ViewModels.Transmission;
+
 	using static Common.EntityValidationConstants.Car;
 
-	public class CarFormModel
+	public class CarFormModel : IMapTo<Car>, IHaveCustomMappings, IMapFrom<Car>
 	{
 		public CarFormModel()
 		{
@@ -41,11 +41,11 @@ namespace AutoTrade.Web.ViewModels.Car
 		public int Year { get; set; }
 
 		[Range(typeof(int), MileageMinValue, MileageMaxValue)]
-        [Display(Name = "Mileage(km)")]
-        public int Mileage { get; set; }
+		[Display(Name = "Mileage(km)")]
+		public int Mileage { get; set; }
 
 		[Display(Name = "Category")]
-        public int CategoryId { get; set; }
+		public int CategoryId { get; set; }
 
 		[Display(Name = "Engine Type")]
 		public int EngineTypeId { get; set; }
@@ -59,6 +59,13 @@ namespace AutoTrade.Web.ViewModels.Car
 
 		public IEnumerable<CarSelectCategoryViewModel> Categories { get; set; }
 		public IEnumerable<CarSelectEngineTypeViewModel> EngineTypes { get; set; }
-        public IEnumerable<CarSelectTransmissionViewModel> Transmissions { get; set; }
-    }
+		public IEnumerable<CarSelectTransmissionViewModel> Transmissions { get; set; }
+
+		public void CreateMappings(IProfileExpression configuration)
+		{
+			configuration.CreateMap<CarFormModel, Car>()
+				.ForMember(d => d.AddedOn, opt => opt.Ignore())
+				.ForMember(d => d.SellerId, opt => opt.Ignore());
+		}
+	}
 }

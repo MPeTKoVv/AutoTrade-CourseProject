@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Web.ViewModels.Home
+﻿namespace AutoTrade.Web.ViewModels.Home
 {
-	public class IndexViewModel
+    using Data.Models;
+	using Services.Mapping;
+
+	public class IndexViewModel : IMapFrom<Car>
 	{
         public string Id { get; set; } = null!;
         public string Make { get; set; } = null!;

@@ -11,6 +11,7 @@
     <ProjectReference Include="..\AutoTrade.Data.Models\AutoTrade.Data.Models.csproj" />
     <ProjectReference Include="..\AutoTrade.Data\AutoTrade.Data.csproj" />
     <ProjectReference Include="..\AutoTrade.Services.Data.Models\AutoTrade.Services.Data.Models.csproj" />
+    <ProjectReference Include="..\AutoTrade.Services.Mapping\AutoTrade.Services.Mapping.csproj" />
     <ProjectReference Include="..\AutoTrade.Web.ViewModels\AutoTrade.Web.ViewModels.csproj" />
   </ItemGroup>
 

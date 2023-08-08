@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AutoTrade.Common\AutoTrade.Common.csproj" />
     <ProjectReference Include="..\AutoTrade.Data.Models\AutoTrade.Data.Models.csproj" />
+    <ProjectReference Include="..\AutoTrade.Services.Mapping\AutoTrade.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>
