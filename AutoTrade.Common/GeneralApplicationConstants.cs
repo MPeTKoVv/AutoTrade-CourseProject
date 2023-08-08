@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Common
+﻿namespace AutoTrade.Common
 {
 	public class GeneralApplicationConstants
 	{
@@ -12,5 +6,8 @@ namespace AutoTrade.Common
 
 		public const int DefaultPage = 1;
 		public const int EntitiesPerPage = 6;
+
+		public const string AdminRoleName = "Administrator";
+		public const string DevelopmentAdminEmail = "admin@autotrade.com";
 	}
 }

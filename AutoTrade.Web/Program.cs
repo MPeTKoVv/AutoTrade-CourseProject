@@ -1,16 +1,16 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using AutoTrade.Web.Data;
 namespace AutoTrade.Web
 {
+	using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-
+	using Microsoft.AspNetCore.Identity;
+	
     using Data;
     using AutoTrade.Data.Models;
-    using AutoTrade.Web.Infrstructure.Extensions;
     using Services.Data.Interfaces;
-	using AutoTrade.Web.Infrastructure.ModelBinders;
-	using Microsoft.AspNetCore.Mvc;
+    using Web.Infrstructure.Extensions;
+	using Web.Infrastructure.ModelBinders;
+
+    using static Common.GeneralApplicationConstants;
 
 	public class Program
     {
@@ -31,6 +31,7 @@ namespace AutoTrade.Web
                 options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<AutoTradeDbContext>();
 
             builder.Services.AddApplicationServices(typeof(ICarService));
@@ -70,6 +71,8 @@ namespace AutoTrade.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.SeedAdministrator(DevelopmentAdminEmail);
 
             app.MapDefaultControllerRoute();
             app.MapRazorPages();
