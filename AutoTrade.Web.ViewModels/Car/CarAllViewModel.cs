@@ -1,7 +1,7 @@
 ﻿namespace AutoTrade.Web.ViewModels.Car
 {
-	using AutoTrade.Services.Mapping;
 	using Data.Models;
+	using Services.Mapping;
 
 	public class CarAllViewModel : IMapFrom<Car>
 	{

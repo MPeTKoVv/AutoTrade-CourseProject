@@ -3,7 +3,7 @@
 	using System.ComponentModel.DataAnnotations;
 	
 	using Services.Mapping;
-	using AutoTrade.Data.Models;
+	using Data.Models;
 
 	public class CarDeleteDetailsViewModel : IMapFrom<Car>
 	{

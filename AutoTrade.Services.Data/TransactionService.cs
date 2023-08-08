@@ -1,10 +1,11 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Services.Data.Interfaces;
-using AutoTrade.Web.Data;
-using Microsoft.EntityFrameworkCore;
-
-namespace AutoTrade.Services.Data
+﻿namespace AutoTrade.Services.Data
 {
+	using Microsoft.EntityFrameworkCore;
+
+	using AutoTrade.Data.Models;
+	using Interfaces;
+	using Web.Data;
+
 	public class TransactionService : ITransactionService
 	{
 		private readonly AutoTradeDbContext dbContext;

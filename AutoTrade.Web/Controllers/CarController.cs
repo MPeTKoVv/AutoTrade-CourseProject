@@ -1,21 +1,13 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Services.Data.Interfaces;
-using AutoTrade.Services.Data.Models.Car;
-using AutoTrade.Web.Data;
-using AutoTrade.Web.Infrastructure.Extensions;
-using AutoTrade.Web.ViewModels.Car;
-using AutoTrade.Web.ViewModels.Home;
-using Humanizer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
-using System.Runtime.CompilerServices;
-using System.Security.Permissions;
-
-namespace AutoTrade.Web.Controllers
+﻿namespace AutoTrade.Web.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Authorization;
+
+	using Services.Data.Interfaces;
+	using Services.Data.Models.Car;
+	using Web.ViewModels.Car;
+	using Web.Infrastructure.Extensions;
+
 	using static Common.NotificationMessagesConstants;
 
 	[Authorize]

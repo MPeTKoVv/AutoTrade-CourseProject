@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using AutoTrade.Data.Models;
-
-namespace AutoTrade.Data.Configurations
+﻿namespace AutoTrade.Data.Configurations
 {
-    public class TransmissionEntityConfiguration : IEntityTypeConfiguration<Transmission>
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+	using Models;
+
+	public class TransmissionEntityConfiguration : IEntityTypeConfiguration<Transmission>
     {
         public void Configure(EntityTypeBuilder<Transmission> builder)
         {

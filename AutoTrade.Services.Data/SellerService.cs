@@ -1,12 +1,13 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Services.Data.Interfaces;
-using AutoTrade.Web.Data;
-using AutoTrade.Web.ViewModels.Seller;
-using Microsoft.EntityFrameworkCore;
-
-namespace AutoTrade.Services.Data
+﻿namespace AutoTrade.Services.Data
 {
-    public class SellerService : ISellerService
+	using Microsoft.EntityFrameworkCore;
+
+	using AutoTrade.Data.Models;
+	using Interfaces;
+	using Web.Data;
+	using Web.ViewModels.Seller;
+
+	public class SellerService : ISellerService
     {
         private readonly AutoTradeDbContext dbContext;
 

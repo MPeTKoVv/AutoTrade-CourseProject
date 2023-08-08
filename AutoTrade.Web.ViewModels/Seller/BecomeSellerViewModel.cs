@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AutoTrade.Web.ViewModels.Seller
+﻿namespace AutoTrade.Web.ViewModels.Seller
 {
+	using System.ComponentModel.DataAnnotations;
+
 	using static Common.EntityValidationConstants.Seller;
 
 	public class BecomeSellerViewModel

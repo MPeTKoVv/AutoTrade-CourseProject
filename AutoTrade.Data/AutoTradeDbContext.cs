@@ -1,13 +1,14 @@
-﻿using AutoTrade.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Reflection;
-
-namespace AutoTrade.Web.Data
+﻿namespace AutoTrade.Web.Data
 {
-    public class AutoTradeDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+	using System.Reflection;
+
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.AspNetCore.Identity;
+	using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+	
+    using AutoTrade.Data.Models;
+
+	public class AutoTradeDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public AutoTradeDbContext(DbContextOptions<AutoTradeDbContext> options)
             : base(options)

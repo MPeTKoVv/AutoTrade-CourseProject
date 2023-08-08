@@ -1,6 +1,6 @@
 ﻿namespace AutoTrade.Services.Data.Models.Car
 {
-	using AutoTrade.Web.ViewModels.Car;
+	using Web.ViewModels.Car;
 
 	public class AllCarsFilteredAndPagedServiceModel
 	{

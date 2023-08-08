@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Data.Models
+﻿namespace AutoTrade.Data.Models
 {
-    using static Common.EntityValidationConstants.Transmission;
+	using System.ComponentModel.DataAnnotations;
 
-    public class Transmission
-    {
-        public Transmission()
-        {
-            this.Cars = new HashSet<Car>();
-        }
+	using static Common.EntityValidationConstants.Transmission;
 
-        [Key]
-        public int Id { get; set; }
+	public class Transmission
+	{
+		public Transmission()
+		{
+			this.Cars = new HashSet<Car>();
+		}
 
-        [Required]
-        [MaxLength(NameMaxLength)]
-        public string Name { get; set; } = null!;
+		[Key]
+		public int Id { get; set; }
 
-        public virtual ICollection<Car> Cars { get; set; }
-    }
+		[Required]
+		[MaxLength(NameMaxLength)]
+		public string Name { get; set; } = null!;
+
+		public virtual ICollection<Car> Cars { get; set; }
+	}
 }

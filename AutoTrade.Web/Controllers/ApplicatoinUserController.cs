@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AutoTrade.Web.Controllers
+﻿namespace AutoTrade.Web.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Authorization;
+
 	[Authorize]
 	public class ApplicatoinUserController : Controller
 	{

@@ -1,23 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AutoTrade.Data.Models
+﻿namespace AutoTrade.Data.Models
 {
-    using static Common.EntityValidationConstants.Category;
+	using System.ComponentModel.DataAnnotations;
 
-    public class Category
-    {
-        public Category()
-        {
-            this.Cars = new HashSet<Car>();
-        }
+	using static Common.EntityValidationConstants.Category;
 
-        [Key]
-        public int Id { get; set; }
+	public class Category
+	{
+		public Category()
+		{
+			this.Cars = new HashSet<Car>();
+		}
 
-        [Required]
-        [MaxLength(NameMaxLength)]
-        public string Name { get; set; } = null!;
+		[Key]
+		public int Id { get; set; }
 
-        public virtual ICollection<Car> Cars { get; set; }
-    }
+		[Required]
+		[MaxLength(NameMaxLength)]
+		public string Name { get; set; } = null!;
+
+		public virtual ICollection<Car> Cars { get; set; }
+	}
 }

@@ -1,17 +1,12 @@
-﻿using AutoTrade.Web.ViewModels.Category;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Services.Data.Interfaces
+﻿namespace AutoTrade.Services.Data.Interfaces
 {
+	using Web.ViewModels.Category;
+
 	public interface ICategoryService
 	{
 		Task<IEnumerable<CarSelectCategoryViewModel>> AllCategoriesAsync();
 
-		Task<bool>ExistsByIdAsync(int id);
+		Task<bool> ExistsByIdAsync(int id);
 
 		Task<IEnumerable<string>> AllCategoryNamesAsync();
 	}

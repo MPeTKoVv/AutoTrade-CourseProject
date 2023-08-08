@@ -1,13 +1,7 @@
-﻿using AutoTrade.Web.ViewModels.Seller;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Web.ViewModels.Car
+﻿namespace AutoTrade.Web.ViewModels.Car
 {
+	using Seller;
+
 	public class CarDetailsViewModel : CarAllViewModel
 	{
 		public string Description { get; set; } = null!;
@@ -20,8 +14,8 @@ namespace AutoTrade.Web.ViewModels.Car
 
 		public int Mileage { get; set; }
 
-        public bool IsForSale { get; set; }
+		public bool IsForSale { get; set; }
 
-		public SellerInfoOnCarViewModel Seller { get; set; }
+		public SellerInfoOnCarViewModel Seller { get; set; } = null!;
 	}
 }

@@ -1,12 +1,14 @@
-﻿using AutoTrade.Services.Data.Interfaces;
-using AutoTrade.Web.Infrastructure.Extensions;
-using AutoTrade.Web.ViewModels.Seller;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
-namespace AutoTrade.Web.Controllers
+﻿namespace AutoTrade.Web.Controllers
 {
+	using System.Security.Claims;
+
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Mvc;
+
+	using Services.Data.Interfaces;
+	using Web.Infrastructure.Extensions;
+	using Web.ViewModels.Seller;
+	
 	using static Common.NotificationMessagesConstants;
 
 	[Authorize]

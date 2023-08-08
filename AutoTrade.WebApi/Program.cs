@@ -1,9 +1,10 @@
 namespace AutoTrade.WebApi
 {
-    using AutoTrade.Web.Data;
     using Microsoft.EntityFrameworkCore;
-    using Services.Data.Interfaces;
+
+    using Web.Data;
     using Web.Infrstructure.Extensions;
+    using Services.Data.Interfaces;
 
     public class Program
     {

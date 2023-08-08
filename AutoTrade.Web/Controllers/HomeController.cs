@@ -1,41 +1,41 @@
-﻿using AutoTrade.Services.Data.Interfaces;
-using AutoTrade.Web.ViewModels.Home;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
-namespace AutoTrade.Web.Controllers
+﻿namespace AutoTrade.Web.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ICarService carService;
+	using Microsoft.AspNetCore.Mvc;
 
-        public HomeController(ICarService carService)
-        {
-            this.carService = carService;
-        }
+	using Services.Data.Interfaces;
+	using Web.ViewModels.Home;
 
-        public async Task<IActionResult> Index()
-        {
-            IEnumerable<IndexViewModel> viewModel =
-                await this.carService.AllCarsOrderedByAddedOnDescendingAsync();
+	public class HomeController : Controller
+	{
+		private readonly ICarService carService;
 
-            return View(viewModel);
-        }
+		public HomeController(ICarService carService)
+		{
+			this.carService = carService;
+		}
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(int statusCode)
-        {
-            if (statusCode == 400 || statusCode == 404)
-            {
-                return this.View("Error404");
-            }
+		public async Task<IActionResult> Index()
+		{
+			IEnumerable<IndexViewModel> viewModel =
+				await this.carService.AllCarsOrderedByAddedOnDescendingAsync();
 
-            if (statusCode == 401)
-            {
-                return this.View("Error401");
-            }
+			return View(viewModel);
+		}
 
-            return this.View();
-        }
-    }
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error(int statusCode)
+		{
+			if (statusCode == 400 || statusCode == 404)
+			{
+				return this.View("Error404");
+			}
+
+			if (statusCode == 401)
+			{
+				return this.View("Error401");
+			}
+
+			return this.View();
+		}
+	}
 }

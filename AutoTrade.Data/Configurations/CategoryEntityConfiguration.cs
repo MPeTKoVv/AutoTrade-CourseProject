@@ -1,10 +1,11 @@
-﻿using AutoTrade.Data.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace AutoTrade.Data.Configurations
+﻿namespace AutoTrade.Data.Configurations
 {
-    public class CategoryEntityConfiguration : IEntityTypeConfiguration<Category>
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+	using Models;
+
+	public class CategoryEntityConfiguration : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {

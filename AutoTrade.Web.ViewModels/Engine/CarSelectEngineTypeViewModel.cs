@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Web.ViewModels.Engine
+﻿namespace AutoTrade.Web.ViewModels.Engine
 {
 	public class CarSelectEngineTypeViewModel
 	{

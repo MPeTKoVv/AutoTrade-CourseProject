@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AutoTrade.Data.Models
+﻿namespace AutoTrade.Data.Models
 {
+	using System.ComponentModel.DataAnnotations;
+
+	using Microsoft.AspNetCore.Identity;
+
 	using static Common.EntityValidationConstants.User;
 
 	public class ApplicationUser : IdentityUser<Guid>

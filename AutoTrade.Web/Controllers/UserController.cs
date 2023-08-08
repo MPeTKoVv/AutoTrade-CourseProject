@@ -1,10 +1,11 @@
 ﻿namespace AutoTrade.Web.Controllers
 {
-	using AutoTrade.Data.Models;
-	using AutoTrade.Web.ViewModels.User;
 	using Microsoft.AspNetCore.Authentication;
 	using Microsoft.AspNetCore.Identity;
 	using Microsoft.AspNetCore.Mvc;
+
+	using AutoTrade.Data.Models;
+	using Web.ViewModels.User;
 
     using static Common.NotificationMessagesConstants;
 

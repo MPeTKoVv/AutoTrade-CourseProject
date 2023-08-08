@@ -1,13 +1,13 @@
-﻿using AutoTrade.Web.ViewModels.Transmission;
-
-namespace AutoTrade.Services.Data.Interfaces
+﻿namespace AutoTrade.Services.Data.Interfaces
 {
-    public interface ITransmissionService
-    {
-        Task<IEnumerable<CarSelectTransmissionViewModel>> AllTransmissionsAsync();
+	using Web.ViewModels.Transmission;
 
-        Task<bool> ExistsByIdAsync(int id);
+	public interface ITransmissionService
+	{
+		Task<IEnumerable<CarSelectTransmissionViewModel>> AllTransmissionsAsync();
 
-        Task<IEnumerable<string>> AllTransmissionNamesAsync();
-    }
+		Task<bool> ExistsByIdAsync(int id);
+
+		Task<IEnumerable<string>> AllTransmissionNamesAsync();
+	}
 }

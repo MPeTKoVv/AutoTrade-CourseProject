@@ -1,7 +1,8 @@
 ﻿namespace AutoTrade.Web.Infrastructure.ModelBinders
 {
-	using Microsoft.AspNetCore.Mvc.ModelBinding;
 	using System.Globalization;
+
+	using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 	public class DecimalModelBinder : IModelBinder
 	{

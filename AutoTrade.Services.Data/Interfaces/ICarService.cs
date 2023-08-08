@@ -1,9 +1,9 @@
 ﻿namespace AutoTrade.Services.Data.Interfaces
 {
 	using Data.Models.Car;
+    using Models.Statistics;
 	using Web.ViewModels.Home;
 	using Web.ViewModels.Car;
-    using AutoTrade.Services.Data.Models.Statistics;
 
     public interface ICarService
 	{

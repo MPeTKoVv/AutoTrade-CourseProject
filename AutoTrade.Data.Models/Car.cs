@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AutoTrade.Data.Models
+﻿namespace AutoTrade.Data.Models
 {
+	using System.ComponentModel.DataAnnotations;
+
 	using static Common.EntityValidationConstants.Car;
 
 	public class Car
@@ -13,9 +10,9 @@ namespace AutoTrade.Data.Models
 		{
 			this.Id = Guid.NewGuid();
 			this.Transactions = new HashSet<Transaction>();
-        }
+		}
 
-        [Key]
+		[Key]
 		public Guid Id { get; set; }
 
 		[Required]
@@ -30,11 +27,11 @@ namespace AutoTrade.Data.Models
 		[MaxLength(DescriptionMaxLength)]
 		public string Description { get; set; } = null!;
 
-        [Required]
-        [MaxLength(ImageUrlMaxLength)]
-        public string ImageUrl { get; set; } = null!;
+		[Required]
+		[MaxLength(ImageUrlMaxLength)]
+		public string ImageUrl { get; set; } = null!;
 
-        public int Horsepower { get; set; }
+		public int Horsepower { get; set; }
 
 		public decimal Price { get; set; }
 
@@ -44,11 +41,11 @@ namespace AutoTrade.Data.Models
 
 		public DateTime AddedOn { get; set; }
 
-        public DateTime AddedOnForSale { get; set; }
+		public DateTime AddedOnForSale { get; set; }
 
-        public bool IsActive { get; set; }
+		public bool IsActive { get; set; }
 
-        public bool IsForSale { get; set; }
+		public bool IsForSale { get; set; }
 
 		public int EngineId { get; set; }
 		public virtual EngineType EngineType { get; set; } = null!;
@@ -66,5 +63,5 @@ namespace AutoTrade.Data.Models
 		public virtual ApplicationUser Owner { get; set; }
 
 		public virtual ICollection<Transaction> Transactions { get; set; }
-    }
+	}
 }
