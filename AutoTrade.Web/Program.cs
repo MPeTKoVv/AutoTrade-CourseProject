@@ -35,6 +35,11 @@ namespace AutoTrade.Web
 
             builder.Services.AddApplicationServices(typeof(ICarService));
 
+            builder.Services.ConfigureApplicationCookie(cfg =>
+            {
+                cfg.LoginPath = "/User/Login";
+            });
+
             builder.Services
                 .AddControllersWithViews()
                 .AddMvcOptions(options =>

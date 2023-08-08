@@ -1,21 +1,24 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Web.ViewModels.User;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-
-namespace AutoTrade.Web.Controllers
+﻿namespace AutoTrade.Web.Controllers
 {
-    public class UserController : Controller
+	using AutoTrade.Data.Models;
+	using AutoTrade.Web.ViewModels.User;
+	using Microsoft.AspNetCore.Authentication;
+	using Microsoft.AspNetCore.Identity;
+	using Microsoft.AspNetCore.Mvc;
+
+    using static Common.NotificationMessagesConstants;
+
+	public class UserController : Controller
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserStore<ApplicationUser> userStore;
 
-        public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.userStore = userStore;
         }
 
         [HttpGet]
@@ -58,5 +61,38 @@ namespace AutoTrade.Web.Controllers
 
             return this.RedirectToAction("Index", "Home");
         }
-    }
+
+        [HttpGet]
+        public IActionResult Login(string? returnUrl = null)
+        {
+            LoginFormModel model = new LoginFormModel()
+            {
+                ReturnUrl = returnUrl,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginFormModel model)
+        {
+			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+           var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+            if (!result.Succeeded)
+            {
+                TempData[ErrorMessage] = "There was an error while logging you in! Please, try again later or contact an administrator.";
+
+                return this.View(model);
+            }
+
+            return this.Redirect(model.ReturnUrl ?? "/Home/Index");
+        }
+	}
 }
