@@ -1,21 +1,24 @@
-﻿@using AutoTrade.Data.Models;
+﻿@using AutoTrade.Services.Data.Interfaces;
+@using AutoTrade.Web.Infrastructure.Extensions;
+@using AutoTrade.Data.Models;
 @using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
-@using AutoTrade.Services.Data.Interfaces;
-@using AutoTrade.Web.Infrastructure.Extensions;
+@inject IUserService UserService
 
 @inject ISellerService SellerService
 @{
 	bool isUserSeller = await SellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+
+	string userFullName = await UserService.GetFullNameByEmailAsync(this.User.Identity?.Name!);
 }
 
 <ul class="navbar-nav">
 	@if (SignInManager.IsSignedIn(User))
 	{
 		<li class="nav-item">
-			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity?.Name!</a>
+			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @userFullName</a>
 		</li>
 
 		@if (!isUserSeller)

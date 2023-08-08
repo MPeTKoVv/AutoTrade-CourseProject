@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoTrade.Web.ViewModels.Seller
+﻿namespace AutoTrade.Web.ViewModels.Seller
 {
+	using System.ComponentModel.DataAnnotations;
+
 	public class SellerInfoOnCarViewModel
 	{
-        public string Email{ get; set; }
+		public string FullName { get; set; } = null!;
 
-        [Display(Name = "Phone")]
-        public string PhoneNumber { get; set; }
-    }
+		public string Email { get; set; } = null!;
+
+		[Display(Name = "Phone")]
+		public string PhoneNumber { get; set; } = null!;
+	}
 }

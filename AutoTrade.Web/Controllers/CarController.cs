@@ -7,6 +7,7 @@ using AutoTrade.Web.ViewModels.Car;
 using AutoTrade.Web.ViewModels.Home;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
@@ -25,8 +26,9 @@ namespace AutoTrade.Web.Controllers
 		private readonly IEngineService engineService;
 		private readonly ITransmissionService transmissionService;
 		private readonly ITransactionService transactionService;
+		private readonly IUserService userService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService)
+		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService, IUserService userService)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
@@ -34,6 +36,7 @@ namespace AutoTrade.Web.Controllers
 			this.engineService = engineService;
 			this.transmissionService = transmissionService;
 			this.transactionService = transactionService;
+			this.userService = userService;
 		}
 
 		[AllowAnonymous]
@@ -67,6 +70,7 @@ namespace AutoTrade.Web.Controllers
 
 			CarDetailsViewModel viewModel = await carService
 				.GetDetailsByIdAsync(id);
+			viewModel.Seller!.FullName = await this.userService.GetFullNameByEmailAsync(User.Identity?.Name!);
 
 			return View(viewModel);
 		}
