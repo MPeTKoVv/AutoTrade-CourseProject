@@ -32,7 +32,7 @@
 			<p>Transmission: <b>@Model.Transmission</b></p>
 			<p>Engine type: <b>@Model.EngineType</b></p>
 			<div class="form-inline">
-				@if (isUserOwnerOfCar)
+				@if (isUserOwnerOfCar || this.User.IsAdmin())
 				{
 					<a class="btn btn-warning" asp-controller="Car" asp-action="Edit"
 					   asp-route-id="@Model.Id">Edit</a>
@@ -51,7 +51,7 @@
 						</form>
 					}
 					<a class="ml-2 btn btn-danger" asp-controller="Car" asp-action="Delete"
-					asp-route-id="@Model.Id">Delete</a>
+					   asp-route-id="@Model.Id">Delete</a>
 				}
 				else
 				{
@@ -63,17 +63,27 @@
 			</div>
 			<p></p>
 
-			@if (Model.IsForSale)
-			{
-				<div class="card" style="width: 18rem;">
-					<div class="card-body">
+			<div class="card" style="width: 18rem;">
+				<div class="card-body">
+					@if (Model.IsForSale)
+					{
 						<h5 class="card-title">Seller Info</h5>
-						<p class="card-text">Full name:  @Model.Seller.FullName</p>
-						<p class="card-text">Email:  @Model.Seller.Email</p>
+					}
+					else
+					{
+						<h5 class="card-title">Owner Info</h5>
+					}
+
+					<p class="card-text">Full name:  @Model.Seller.FullName</p>
+					<p class="card-text">Email:  @Model.Seller.Email</p>
+
+					@if (Model.Seller.PhoneNumber != null)
+					{
 						<p class="card-text">Phone Number: @Model.Seller.PhoneNumber</p>
-					</div>
+					}
 				</div>
-			}
+			</div>
+
 		</div>
 	</div>
 </div>

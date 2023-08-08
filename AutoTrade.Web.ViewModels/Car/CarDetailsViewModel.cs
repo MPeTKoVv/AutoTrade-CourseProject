@@ -22,6 +22,6 @@ namespace AutoTrade.Web.ViewModels.Car
 
         public bool IsForSale { get; set; }
 
-        public SellerInfoOnCarViewModel? Seller { get; set; }
+		public SellerInfoOnCarViewModel Seller { get; set; }
 	}
 }

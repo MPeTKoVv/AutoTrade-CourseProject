@@ -234,6 +234,7 @@ namespace AutoTrade.Services.Data
 				.Include(c => c.EngineType)
 				.Include(c => c.Seller)
 				.ThenInclude(s => s.User)
+				.Include(c => c.Owner)
 				.Where(c => c.IsActive)
 				.FirstOrDefaultAsync(c => c.Id.ToString() == carId);
 
@@ -241,52 +242,31 @@ namespace AutoTrade.Services.Data
 			{
 				return null;
 			}
-
-			if (car.IsForSale)
+			
+			CarDetailsViewModel viewModel = new CarDetailsViewModel
 			{
-				return new CarDetailsViewModel
+				Id = car.Id.ToString(),
+				Make = car.Make,
+				Model = car.Model,
+				Price = car.Price,
+				Year = car.Year,
+				Horsepower = car.Horsepower,
+				ImageUrl = car.ImageUrl,
+				Category = car.Category.Name,
+				Transmission = car.Transmission.Name,
+				EngineType = car.EngineType.Type,
+				Description = car.Description,
+				IsForSale = car.IsForSale,
+				Seller = new SellerInfoOnCarViewModel
 				{
-					Id = car.Id.ToString(),
-					Make = car.Make,
-					Model = car.Model,
-					Price = car.Price,
-					Year = car.Year,
-					Horsepower = car.Horsepower,
-					ImageUrl = car.ImageUrl,
-					Category = car.Category.Name,
-					Transmission = car.Transmission.Name,
-					EngineType = car.EngineType.Type,
-					Description = car.Description,
-					IsForSale = car.IsForSale,
-					Seller = new SellerInfoOnCarViewModel
-					{
-						Email = car.Seller!.User.Email,
-						PhoneNumber = car.Seller.PhoneNumber
-					}
-				};
-			}
-			else
-			{
-				return new CarDetailsViewModel
-				{
-					Id = car.Id.ToString(),
-					Make = car.Make,
-					Model = car.Model,
-					Price = car.Price,
-					Year = car.Year,
-					Horsepower = car.Horsepower,
-					ImageUrl = car.ImageUrl,
-					Category = car.Category.Name,
-					Transmission = car.Transmission.Name,
-					EngineType = car.EngineType.Type,
-					Description = car.Description,
-					IsForSale = car.IsForSale
-				};
-			}
+					FullName = $"{car.Owner.FirstName} {car.Owner.LastName}",
+					Email = car.Owner.Email,
+					PhoneNumber = car.Seller?.PhoneNumber
+				}
+			};
 
-
+			return viewModel;
 		}
-
 		public async Task<CarDeleteDetailsViewModel> GetCarForDeletByIdAsync(string carId)
 		{
 			Car car = await dbContext

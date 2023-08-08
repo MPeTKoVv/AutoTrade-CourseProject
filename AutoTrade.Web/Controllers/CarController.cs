@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using System.Runtime.CompilerServices;
 using System.Security.Permissions;
 
@@ -53,26 +54,6 @@ namespace AutoTrade.Web.Controllers
 			queryModel.Transmissions = await transmissionService.AllTransmissionNamesAsync();
 
 			return View(queryModel);
-		}
-
-		[AllowAnonymous]
-		public async Task<IActionResult> Details(string id)
-		{
-			bool carExists = await carService
-				.ExistsByIdAsync(id);
-
-			if (!carExists)
-			{
-				TempData[ErrorMessage] = "Selected car does not exist! Please, try with another car!";
-
-				return RedirectToAction("All", "Car");
-			}
-
-			CarDetailsViewModel viewModel = await carService
-				.GetDetailsByIdAsync(id);
-			viewModel.Seller!.FullName = await this.userService.GetFullNameByEmailAsync(User.Identity?.Name!);
-
-			return View(viewModel);
 		}
 
 		[HttpGet]
@@ -173,7 +154,7 @@ namespace AutoTrade.Web.Controllers
 			string userId = this.User.GetId()!;
 			bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(userId);
 
-			if (!isUserSeller)
+			if (!isUserSeller && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "In order to edit a car you have to be a seller!";
 
@@ -182,7 +163,7 @@ namespace AutoTrade.Web.Controllers
 
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
 
-			if (!isUserOwner)
+			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only edit your cars!";
 
@@ -222,7 +203,7 @@ namespace AutoTrade.Web.Controllers
 			string userId = this.User.GetId()!;
 			bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(userId);
 
-			if (!isUserSeller)
+			if (!isUserSeller && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "In order to edit a car you have to be a seller!";
 
@@ -231,7 +212,7 @@ namespace AutoTrade.Web.Controllers
 
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
 
-			if (!isUserOwner)
+			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only edit your cars!";
 
@@ -265,6 +246,26 @@ namespace AutoTrade.Web.Controllers
 			return RedirectToAction("Details", "Car", new { id });
 		}
 
+		[AllowAnonymous]
+		public async Task<IActionResult> Details(string id)
+		{
+			bool carExists = await carService
+				.ExistsByIdAsync(id);
+
+			if (!carExists)
+			{
+				TempData[ErrorMessage] = "Selected car does not exist! Please, try with another car!";
+
+				return RedirectToAction("All", "Car");
+			}
+
+			CarDetailsViewModel viewModel = await carService
+				.GetDetailsByIdAsync(id);
+			viewModel.Seller!.FullName = await this.userService.GetFullNameByEmailAsync(User.Identity?.Name!);
+
+			return View(viewModel);
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> Delete(string id)
 		{
@@ -280,7 +281,7 @@ namespace AutoTrade.Web.Controllers
 			string userId = this.User.GetId()!;
 			bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(userId);
 
-			if (!isUserSeller)
+			if (!isUserSeller && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "In order to delete a car you have to be a seller!";
 
@@ -289,7 +290,7 @@ namespace AutoTrade.Web.Controllers
 
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
 
-			if (!isUserOwner)
+			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only delete your cars!";
 
@@ -324,7 +325,7 @@ namespace AutoTrade.Web.Controllers
 			string userId = this.User.GetId()!;
 			bool isUserSeller = await sellerService.SellerExistsByUserIdAsync(userId);
 
-			if (!isUserSeller)
+			if (!isUserSeller && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "In order to delete a car you have to be a seller!";
 
@@ -333,7 +334,7 @@ namespace AutoTrade.Web.Controllers
 
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
 
-			if (!isUserOwner)
+			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only delete your cars!";
 
@@ -358,11 +359,18 @@ namespace AutoTrade.Web.Controllers
 		{
 			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
 
-			string userId = this.User.GetId()!;
+			string userId = User.GetId()!;
 
-			myCars.AddRange(await this.carService.AllByUserIdAsync(userId));
+			try
+			{
+				myCars.AddRange(await carService.AllByUserIdAsync(userId));
 
-			return View(myCars);
+				return View(myCars);
+			}
+			catch (Exception)
+			{
+				return GeneralError();
+			}
 		}
 
 		public async Task<IActionResult> CarsForSale()
@@ -431,7 +439,7 @@ namespace AutoTrade.Web.Controllers
 			}
 
 			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
-			if (!sellerExists)
+			if (!sellerExists && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You have to be a seller in order to add your car for sale!";
 
@@ -440,8 +448,7 @@ namespace AutoTrade.Web.Controllers
 
 			string ownerId = this.User.GetId()!;
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, ownerId);
-
-			if (!isUserOwner)
+			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only add for sell your cars!";
 
@@ -483,7 +490,7 @@ namespace AutoTrade.Web.Controllers
 			}
 
 			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
-			if (!sellerExists)
+			if (!sellerExists && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You have to be a seller in order to add your car for sale!";
 
@@ -493,7 +500,7 @@ namespace AutoTrade.Web.Controllers
 			string ownerId = this.User.GetId()!;
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, ownerId);
 
-			if (!isUserOwner)
+			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only add for sell your cars!";
 
