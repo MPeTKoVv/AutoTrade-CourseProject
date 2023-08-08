@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using AutoTrade.Web.Data;
 namespace AutoTrade.Web
 {
     using Microsoft.EntityFrameworkCore;
