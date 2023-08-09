@@ -4,6 +4,7 @@ using AutoTrade.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoTrade.Data.Migrations
 {
     [DbContext(typeof(AutoTradeDbContext))]
-    partial class AutoTradeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230809195340_RemoveWalletIdInApplicationUser")]
+    partial class RemoveWalletIdInApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +90,6 @@ namespace AutoTrade.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid?>("WalletId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -195,7 +194,7 @@ namespace AutoTrade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6a5de07b-a2fe-4e30-bed5-7a1c2f50a47a"),
+                            Id = new Guid("042bbc80-8328-43a2-ae35-34a39d5cc6df"),
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             AddedOnForSale = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CategoryId = 5,
@@ -284,45 +283,6 @@ namespace AutoTrade.Data.Migrations
                             Id = 10,
                             Name = "Pickup Truck"
                         });
-                });
-
-            modelBuilder.Entity("AutoTrade.Data.Models.CreditCard", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BillingAddress")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("CVVCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CardNumber")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NameOnCard")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("WalletId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CreditCards");
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.EngineType", b =>
@@ -465,22 +425,21 @@ namespace AutoTrade.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(1000000m);
 
-                    b.Property<Guid?>("CreditCardId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CreditCard")
+                        .IsRequired()
+                        .HasMaxLength(19)
+                        .HasColumnType("nvarchar(19)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreditCardId")
-                        .IsUnique()
-                        .HasFilter("[CreditCardId] IS NOT NULL");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Wallets");
                 });
@@ -705,18 +664,11 @@ namespace AutoTrade.Data.Migrations
 
             modelBuilder.Entity("AutoTrade.Data.Models.Wallet", b =>
                 {
-                    b.HasOne("AutoTrade.Data.Models.CreditCard", "CreditCard")
-                        .WithOne("Wallet")
-                        .HasForeignKey("AutoTrade.Data.Models.Wallet", "CreditCardId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("AutoTrade.Data.Models.ApplicationUser", "User")
-                        .WithOne("Wallet")
-                        .HasForeignKey("AutoTrade.Data.Models.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CreditCard");
 
                     b.Navigation("User");
                 });
@@ -777,9 +729,6 @@ namespace AutoTrade.Data.Migrations
                     b.Navigation("BoughtCarsHistory");
 
                     b.Navigation("OwnedCars");
-
-                    b.Navigation("Wallet")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.Car", b =>
@@ -790,11 +739,6 @@ namespace AutoTrade.Data.Migrations
             modelBuilder.Entity("AutoTrade.Data.Models.Category", b =>
                 {
                     b.Navigation("Cars");
-                });
-
-            modelBuilder.Entity("AutoTrade.Data.Models.CreditCard", b =>
-                {
-                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("AutoTrade.Data.Models.EngineType", b =>

@@ -12,12 +12,14 @@
 			builder
 				.HasOne(w => w.User)
 				.WithOne(u => u.Wallet)
-				.HasForeignKey<Wallet>(w => w.Id)
+				.HasForeignKey<Wallet>(w => w.UserId)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			builder
-				.Property(w => w.Balance)
-				.HasDefaultValue(1000000m);
-		}
+            builder
+                .HasOne(w => w.CreditCard)
+                .WithOne(c => c.Wallet)
+                .HasForeignKey<Wallet>(w => w.CreditCardId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
 	}
 }

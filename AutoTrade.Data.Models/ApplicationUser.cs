@@ -24,8 +24,8 @@
 		[MaxLength(LastNameMaxLength)]
 		public string LastName { get; set; } = null!;
 
-		public Guid WalletId { get; set; }
-		public Wallet Wallet { get; set; } = null!;
+		public Guid? WalletId { get; set; }
+		public virtual Wallet Wallet { get; set; }
 
 		public virtual ICollection<Car> OwnedCars { get; set; }
 

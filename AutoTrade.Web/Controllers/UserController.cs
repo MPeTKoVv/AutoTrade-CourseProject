@@ -1,8 +1,8 @@
 ﻿namespace AutoTrade.Web.Controllers
 {
-	using Microsoft.AspNetCore.Authentication;
-	using Microsoft.AspNetCore.Identity;
 	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Identity;
+	using Microsoft.AspNetCore.Authentication;
 
 	using AutoTrade.Data.Models;
 	using Web.ViewModels.User;

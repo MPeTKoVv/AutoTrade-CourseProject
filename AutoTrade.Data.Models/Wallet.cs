@@ -16,7 +16,10 @@
 		public Guid UserId { get; set; }
 		public virtual ApplicationUser User { get; set; } = null!;
 
-		public decimal Balance { get; set; }
+        public Guid? CreditCardId { get; set; }
+        public CreditCard? CreditCard { get; set; }
+
+        public decimal Balance { get; set; }
 
 		public virtual ICollection<Transaction> Transactions { get; set; }
 	}

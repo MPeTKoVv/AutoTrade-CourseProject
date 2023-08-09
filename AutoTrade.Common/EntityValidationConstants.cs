@@ -67,5 +67,16 @@
 			public const int LastNameMinLength = 1;
 			public const int LastNameMaxLength = 15;
 		}
+
+        public static class CreditCard
+        {
+            public const int CreditNumberLength = 16;
+
+            public const int BillingAddressMinLength = 5;
+            public const int BillingAddressMaxLength = 100;
+
+            public const int CountryMinLength = 2;
+            public const int CountryMaxLength = 60;
+        }
     }
 }
