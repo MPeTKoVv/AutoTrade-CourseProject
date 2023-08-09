@@ -29,7 +29,7 @@
 					<a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id"
 					   class="btn btn-danger">Delete</a>
 
-					@if (!Model.IsForSale || this.User.IsAdmin())
+					@if (!Model.IsForSale)
 					{
 						<form class="input-group-sm" asp-area="" asp-controller="Car"
 							  asp-action="ForSale" asp-route-id="@Model.Id" method="post">
@@ -44,7 +44,7 @@
 						</form>
 					}
 				}
-				else
+				if (Model.IsForSale && !isUserOwnerOfCar)
 				{
 					<form class="input-group-sm" asp-area="" asp-controller="Car"
 						  asp-action="Buy" asp-route-id="@Model.Id" method="post">

@@ -241,9 +241,7 @@
 		[AllowAnonymous]
 		public async Task<IActionResult> Details(string id)
 		{
-			bool carExists = await carService
-				.ExistsByIdAsync(id);
-
+			bool carExists = await carService.ExistsByIdAsync(id);
 			if (!carExists)
 			{
 				TempData[ErrorMessage] = "Selected car does not exist! Please, try with another car!";
@@ -251,9 +249,19 @@
 				return RedirectToAction("All", "Car");
 			}
 
-			CarDetailsViewModel viewModel = await carService
-				.GetDetailsByIdAsync(id);
-			viewModel.Seller!.FullName = await this.userService.GetFullNameByEmailAsync(User.Identity?.Name!);
+			bool isForSale = await carService.IsForSaleByIdAsync(id);
+			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, this.User.GetId()!);
+			if (!isForSale && !this.User.IsAdmin() && !isUserOwner)
+			{
+				TempData[ErrorMessage] = "Selected car is not for sale! Please, try with another car!";
+
+				return RedirectToAction("All", "Car");
+			}
+
+			CarDetailsViewModel viewModel = await carService.GetDetailsByIdAsync(id);
+
+			string sellerEmail = viewModel.Seller.Email;
+			viewModel.Seller!.FullName = await this.userService.GetFullNameByEmailAsync(sellerEmail);
 
 			return View(viewModel);
 		}
@@ -438,8 +446,8 @@
 				return RedirectToAction("Become", "Seller");
 			}
 
-			string ownerId = this.User.GetId()!;
-			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, ownerId);
+			string userId = this.User.GetId()!;
+			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
 			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only add for sell your cars!";
@@ -457,10 +465,21 @@
 
 			try
 			{
-				string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(ownerId);
+				string ownerId = await carService.GetOwnerIdAsync(id);
+				string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(userId);
+
+				if (this.User.IsAdmin() && userId != ownerId)
+				{
+					sellerId = await sellerService.GetSellerIdByUserIdAsync(ownerId);
+					await this.carService.CarForSaleAsync(id, sellerId);
+
+					return RedirectToAction("All", "Car");
+				}
+
 				await this.carService.CarForSaleAsync(id, sellerId);
 
 				TempData[SuccessMessage] = "The car was successfully added for sale!";
+
 			}
 			catch (Exception)
 			{
@@ -489,8 +508,8 @@
 				return RedirectToAction("Become", "Seller");
 			}
 
-			string ownerId = this.User.GetId()!;
-			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, ownerId);
+			string userId = this.User.GetId()!;
+			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
 
 			if (!isUserOwner && !this.User.IsAdmin())
 			{
@@ -508,8 +527,15 @@
 			}
 
 			try
-			{
+			{           
+				string ownerId = await this.carService.GetOwnerIdAsync(id);
+
 				await this.carService.ReturnCarToGarageAsync(id);
+
+				if (this.User.IsAdmin() && userId != ownerId)
+				{
+					return RedirectToAction("All", "Car");
+				}
 
 				TempData[SuccessMessage] = "The car was successfully returned to your garage!";
 			}

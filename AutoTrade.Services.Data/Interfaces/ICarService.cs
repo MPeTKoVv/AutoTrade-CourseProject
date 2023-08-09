@@ -1,11 +1,11 @@
 ﻿namespace AutoTrade.Services.Data.Interfaces
 {
 	using Data.Models.Car;
-    using Models.Statistics;
+	using Models.Statistics;
 	using Web.ViewModels.Home;
 	using Web.ViewModels.Car;
 
-    public interface ICarService
+	public interface ICarService
 	{
 		Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync();
 
@@ -41,6 +41,6 @@
 
 		Task ReturnCarToGarageAsync(string id);
 
-		Task<string> GetSellerIdAsync(string carId);
+		Task<string> GetOwnerIdAsync(string carId);
 	}
 }

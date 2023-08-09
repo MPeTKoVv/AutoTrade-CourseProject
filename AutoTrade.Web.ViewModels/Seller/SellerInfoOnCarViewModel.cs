@@ -2,7 +2,10 @@
 {
 	using System.ComponentModel.DataAnnotations;
 
-	public class SellerInfoOnCarViewModel
+	using Services.Mapping;
+	using Data.Models;
+
+	public class SellerInfoOnCarViewModel 
 	{
 		public string FullName { get; set; } 
 

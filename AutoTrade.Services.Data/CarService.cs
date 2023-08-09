@@ -184,9 +184,6 @@
 				return null;
 			}
 
-			//CarDetailsViewModel viewModel = AutoMapperConfig.MapperInstance.Map<CarDetailsViewModel>(car);
-
-
 			CarDetailsViewModel viewModel = new CarDetailsViewModel
 			{
 				Id = car.Id.ToString(),
@@ -322,15 +319,15 @@
 			dbContext.SaveChanges();
 		}
 
-		public async Task<string> GetSellerIdAsync(string carId)
+		public async Task<string> GetOwnerIdAsync(string carId)
 		{
 			Car car = await dbContext
 				.Cars
 				.FirstAsync(c => c.Id.ToString() == carId);
 
-			string sellerId = car.SellerId.ToString()!;
+			string ownerId = car.OwnerId.ToString()!;
 
-			return sellerId;
+			return ownerId;
 		}
 	}
 }
