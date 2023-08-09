@@ -100,6 +100,8 @@
 			IEnumerable<CarAllViewModel> usersCars = await dbContext
 				.Cars
 				.Where(c => c.IsActive && !c.IsForSale && c.OwnerId.ToString() == userId)
+				.OrderBy(c => c.Make)
+				.ThenBy(c => c.Model)
 				.To<CarAllViewModel>()
 				.ToListAsync();
 
@@ -290,6 +292,7 @@
 			IEnumerable<CarAllViewModel> carsForSale = await dbContext
 				.Cars
 				.Where(c => c.IsActive && c.IsForSale && c.SellerId.ToString() == sellerId)
+				.OrderByDescending(c => c.AddedOnForSale)
 				.To<CarAllViewModel>()
 				.ToListAsync();
 
