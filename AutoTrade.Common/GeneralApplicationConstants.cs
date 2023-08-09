@@ -9,5 +9,7 @@
 
 		public const string AdminRoleName = "Administrator";
 		public const string DevelopmentAdminEmail = "admin@autotrade.com";
+
+		public const string cultureInfo = "fr-FR";
 	}
 }

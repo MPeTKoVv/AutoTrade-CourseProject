@@ -253,7 +253,7 @@
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, this.User.GetId()!);
 			if (!isForSale && !this.User.IsAdmin() && !isUserOwner)
 			{
-				TempData[ErrorMessage] = "Selected car is not for sale! Please, try with another car!";
+				TempData[ErrorMessage] = "Selected car is not for sale and you can not see its details! Please, try with another car!";
 
 				return RedirectToAction("All", "Car");
 			}
@@ -377,9 +377,23 @@
 		{
 			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
 
-			string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
+			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+			if (!sellerExists && !this.User.IsAdmin())
+			{
+				TempData[ErrorMessage] = "You have to be a seller in order to see your cars for sale!";
 
-			myCars.AddRange(await this.carService.AllCarsForSaleBySellerIdAsync(sellerId));
+				return RedirectToAction("Become", "Seller");
+			}
+
+			try
+			{
+				string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
+				myCars.AddRange(await this.carService.AllCarsForSaleBySellerIdAsync(sellerId));
+			}
+			catch (Exception)
+			{
+				GeneralError();
+			}
 
 			return View(myCars);
 		}

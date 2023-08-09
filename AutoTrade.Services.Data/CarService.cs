@@ -23,6 +23,18 @@
 			this.dbContext = dbContext;
 			this.transactionService = transactionService;
 		}
+		public async Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync()
+		{
+			IEnumerable<IndexViewModel> orderedCars = await dbContext
+				.Cars
+				.Where(c => c.IsActive && c.IsForSale)
+				.OrderByDescending(c => c.AddedOnForSale)
+				.Take(5)
+				.To<IndexViewModel>()
+				.ToArrayAsync();
+
+			return orderedCars;
+		}
 
 		public async Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel)
 		{
@@ -108,17 +120,16 @@
 			return usersCars;
 		}
 
-		public async Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync()
+		public async Task<IEnumerable<CarAllViewModel>> AllCarsForSaleBySellerIdAsync(string sellerId)
 		{
-			IEnumerable<IndexViewModel> orderedCars = await dbContext
+			IEnumerable<CarAllViewModel> carsForSale = await dbContext
 				.Cars
-				.Where(c => c.IsActive && c.IsForSale)
+				.Where(c => c.IsActive && c.IsForSale && c.SellerId.ToString() == sellerId)
 				.OrderByDescending(c => c.AddedOnForSale)
-				.Take(5)
-				.To<IndexViewModel>()
-				.ToArrayAsync();
+				.To<CarAllViewModel>()
+				.ToListAsync();
 
-			return orderedCars;
+			return carsForSale;
 		}
 
 		public async Task CreateAndReturnIdAsync(CarFormModel formModel, string sellerId)
@@ -285,18 +296,6 @@
 			car.AddedOnForSale = DateTime.UtcNow;
 
 			dbContext.SaveChanges();
-		}
-
-		public async Task<IEnumerable<CarAllViewModel>> AllCarsForSaleBySellerIdAsync(string sellerId)
-		{
-			IEnumerable<CarAllViewModel> carsForSale = await dbContext
-				.Cars
-				.Where(c => c.IsActive && c.IsForSale && c.SellerId.ToString() == sellerId)
-				.OrderByDescending(c => c.AddedOnForSale)
-				.To<CarAllViewModel>()
-				.ToListAsync();
-
-			return carsForSale;
 		}
 
 		public async Task<StatisticsServiceModel> GetStatisticsAsync()

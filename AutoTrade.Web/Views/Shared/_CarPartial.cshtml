@@ -14,7 +14,7 @@
 			<h4>@Model.Make @Model.Model</h4>
 			<h6>Horsepower: <b>@Model.Horsepower</b></h6>
 			<h6>Year: <b>@Model.Year</b></h6>
-			<h6>Price: <b>@($"{Model.Price:f2}") €</b></h6>
+			<h6>Price: <b>@($"{Model.Price.ToString("N"):f2}") €</b></h6>
 
 			<a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id"
 			   class="btn btn-success">Details</a>
