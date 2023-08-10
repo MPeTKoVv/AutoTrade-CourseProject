@@ -1,8 +1,6 @@
-﻿using AutoTrade.Data.Models;
-using AutoTrade.Web.ViewModels.Wallet;
-
-namespace AutoTrade.Services.Data.Interfaces
+﻿namespace AutoTrade.Services.Data.Interfaces
 {
+	using Web.ViewModels.Wallet;
 	public interface IWalletService
 	{
 		Task<string> CreateAndReturnIdAsync(string userId);
@@ -14,5 +12,7 @@ namespace AutoTrade.Services.Data.Interfaces
 		Task<bool> HasCreditCardByIdAsync(string id);
 
 		Task AddCreditCardByIdAndWalletIdAsync(string walletId, string creditCardId);
+
+		Task DeleteCreditCardByIdAsync(string creditCardId);
 	}
 }

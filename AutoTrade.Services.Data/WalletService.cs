@@ -39,6 +39,16 @@
 			return walletId;
 		}
 
+		public async Task DeleteCreditCardByIdAsync(string id)
+		{
+			Wallet wallet = await dbContext
+				.Wallets
+				.FirstAsync(w => w.Id.ToString() == id);
+
+			wallet.CreditCardId = null;
+			await dbContext.SaveChangesAsync();
+		}
+
 		public async Task<string?> GetIdByUserIdAsync(string userId)
 		{
 			ApplicationUser user = await dbContext
@@ -84,5 +94,7 @@
 
 			return result;
 		}
+
+
 	}
 }

@@ -4,6 +4,7 @@
 
 	using AutoTrade.Data.Models;
     using Interfaces;
+	using Microsoft.EntityFrameworkCore;
 	using Web.Data;
 	using Web.ViewModels.CreditCard;
 
@@ -35,6 +36,37 @@
 			string id = newCreditCard.Id.ToString();
 
 			return id;
+		}
+
+		public async Task DeleteByIdAsync(string id)
+		{
+			CreditCard creditCard = await dbContext
+				.CreditCards
+				.FirstAsync(c => c.Id.ToString() == id);
+
+			creditCard.IsActive = false;
+			creditCard.WalletId = null;
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task<CreditCardViewModel> GetCreditCardByIdAsync(string creditCardId)
+		{
+			CreditCard creditCard = await dbContext
+				.CreditCards
+				.FirstAsync(c => c.Id.ToString() == creditCardId);
+
+			CreditCardViewModel viewModel = new CreditCardViewModel
+			{
+				Id = creditCard.Id.ToString(),
+				NameOnCard = creditCard.NameOnCard,
+				CardNumber = creditCard.CardNumber,
+				ExpirationDate = creditCard.ExpirationDate,
+				CVVCode = creditCard.CVVCode,
+				BillingAddress = creditCard.BillingAddress,
+				Country = creditCard.Country
+			};
+
+			return viewModel;
 		}
 	}
 }

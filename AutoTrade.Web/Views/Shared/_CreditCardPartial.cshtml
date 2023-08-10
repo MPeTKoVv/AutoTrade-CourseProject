@@ -1,0 +1,17 @@
+﻿@using AutoTrade.Services.Data.Interfaces;
+@using AutoTrade.Web.Infrastructure.Extensions;
+@using static AutoTrade.Common.GeneralApplicationConstants;
+@model CreditCardViewModel
+
+<div class="col-md-3">
+	<div class="card mb-3">
+		<img class="card-img-top" src=@creditCardUrl alt="Car Image">
+		<div class="card-body text-center">
+			<h5>Name on card: @Model.NameOnCard</h5>
+			<h6>Card number: <b>@Model.CardNumber</b></h6>
+			<h6>Expiration date: <b>@Model.ExpirationDate</b></h6>
+			<a asp-controller="CreditCard" asp-action="Delete" asp-route-id="@Model.Id"
+			   class="btn btn-danger">Delete</a>
+		</div>
+	</div>
+</div>

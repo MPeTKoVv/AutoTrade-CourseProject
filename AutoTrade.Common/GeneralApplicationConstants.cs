@@ -10,6 +10,6 @@
 		public const string AdminRoleName = "Administrator";
 		public const string DevelopmentAdminEmail = "admin@autotrade.com";
 
-		public const string cultureInfo = "fr-FR";
+		public const string creditCardUrl = "https://static-00.iconduck.com/assets.00/credit-card-emoji-2048x1317-btgi2qqv.png";
 	}
 }

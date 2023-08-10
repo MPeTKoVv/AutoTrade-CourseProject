@@ -40,5 +40,7 @@
 
         public Guid? WalletId { get; set; }
         public virtual Wallet? Wallet { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

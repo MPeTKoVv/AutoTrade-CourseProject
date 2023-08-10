@@ -1,6 +1,11 @@
-﻿@model WalletOverviewViewModel
+﻿@using AutoTrade.Services.Data.Interfaces;
+@model WalletOverviewViewModel
+@inject IWalletService WalletService;
+@inject ICreditCardService CreditCardService;
 @{
 	ViewBag.Title = "Wallet Overview";
+
+	bool hasCreditCard = await WalletService.HasCreditCardByIdAsync(Model.WalletId.ToString());
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -35,7 +40,18 @@
 	}
 </table>
 
-<div>
-	<a asp-controller="CreditCard" asp-action="Add"
-	   class="btn btn-primary">Add card</a>
-</div>
+@if (hasCreditCard)
+{
+	CreditCardViewModel creditCardViewModel = await CreditCardService.GetCreditCardByIdAsync(Model.CreditCardId!);
+
+	<div class="">
+		<partial name="_CreditCardPartial" model="@creditCardViewModel" />
+	</div>
+}
+else
+{
+	<div>
+		<a asp-controller="CreditCard" asp-action="Add"
+		   class="btn btn-primary">Add card</a>
+	</div>
+}

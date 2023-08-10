@@ -90,6 +90,42 @@
 			return RedirectToAction("Mine", "Wallet");
 		}
 
+		public async Task<IActionResult> Delete(string id)
+		{
+			bool hasWallet = await userService.HasWalletByIdAsync(this.User.GetId()!);
+			if (!hasWallet)
+			{
+				TempData[ErrorMessage] = "You do not have a wallet!";
+
+				return RedirectToAction("Index", "Home");
+			}
+
+			string? walletId = await walletService.GetIdByUserIdAsync(this.User.GetId()!);
+			bool hasCard = await walletService.HasCreditCardByIdAsync(walletId!);
+			if (!hasCard)
+			{
+				TempData[ErrorMessage] = "You do not have a credit card!";
+
+				return RedirectToAction("Mine", "Wallet");
+			}
+
+			try
+			{
+				await creditCardService.DeleteByIdAsync(id);
+				await walletService.DeleteCreditCardByIdAsync(walletId!);
+
+				TempData[WarningMessage] = "Credit card was successfully deleted!";
+			}
+			catch (Exception)
+			{
+				GeneralError();
+
+				return RedirectToAction("Mine", "Wallet");
+			}
+
+			return RedirectToAction("Mine", "Wallet");
+		}
+
 		private IActionResult GeneralError()
 		{
 			TempData[ErrorMessage] =

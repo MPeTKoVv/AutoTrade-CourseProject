@@ -25,10 +25,6 @@
 		}
 		public async Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync()
 		{
-			var wallet = await dbContext.Wallets.FirstAsync(w => w.Id.ToString() == "5590314E-4F8D-44DB-B26F-127B89E6A68E");
-			wallet.CreditCardId = Guid.Parse("74CF3070-4D24-4662-95B5-EDA26CBBCA05");
-			await dbContext.SaveChangesAsync();
-
 			IEnumerable<IndexViewModel> orderedCars = await dbContext
 				.Cars
 				.Where(c => c.IsActive && c.IsForSale)
