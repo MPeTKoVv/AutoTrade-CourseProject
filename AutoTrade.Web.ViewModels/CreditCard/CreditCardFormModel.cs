@@ -1,40 +1,31 @@
-﻿namespace AutoTrade.Data.Models
+﻿namespace AutoTrade.Web.ViewModels.CreditCard
 {
     using System.ComponentModel.DataAnnotations;
 
     using static Common.EntityValidationConstants.CreditCard;
 
-    public class CreditCard
+    public class CreditCardFormModel
     {
-        public CreditCard()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
-        [MaxLength(NameOnCardMaxLength)]
+        [StringLength(NameOnCardMaxLength, MinimumLength = NameOnCardMinLength)]
         public string NameOnCard { get; set; } = null!;
 
         [Required]
-        [MaxLength(CreditNumberLength)]
+        [StringLength(CreditNumberLength)]
         public string CardNumber { get; set; } = null!;
 
+        [DisplayFormat(DataFormatString = "MM/yy")]
         public DateTime ExpirationDate { get; set; }
 
+        [Range(typeof(int), CVVCodeMinValue, CVVCodeMaxValue)]
         public int CVVCode { get; set; }
 
         [Required]
-        [MaxLength(BillingAddressMaxLength)]
+        [StringLength(BillingAddressMaxLength, MinimumLength = BillingAddressMinLength)]
         public string BillingAddress { get; set; } = null!;
 
         [Required]
-        [MaxLength(CountryMaxLength)]
+        [StringLength(CountryMaxLength, MinimumLength = CountryMinLength)]
         public string Country { get; set; } = null!;
-
-        public Guid? WalletId { get; set; }
-        public virtual Wallet? Wallet { get; set; }
     }
 }

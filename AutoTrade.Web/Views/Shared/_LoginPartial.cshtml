@@ -10,8 +10,8 @@
 @inject ISellerService SellerService
 @{
 	bool isUserSeller = await SellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
-
 	string userFullName = await UserService.GetFullNameByEmailAsync(this.User.Identity?.Name!);
+	bool hasWallet = await UserService.HasWalletByIdAsync(this.User.GetId()!);
 }
 
 <ul class="navbar-nav">
@@ -24,7 +24,19 @@
 		@if (!isUserSeller)
 		{
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="Seller" asp-action="Become">Become Seller</a>
+				<a class="nav-link text-dark" asp-controller="Seller" asp-action="Become">Become Seller</a>
+			</li>
+		}
+		@if (!hasWallet)
+		{
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-controller="Wallet" asp-action="Add">Add wallet</a>
+			</li>
+		}
+		else
+		{
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-controller="Wallet" asp-action="Mine">My wallet</a>
 			</li>
 		}
 
@@ -40,7 +52,7 @@
 			<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link text-dark" asp-area="" asp-controller="User"asp-action="Login">Login</a>
+			<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
 		</li>
 	}
 </ul>

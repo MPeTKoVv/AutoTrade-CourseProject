@@ -70,6 +70,9 @@
 
         public static class CreditCard
         {
+            public const int NameOnCardMinLength = 2;
+            public const int NameOnCardMaxLength = 30;
+
             public const int CreditNumberLength = 16;
 
             public const int BillingAddressMinLength = 5;
@@ -77,6 +80,9 @@
 
             public const int CountryMinLength = 2;
             public const int CountryMaxLength = 60;
+
+            public const string CVVCodeMinValue = "3";
+            public const string CVVCodeMaxValue = "4";
         }
     }
 }

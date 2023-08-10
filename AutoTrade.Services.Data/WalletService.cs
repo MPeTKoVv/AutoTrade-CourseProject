@@ -3,8 +3,9 @@
 	using AutoTrade.Web.Data;
 	using AutoTrade.Data.Models;
 	using Services.Data.Interfaces;
+    using Microsoft.EntityFrameworkCore;
 
-	public class WalletService : IWalletService
+    public class WalletService : IWalletService
 	{
 		private readonly AutoTradeDbContext dbContext;
 
@@ -23,5 +24,16 @@
 			string walletId = wallet.Id.ToString();
 			return walletId;
 		}
-	}
+
+        public async Task<string?> GetIdByUserIdAsync(string userId)
+        {
+			ApplicationUser user = await dbContext
+				 .Users
+				 .FirstAsync(u => u.Id.ToString() == userId);
+
+			string? walletId = user.WalletId.ToString();
+
+			return walletId;
+        }
+    }
 }
