@@ -1,14 +1,40 @@
 ﻿namespace AutoTrade.Services.Data
 {
-    using AutoTrade.Web.ViewModels.CreditCard;
-    using Services.Data.Interfaces;
     using System.Threading.Tasks;
+
+	using AutoTrade.Data.Models;
+    using Interfaces;
+	using Web.Data;
+	using Web.ViewModels.CreditCard;
 
     public class CreditCardService : ICreditCardService
     {
-        public Task AddCreditCardByIdAndWalletIdAsync(CreditCardFormModel formModel, string walletId)
+		private readonly AutoTradeDbContext dbContext;
+
+        public CreditCardService(AutoTradeDbContext dbContext)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
         }
-    }
+
+        public async Task<string> CreateAndReturnIdAsync(CreditCardFormModel formModel, string walletId)
+		{
+			CreditCard newCreditCard = new CreditCard
+			{
+				NameOnCard = formModel.NameOnCard,
+				CardNumber = formModel.CardNumber,
+				ExpirationDate = formModel.ExpirationDate,
+				CVVCode = formModel.CVVCode,
+				BillingAddress = formModel.BillingAddress,
+				Country = formModel.Country,
+				WalletId = Guid.Parse(walletId)
+			};
+
+			await dbContext.CreditCards.AddAsync(newCreditCard);
+			await dbContext.SaveChangesAsync();
+
+			string id = newCreditCard.Id.ToString();
+
+			return id;
+		}
+	}
 }

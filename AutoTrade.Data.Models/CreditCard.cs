@@ -22,11 +22,15 @@
         [MaxLength(CreditNumberLength)]
         public string CardNumber { get; set; } = null!;
 
-        public DateTime ExpirationDate { get; set; }
-
-        public int CVVCode { get; set; }
-
         [Required]
+        [MaxLength(ExpirationDateMaxLength)]
+        public string ExpirationDate { get; set; } = null!;
+
+		[Required]
+        [MaxLength(CVVCodeMaxLength)]
+        public string CVVCode { get; set; } = null!;
+
+		[Required]
         [MaxLength(BillingAddressMaxLength)]
         public string BillingAddress { get; set; } = null!;
 

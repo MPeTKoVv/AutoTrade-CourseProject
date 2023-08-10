@@ -81,8 +81,9 @@
             public const int CountryMinLength = 2;
             public const int CountryMaxLength = 60;
 
-            public const string CVVCodeMinValue = "3";
-            public const string CVVCodeMaxValue = "4";
-        }
+            public const int CVVCodeMaxLength = 4;
+
+            public const int ExpirationDateMaxLength = 5;
+		}
     }
 }

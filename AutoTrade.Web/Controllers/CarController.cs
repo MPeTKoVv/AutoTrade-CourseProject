@@ -72,9 +72,7 @@
 		[HttpPost]
 		public async Task<IActionResult> Add(CarFormModel carFormModel)
 		{
-			bool isSeller =
-				await sellerService.SellerExistsByUserIdAsync(User.GetId()!);
-
+			bool isSeller = await sellerService.SellerExistsByUserIdAsync(User.GetId()!);
 			if (!isSeller)
 			{
 				TempData[ErrorMessage] = "You must become a seller in order to add new cars!";

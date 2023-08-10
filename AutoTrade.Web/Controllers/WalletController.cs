@@ -4,10 +4,10 @@
     using Microsoft.AspNetCore.Authorization;
 
     using Services.Data.Interfaces;
-    using Web.Infrastructure.Extensions;
+    using ViewModels.Wallet;
+    using Infrastructure.Extensions;
 
     using static Common.NotificationMessagesConstants;
-    using AutoTrade.Web.ViewModels.Wallet;
 
     [Authorize]
     public class WalletController : Controller

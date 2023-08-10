@@ -1,9 +1,9 @@
-﻿using AutoTrade.Web.ViewModels.CreditCard;
-
-namespace AutoTrade.Services.Data.Interfaces
+﻿namespace AutoTrade.Services.Data.Interfaces
 {
-    public interface ICreditCardService
+	using Web.ViewModels.CreditCard;
+
+	public interface ICreditCardService
     {
-        Task AddCreditCardByIdAndWalletIdAsync(CreditCardFormModel formModel, string walletId);
-    }
+        Task<string> CreateAndReturnIdAsync(CreditCardFormModel formModel, string walletId);
+	}
 }
