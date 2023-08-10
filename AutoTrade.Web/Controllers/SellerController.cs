@@ -25,7 +25,6 @@
 		{
 			string? userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 			bool isSeller = await sellerService.SellerExistsByUserIdAsync(userId);
-
 			if (isSeller)
 			{
 				TempData[ErrorMessage] = "You are already a seller!";
@@ -41,7 +40,6 @@
 		{
 			string? userId = User.GetId();
 			bool isSeller = await sellerService.SellerExistsByUserIdAsync(userId!);
-
 			if (isSeller)
 			{
 				TempData[ErrorMessage] = "You are already a seller!";
@@ -49,9 +47,7 @@
 				return RedirectToAction("Index", "Home");
 			}
 
-			bool isPhoneNumberTaken =
-				await sellerService.SellerExistsByPhoneNumberAsync(model.PhoneNumber);
-
+			bool isPhoneNumberTaken = await sellerService.SellerExistsByPhoneNumberAsync(model.PhoneNumber);
 			if (isPhoneNumberTaken)
 			{
 				ModelState.AddModelError(nameof(model.PhoneNumber), "Seller with the provided phone number already exists!");

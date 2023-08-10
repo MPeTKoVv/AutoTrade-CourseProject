@@ -12,6 +12,8 @@
 			<h6>Expiration date: <b>@Model.ExpirationDate</b></h6>
 			<a asp-controller="CreditCard" asp-action="Delete" asp-route-id="@Model.Id"
 			   class="btn btn-danger">Delete</a>
+			<a asp-controller="CreditCard" asp-action="Withdraw" asp-route-id="@Model.Id"
+			   class="btn btn-success">Withdraw money</a>
 		</div>
 	</div>
 </div>

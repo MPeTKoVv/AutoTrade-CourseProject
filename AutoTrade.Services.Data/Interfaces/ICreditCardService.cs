@@ -9,5 +9,9 @@
 		Task<CreditCardViewModel> GetCreditCardByIdAsync(string creditCardId);
 
 		Task DeleteByIdAsync(string id);
-	}
+
+		Task<bool> CardBelongsToUserByIdAsync(string id, string userId);
+
+		Task<decimal> WithdrawByIdAsync(WithdrawMoneyFormModel formModel, string id);
+    }
 }

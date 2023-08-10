@@ -8,8 +8,9 @@
 	using Web.Infrastructure.Extensions;
 
 	using static Common.NotificationMessagesConstants;
+    using System.Security.Cryptography;
 
-	[Authorize]
+    [Authorize]
 	public class CreditCardController : Controller
 	{
 		private readonly ICreditCardService creditCardService;
@@ -126,7 +127,48 @@
 			return RedirectToAction("Mine", "Wallet");
 		}
 
-		private IActionResult GeneralError()
+		[HttpGet]
+		public async Task<IActionResult> Withdraw(string id)
+		{
+			bool cardBelongsToUser = await creditCardService.CardBelongsToUserByIdAsync(id, this.User.GetId()!);
+			if (!cardBelongsToUser)
+			{
+				TempData[ErrorMessage] = "You can only wirhdraw from you card! Please, try with your credit card!";
+
+				return RedirectToAction("Mine", "Wallet");
+			}
+
+			WithdrawMoneyFormModel formModel = new WithdrawMoneyFormModel();
+
+			return View();
+		}
+
+        [HttpPost]
+        public async Task<IActionResult> Withdraw(WithdrawMoneyFormModel formModel, string id)
+        {
+            bool cardBelongsToUser = await creditCardService.CardBelongsToUserByIdAsync(id, this.User.GetId()!);
+            if (!cardBelongsToUser)
+            {
+                TempData[ErrorMessage] = "You can only wirhdraw from you card! Please, try with your credit card!";
+
+                return RedirectToAction("Mine", "Wallet");
+            }
+
+			try
+			{
+				decimal money = await creditCardService.WithdrawByIdAsync(formModel, id);
+
+				TempData[SuccessMessage] = $"{money.ToString("N"):f2}€ was withdrawn successully to your wallet balance!";
+			}
+			catch (Exception)
+			{
+				GeneralError();
+            }
+
+			return RedirectToAction("Mine", "Wallet");
+        }
+
+        private IActionResult GeneralError()
 		{
 			TempData[ErrorMessage] =
 				"Unexpected error occurred! Please try again later or contact administrator";

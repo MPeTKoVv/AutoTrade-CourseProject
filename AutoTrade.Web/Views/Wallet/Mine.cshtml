@@ -12,7 +12,7 @@
 <hr />
 
 <p>User: @Model.UserName</p>
-<p>Balance: @Model.Balance</p>
+<p>Balance: @Model.Balance.ToString("N3")€</p>
 
 <h3>Transaction History</h3>
 <table>
@@ -28,11 +28,11 @@
 			<td>@transaction.Date.ToShortDateString()</td>
 			@if (transaction.BuyerId.ToLower() == Model.UserId)
 			{
-				<td>-@transaction.Amount</td>
+				<td>-@transaction.Amount.ToString("N3")€</td>
 			}
 			else
 			{
-				<td>+@transaction.Amount</td>
+				<td>+@transaction.Amount.ToString("N3")€</td>
 			}
 			<td>@transaction.BuyerFullName</td>
 			<td>@transaction.SellerFullName</td>

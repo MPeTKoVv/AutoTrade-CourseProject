@@ -84,6 +84,9 @@
             public const int CVVCodeMaxLength = 4;
 
             public const int ExpirationDateMaxLength = 5;
+
+            public const string WithdrawMinValue = "1";
+			public const string WithdrawMaxValue = "1000000";
 		}
     }
 }
