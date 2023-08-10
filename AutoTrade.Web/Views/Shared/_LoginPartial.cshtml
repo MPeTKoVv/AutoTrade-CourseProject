@@ -6,7 +6,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserService UserService
-
 @inject ISellerService SellerService
 @{
 	bool isUserSeller = await SellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
@@ -24,19 +23,19 @@
 		@if (!isUserSeller)
 		{
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-controller="Seller" asp-action="Become">Become Seller</a>
+				<a class="nav-link text-dark" asp-area="" asp-controller="Seller" asp-action="Become">Become Seller</a>
 			</li>
 		}
 		@if (!hasWallet)
 		{
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-controller="Wallet" asp-action="Add">Add wallet</a>
+				<a class="nav-link text-dark" asp-area="" asp-controller="Wallet" asp-action="Add">Add wallet</a>
 			</li>
 		}
 		else
 		{
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-controller="Wallet" asp-action="Mine">My wallet</a>
+				<a class="nav-link text-dark" asp-area="" asp-controller="Wallet" asp-action="Mine">My wallet</a>
 			</li>
 		}
 

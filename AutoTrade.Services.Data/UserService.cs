@@ -5,8 +5,6 @@
 	using AutoTrade.Data.Models;
 	using Interfaces;
 	using Web.Data;
-    using AutoTrade.Data.Configurations;
-    using System.Reflection.Metadata.Ecma335;
 
     public class UserService : IUserService
 	{
@@ -45,6 +43,16 @@
 			bool result = user.WalletId.HasValue;
 
 			return result;
+        }
+
+        public async Task SetWalletIdAsync(string id, string walletId)
+        {
+			ApplicationUser user = await dbContext
+				.Users
+				.FirstAsync(u => u.Id.ToString() == id);
+
+			user.WalletId = Guid.Parse(walletId);
+			await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -51,9 +51,7 @@
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
-			bool isAgent =
-				await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
-
+			bool isAgent =await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 			if (!isAgent)
 			{
 				TempData[ErrorMessage] = "You must become a seller in order to add new cars!";

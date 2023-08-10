@@ -9,6 +9,7 @@
     using Web.Infrastructure.Extensions;
 
     using static Common.NotificationMessagesConstants;
+    using AutoTrade.Data.Models;
 
     [Authorize]
     public class CreditCardController : Controller
@@ -25,26 +26,29 @@
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            return View();
+            CreditCardFormModel fromModel = new CreditCardFormModel();
+
+            return View(fromModel);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Add(CreditCardFormModel formModel)
-        //{
-        //    string? walletId = await walletService.GetIdByUserIdAsync(this.User.GetId()!);
-        //    if (walletId == null)
-        //    {
-        //        TempData[ErrorMessage] = "You";
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> Add(CreditCardFormModel formModel)
+        {
+            string? walletId = await walletService.GetIdByUserIdAsync(this.User.GetId()!);
+            if (walletId == null)
+            {
+                TempData[ErrorMessage] = "You";
+            }
 
-        //    try
-        //    {
+            if (!ModelState.IsValid)
+            {
+                return View(formModel);
+            }
 
-        //    }
-        //    catch (Exception)
-        //    {
+            //await creditCardService.
 
-        //    }
-        //}
+
+            return RedirectToAction("Mine", "Wallet");
+        }
     }
 }

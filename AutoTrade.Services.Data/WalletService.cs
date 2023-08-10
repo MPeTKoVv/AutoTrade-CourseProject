@@ -20,6 +20,7 @@
 			wallet.UserId = Guid.Parse(userId);
 
 			await dbContext.Wallets.AddAsync(wallet);
+			await dbContext.SaveChangesAsync();
 
 			string walletId = wallet.Id.ToString();
 			return walletId;
