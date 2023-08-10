@@ -1,6 +1,36 @@
-﻿@{
-    ViewBag.Title = "Wallet overview";
+﻿@model WalletOverviewViewModel
+@{
+	ViewBag.Title = "Wallet Overview";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
+<p>User: @Model.UserName</p>
+<p>Balance: @Model.Balance</p>
+
+<h3>Transaction History</h3>
+<table>
+	<tr>
+		<th>Date</th>
+		<th>Amount</th>
+		<th>From</th>
+		<th>To</th>
+	</tr>
+	@foreach (var transaction in Model.TransactionHistory)
+	{
+		<tr>
+			<td>@transaction.Date.ToShortDateString()</td>
+			@if (transaction.BuyerId.ToLower() == Model.UserId)
+			{
+				<td>-@transaction.Amount</td>
+			}
+			else
+			{
+				<td>+@transaction.Amount</td>
+			}
+			<td>@transaction.BuyerFullName</td>
+			<td>@transaction.SellerFullName</td>
+		</tr>
+	}
+</table>

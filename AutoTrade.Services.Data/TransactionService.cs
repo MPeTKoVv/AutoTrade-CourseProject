@@ -5,6 +5,8 @@
 	using AutoTrade.Data.Models;
 	using Interfaces;
 	using Web.Data;
+	using System.Collections.Generic;
+	using AutoTrade.Web.ViewModels.Transaction;
 
 	public class TransactionService : ITransactionService
 	{
@@ -13,6 +15,30 @@
 		public TransactionService(AutoTradeDbContext dbContext)
 		{
 			this.dbContext = dbContext;
+		}
+
+		public async Task<IEnumerable<TransactionAllViewModel>?> GetTransactionHistoryByUserIdAsync(string userId)
+		{
+			IEnumerable<TransactionAllViewModel> allTransactions = await dbContext
+				.Transactions
+				.OrderByDescending(t => t.TransactionDate)
+				.Include(t => t.Buyer)
+				.Include(t => t.Seller)
+				.ThenInclude(s => s.User)
+				.Where(t => t.BuyerId.ToString() == userId || t.Seller.UserId.ToString() == userId)
+				.Select(t => new TransactionAllViewModel
+				{
+					Id = t.Id.ToString(),
+					Amount = t.Amount,
+					Date = t.TransactionDate,
+					BuyerId = t.BuyerId.ToString(),
+					BuyerFullName = $"{t.Buyer.FirstName} {t.Buyer.LastName}",
+					SellerId = t.SellerId.ToString(),
+					SellerFullName = $"{t.Seller.User.FirstName} {t.Seller.User.LastName}"
+				})
+				.ToListAsync();
+
+			return allTransactions;
 		}
 
 		public async Task RecordTransaction(string carId, string buyerId, string sellerId)
@@ -32,7 +58,7 @@
 			Transaction transaction = new Transaction
 			{
 				CarId = car.Id,
-				BuyerId =buyer.Id,
+				BuyerId = buyer.Id,
 				SellerId = seller.Id,
 				Amount = car.Price,
 				TransactionDate = DateTime.Now

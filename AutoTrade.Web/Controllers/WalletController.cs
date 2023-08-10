@@ -7,17 +7,20 @@
     using Web.Infrastructure.Extensions;
 
     using static Common.NotificationMessagesConstants;
+    using AutoTrade.Web.ViewModels.Wallet;
 
     [Authorize]
     public class WalletController : Controller
     {
         private readonly IWalletService walletService;
         private readonly IUserService userService;
+        private readonly ITransactionService transactionService;
 
-        public WalletController(IWalletService walletService, IUserService userService)
+        public WalletController(IWalletService walletService, IUserService userService, ITransactionService transactionService)
         {
             this.walletService = walletService;
             this.userService = userService;
+            this.transactionService = transactionService;
         }
 
         public async Task<IActionResult> Add()
@@ -58,7 +61,10 @@
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            WalletOverviewViewModel viewModel = await walletService.GetWalletOverviewByUserIdAsync(this.User.GetId()!);
+            viewModel.TransactionHistory = await transactionService.GetTransactionHistoryByUserIdAsync(this.User.GetId()!);
+            
+            return View(viewModel);
         }
 
         private IActionResult GeneralError()
