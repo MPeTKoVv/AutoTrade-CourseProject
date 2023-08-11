@@ -14,11 +14,12 @@
 
 <h4>User: @Model.UserName</h4>
 <h4>Balance: @Model.Balance.ToString("N")€</h4>
+
 @if (hasCreditCard)
 {
 	CreditCardViewModel creditCardViewModel = await CreditCardService.GetCreditCardByIdAsync(Model.CreditCardId!);
 
-	<div class="text-right">
+	<div style="float:right">
 		<partial name="_CreditCardPartial" model="@creditCardViewModel" />
 	</div>
 }
@@ -29,6 +30,7 @@ else
 		   class="btn btn-primary">Add card</a>
 	</div>
 }
+
 <hr />
 
 <h3>Transaction History</h3>
