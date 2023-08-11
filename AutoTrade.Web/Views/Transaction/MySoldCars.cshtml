@@ -1,7 +1,7 @@
 ﻿@model List<CarAllViewModel>
 
 @{
-	ViewBag.Title = "My Cars For Sale";
+	ViewBag.Title = "My sold cars";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -9,7 +9,7 @@
 
 @if (!Model.Any())
 {
-	<h2 class="text-center">No cars for sale!</h2>
+	<h2 class="text-center">No sold cars!</h2>
 }
 
 <div class="row">
