@@ -11,6 +11,7 @@
 	bool isUserSeller = await SellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 	string userFullName = await UserService.GetFullNameByEmailAsync(this.User.Identity?.Name!);
 	bool hasWallet = await UserService.HasWalletByIdAsync(this.User.GetId()!);
+	string balance = await UserService.GetBalanceByIdAsync(this.User.GetId()!);
 }
 
 <ul class="navbar-nav">
@@ -26,16 +27,16 @@
 				<a class="nav-link text-dark" asp-area="" asp-controller="Seller" asp-action="Become">Become Seller</a>
 			</li>
 		}
-		@if (!hasWallet)
+		@if (hasWallet)
 		{
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="Wallet" asp-action="Add">Add wallet</a>
+				<a class="nav-link text-dark" asp-area="" asp-controller="Wallet" asp-action="Mine">Balance: @balance€</a>
 			</li>
 		}
 		else
 		{
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="Wallet" asp-action="Mine">My wallet</a>
+				<a class="nav-link text-dark" asp-area="" asp-controller="Wallet" asp-action="Add">Add wallet</a>
 			</li>
 		}
 

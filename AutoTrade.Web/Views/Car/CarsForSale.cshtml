@@ -1,11 +1,13 @@
 ﻿@model List<CarAllViewModel>
 
 @{
-	ViewBag.Title = "My Cars For Sale";
+	ViewBag.Title = "My cars for sale";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
+<partial name="_MyCarsButtons"/>
 
 @if (!Model.Any())
 {

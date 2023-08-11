@@ -39,20 +39,11 @@
 						@if (this.User.Identity?.IsAuthenticated ?? false)
 						{
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Mine">My Garage</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Mine">My Cars</a>
 							</li>
 
 							@if (isUserSeller)
 							{
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="CarsForSale">My Cars For Sale</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="MySoldCars">My sold cars</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="MyBoughtCars">My bought cars</a>
-								</li>
 								<li class="nav-item">
 									<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Add">Add Car</a>
 								</li>
