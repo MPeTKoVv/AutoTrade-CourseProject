@@ -6,8 +6,6 @@
 	using Interfaces;
 	using Web.Data;
 	using Web.ViewModels.Wallet;
-	using AutoTrade.Data.Configurations;
-	using Microsoft.AspNetCore.Identity;
 
 	public class WalletService : IWalletService
 	{

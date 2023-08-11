@@ -8,7 +8,6 @@
 	using Interfaces;
 	using Web.Data;
 	using Web.ViewModels.User;
-	using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 	public class UserService : IUserService
 	{
@@ -19,9 +18,34 @@
 			this.dbContext = dbContext;
 		}
 
-		public Task<IEnumerable<UserViewModel>> AllAsync()
+		public async Task<IEnumerable<UserViewModel>> AllAsync()
 		{
-			throw new NotImplementedException();
+			List<UserViewModel> allUsers = await dbContext
+				.Users
+				.Select(u => new UserViewModel
+				{
+					Id = u.Id.ToString(),
+					Email = u.Email,
+					FullName = u.FirstName + " " + u.LastName
+				})
+				.ToListAsync();
+
+			foreach (var user in allUsers)
+			{
+				Seller? seller = dbContext
+					.Sellers
+					.FirstOrDefault(s => s.UserId.ToString() == user.Id);
+				if (seller != null)
+				{
+					user.PhoneNumber = seller.PhoneNumber;
+				}
+				else
+				{
+					user.PhoneNumber = string.Empty;
+				}
+			}
+
+			return allUsers;
 		}
 
 		public async Task<string> GetBalanceByIdAsync(string id)
