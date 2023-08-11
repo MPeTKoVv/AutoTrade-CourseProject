@@ -2,9 +2,9 @@
 {
 	using Microsoft.EntityFrameworkCore;
 
+	using Mapping;
 	using AutoTrade.Data.Models;
 	using Interfaces;
-	using Mapping;
 	using Models.Car;
 	using Models.Statistics;
 	using Web.Data;
@@ -16,12 +16,10 @@
 	public class CarService : ICarService
 	{
 		private readonly AutoTradeDbContext dbContext;
-		private readonly ITransactionService transactionService;
 
-		public CarService(AutoTradeDbContext dbContext, ITransactionService transactionService)
+		public CarService(AutoTradeDbContext dbContext)
 		{
 			this.dbContext = dbContext;
-			this.transactionService = transactionService;
 		}
 		public async Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync()
 		{
@@ -276,14 +274,12 @@
 				.Users
 				.FirstAsync(u => u.Id.ToString() == userId);
 
-			await transactionService.RecordTransaction(carId, userId, car.SellerId.ToString()!);
-
 			car.IsForSale = false;
 			car.SellerId = null;
 			car.OwnerId = Guid.Parse(userId);
 			user.OwnedCars.Add(car);
 
-			dbContext.SaveChanges();
+			await dbContext.SaveChangesAsync();
 		}
 
 		public async Task CarForSaleAsync(string carId, string sellerId)
@@ -331,6 +327,28 @@
 			string ownerId = car.OwnerId.ToString()!;
 
 			return ownerId;
+		}
+
+		public async Task<decimal> GetPriceByIdAsync(string id)
+		{
+			Car car = await dbContext
+				.Cars
+				.FirstAsync(c => c.Id.ToString() == id);
+
+			decimal price = car.Price;
+
+			return price;
+		}
+
+		public async Task<string> GetSellerIdByCarIdAsync(string id)
+		{
+			Car car = await dbContext
+				.Cars
+				.FirstAsync(c => c.Id.ToString() == id);
+
+			string sellerId = car.SellerId.ToString()!;
+
+			return sellerId;
 		}
 	}
 }

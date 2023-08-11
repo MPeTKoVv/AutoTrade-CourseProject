@@ -20,8 +20,9 @@
 		private readonly ITransmissionService transmissionService;
 		private readonly ITransactionService transactionService;
 		private readonly IUserService userService;
+		private readonly IWalletService walletService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService, IUserService userService)
+		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService, IUserService userService, IWalletService walletService)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
@@ -30,6 +31,7 @@
 			this.transmissionService = transmissionService;
 			this.transactionService = transactionService;
 			this.userService = userService;
+			this.walletService = walletService;
 		}
 
 		[AllowAnonymous]
@@ -51,7 +53,7 @@
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
-			bool isAgent =await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+			bool isAgent = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 			if (!isAgent)
 			{
 				TempData[ErrorMessage] = "You must become a seller in order to add new cars!";
@@ -415,7 +417,6 @@
 
 			string userId = this.User.GetId()!;
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
-
 			if (isUserOwner)
 			{
 				TempData[ErrorMessage] = "You can not buy your cars!";
@@ -423,8 +424,32 @@
 				return RedirectToAction("All", "Car");
 			}
 
+			bool hasWallet = await userService.HasWalletByIdAsync(userId);
+			if (!hasWallet)
+			{
+				TempData[ErrorMessage] = "You do not have a wallet! Please, add and try again!";
+
+				return RedirectToAction("Index", "Home");
+			}
+
+			decimal userBalance = await walletService.GetBalanceByUserIdAsync(userId);
+			decimal carPrice = await carService.GetPriceByIdAsync(id);
+			bool hasEnoughMoney = userBalance >= carPrice;
+			if (!hasEnoughMoney)
+			{
+				TempData[ErrorMessage] = "You do not have enough money to buy this car! Please, withdraw and try again!";
+
+				return RedirectToAction("Mine", "Wallet");
+			}
+
 			try
 			{
+				string sellerId = await carService.GetSellerIdByCarIdAsync(id);
+				string ownerId = await carService.GetOwnerIdAsync(id);
+
+				await walletService.ReduceBalance(userId, carPrice);
+				await walletService.IncreaseBalance(ownerId, carPrice);
+				await transactionService.RecordTransaction(id, userId, sellerId!);
 				await this.carService.BuyCarAsync(id, userId);
 
 				TempData[SuccessMessage] = "The car was successfully bought!";
@@ -537,7 +562,7 @@
 			}
 
 			try
-			{           
+			{
 				string ownerId = await this.carService.GetOwnerIdAsync(id);
 
 				await this.carService.ReturnCarToGarageAsync(id);

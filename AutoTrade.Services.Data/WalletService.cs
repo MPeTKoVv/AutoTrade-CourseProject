@@ -6,6 +6,8 @@
 	using Interfaces;
 	using Web.Data;
 	using Web.ViewModels.Wallet;
+	using AutoTrade.Data.Configurations;
+	using Microsoft.AspNetCore.Identity;
 
 	public class WalletService : IWalletService
 	{
@@ -47,6 +49,17 @@
 
 			wallet.CreditCardId = null;
 			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task<decimal> GetBalanceByUserIdAsync(string userId)
+		{
+			Wallet wallet = await dbContext
+				.Wallets
+				.FirstAsync(w => w.UserId.ToString() == userId);
+
+			decimal balance = wallet.Balance;
+
+			return balance;
 		}
 
 		public async Task<string?> GetIdByUserIdAsync(string userId)
@@ -95,6 +108,26 @@
 			return result;
 		}
 
+		public async Task IncreaseBalance(string userId, decimal carPrice)
+		{
+			ApplicationUser user = await dbContext
+				.Users
+				.Include(u=>u.Wallet)
+				.FirstAsync(u => u.Id.ToString() == userId);
 
+			user.Wallet.Balance += carPrice;
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task ReduceBalance(string userId, decimal carPrice)
+		{
+			ApplicationUser user = await dbContext
+				.Users
+				.Include(u => u.Wallet)
+				.FirstAsync(u => u.Id.ToString() == userId);
+
+			user.Wallet.Balance -= carPrice;
+			await dbContext.SaveChangesAsync();
+		}
 	}
 }

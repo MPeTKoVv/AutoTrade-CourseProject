@@ -34,6 +34,12 @@
 				.OnDelete(DeleteBehavior.Restrict);
 
 			builder
+				.HasMany(c => c.Transactions)
+				.WithOne(t => t.Car)
+				.HasForeignKey(c => c.CarId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			builder
 				.Property(c => c.AddedOn)
 				.HasDefaultValueSql("GETDATE()");
 
@@ -46,7 +52,7 @@
 				.HasDefaultValue(true);
 
 			builder
-				.Property(c=>c.AddedOnForSale)
+				.Property(c => c.AddedOnForSale)
 				.HasDefaultValueSql("GETDATE()");
 
 			builder.HasData(this.GenerateCars());

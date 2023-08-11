@@ -42,5 +42,9 @@
 		Task ReturnCarToGarageAsync(string id);
 
 		Task<string> GetOwnerIdAsync(string carId);
+
+		Task<decimal> GetPriceByIdAsync(string id);
+
+		Task<string> GetSellerIdByCarIdAsync(string id);
 	}
 }
