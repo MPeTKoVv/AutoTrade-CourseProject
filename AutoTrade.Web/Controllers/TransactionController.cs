@@ -4,35 +4,39 @@
 	using Microsoft.AspNetCore.Authorization;
 
 	using Services.Data.Interfaces;
-	using ViewModels.Car;
 	using Infrastructure.Extensions;
+	using ViewModels.Transaction;
 
 	using static Common.NotificationMessagesConstants;
+	using NuGet.Packaging;
 
 	[Authorize]
 	public class TransactionController : Controller
 	{
 		private readonly ISellerService sellerService;
 		private readonly ICarService carService;
+		private readonly ITransactionService transactionService;
 
-		public TransactionController(ISellerService sellerService, ICarService carService)
+		public TransactionController(ISellerService sellerService, ICarService carService, ITransactionService transactionService)
 		{
 			this.sellerService = sellerService;
 			this.carService = carService;
+			this.transactionService = transactionService;
 		}
 
 		public async Task<IActionResult> MySoldCars()
 		{
-			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
+			List<TransactionSoldAndBoughtCarsViewModel> soldCars = new List<TransactionSoldAndBoughtCarsViewModel>();
+			soldCars.AddRange(await this.transactionService.GetSoldCarsByUserIdAsync(this.User.GetId()!));
 
-			return View(myCars);
+			return View(soldCars);
 		}
 
 		public async Task<IActionResult> MyBoughtCars()
 		{
-			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
-
-			return View(myCars);
+			List<TransactionSoldAndBoughtCarsViewModel> boughtCars = new List<TransactionSoldAndBoughtCarsViewModel>();
+			boughtCars.AddRange(await transactionService.GetBoughtCarsByUserIdAsync(this.User.GetId()!));
+			return View(boughtCars);
 		}
 
 		private IActionResult GeneralError()

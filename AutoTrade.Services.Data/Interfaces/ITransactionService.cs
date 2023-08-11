@@ -7,5 +7,9 @@ namespace AutoTrade.Services.Data.Interfaces
 		Task RecordTransaction(string carId, string buyerId, string sellerId);
 
 		Task<IEnumerable<TransactionAllViewModel>> GetTransactionHistoryByUserIdAsync(string userId);
+
+		Task<IEnumerable<TransactionSoldAndBoughtCarsViewModel>> GetSoldCarsByUserIdAsync(string userId);
+
+		Task<IEnumerable<TransactionSoldAndBoughtCarsViewModel>> GetBoughtCarsByUserIdAsync(string userId);
 	}
 }

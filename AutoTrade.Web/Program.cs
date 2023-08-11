@@ -15,6 +15,7 @@ namespace AutoTrade.Web
 	using Web.Infrastructure.ModelBinders;
 
 	using static Common.GeneralApplicationConstants;
+	using AutoTrade.Web.Hubs;
 
 	public class Program
 	{
@@ -52,7 +53,8 @@ namespace AutoTrade.Web
 					options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
 					options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 				});
-			
+			//builder.Services.AddSignalR();
+
 			WebApplication app = builder.Build();
 
 			AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
@@ -85,6 +87,7 @@ namespace AutoTrade.Web
 
 			app.MapDefaultControllerRoute();
 			app.MapRazorPages();
+			//app.MapHub<ChatHub>("/Chat");
 
 			app.Run();
 		}

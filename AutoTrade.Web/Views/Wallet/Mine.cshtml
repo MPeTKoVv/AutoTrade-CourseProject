@@ -6,40 +6,14 @@
 	ViewBag.Title = "Wallet Overview";
 
 	bool hasCreditCard = await WalletService.HasCreditCardByIdAsync(Model.WalletId.ToString());
+	string userId = Model.UserId.ToString();
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<p>User: @Model.UserName</p>
-<p>Balance: @Model.Balance.ToString("N3")€</p>
-
-<h3>Transaction History</h3>
-<table>
-	<tr>
-		<th>Date</th>
-		<th>Amount</th>
-		<th>From</th>
-		<th>To</th>
-	</tr>
-	@foreach (var transaction in Model.TransactionHistory)
-	{
-		<tr>
-			<td>@transaction.Date.ToShortDateString()</td>
-			@if (transaction.BuyerId.ToLower() == Model.UserId)
-			{
-				<td>-@transaction.Amount.ToString("N3")€</td>
-			}
-			else
-			{
-				<td>+@transaction.Amount.ToString("N3")€</td>
-			}
-			<td>@transaction.BuyerFullName</td>
-			<td>@transaction.SellerFullName</td>
-		</tr>
-	}
-</table>
-
+<h4>User: @Model.UserName</h4>
+<h4>Balance: @Model.Balance.ToString("N")€</h4>
 @if (hasCreditCard)
 {
 	CreditCardViewModel creditCardViewModel = await CreditCardService.GetCreditCardByIdAsync(Model.CreditCardId!);
@@ -55,3 +29,34 @@ else
 		   class="btn btn-primary">Add card</a>
 	</div>
 }
+<hr />
+
+<h3>Transaction History</h3>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">From</th>
+			<th scope="col">To</th>
+			<th scope="col">Amount</th>
+			<th scope="col">Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var transaction in Model.TransactionHistory)
+		{
+			<tr>
+				<th>@transaction.BuyerFullName</th>
+				<th>@transaction.SellerFullName</th>
+				@if (transaction.BuyerId == userId)
+				{
+					<th class="table-danger">-@transaction.Amount.ToString("N")€</th>
+				}
+				else
+				{
+					<th class="table-success">+@transaction.Amount.ToString("N")€</th>
+				}
+				<th>@transaction.Date.ToShortDateString()</th>
+			</tr>
+		}
+	</tbody>
+</table>
