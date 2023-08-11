@@ -3,7 +3,7 @@
 	using Microsoft.AspNetCore.Mvc;
 
 	using Services.Data.Interfaces;
-	using Web.ViewModels.Home;
+	using ViewModels.Home;
 
 	public class HomeController : Controller
 	{

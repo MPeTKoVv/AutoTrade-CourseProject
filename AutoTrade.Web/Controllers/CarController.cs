@@ -5,8 +5,8 @@
 
 	using Services.Data.Interfaces;
 	using Services.Data.Models.Car;
-	using Web.ViewModels.Car;
-	using Web.Infrastructure.Extensions;
+	using ViewModels.Car;
+	using Infrastructure.Extensions;
 
 	using static Common.NotificationMessagesConstants;
 
@@ -373,8 +373,6 @@
 
 		public async Task<IActionResult> CarsForSale()
 		{
-			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
-
 			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 			if (!sellerExists && !this.User.IsAdmin())
 			{
@@ -383,6 +381,7 @@
 				return RedirectToAction("Become", "Seller");
 			}
 
+			List<CarAllViewModel> myCars = new List<CarAllViewModel>();
 			try
 			{
 				string sellerId = await this.sellerService.GetSellerIdByUserIdAsync(this.User.GetId()!);
@@ -545,7 +544,6 @@
 
 			string userId = this.User.GetId()!;
 			bool isUserOwner = await carService.IsUserWithIdOwnerOfCarWithIdAsync(id, userId);
-
 			if (!isUserOwner && !this.User.IsAdmin())
 			{
 				TempData[ErrorMessage] = "You can only add for sell your cars!";

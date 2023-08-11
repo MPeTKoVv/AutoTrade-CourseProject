@@ -4,7 +4,6 @@
 
 	using Microsoft.EntityFrameworkCore;
 
-	using Mapping;
 	using Interfaces;
 	using AutoTrade.Data.Models;
 	using Web.Data;

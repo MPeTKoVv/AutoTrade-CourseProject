@@ -8,7 +8,7 @@
 	using Services.Data.Interfaces;
 	using Web.Infrastructure.Extensions;
 	using Web.ViewModels.Seller;
-	
+
 	using static Common.NotificationMessagesConstants;
 
 	[Authorize]
@@ -64,12 +64,17 @@
 			}
 			catch (Exception)
 			{
-				TempData[ErrorMessage] = "Unexpected error occurred while registering you as a seller! Please try again later or contact administrator.";
-
-				return RedirectToAction("Index", "Home");
+				GeneralError();
 			}
 
 			return RedirectToAction("All", "Car");
+		}
+
+		private IActionResult GeneralError()
+		{
+			TempData[ErrorMessage] = "Unexpected error occurred while registering you as a seller! Please try again later or contact administrator.";
+
+			return RedirectToAction("Index", "Home");
 		}
 	}
 }

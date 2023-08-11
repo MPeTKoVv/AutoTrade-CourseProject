@@ -1,28 +1,28 @@
 ﻿namespace AutoTrade.Services.Data
 {
-    using System.Threading.Tasks;
+	using System.Threading.Tasks;
 
-    using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore;
 
 	using AutoTrade.Data.Models;
-    using Interfaces;
-    using Web.Data;
+	using Interfaces;
+	using Web.Data;
 	using Web.ViewModels.CreditCard;
 
-    public class CreditCardService : ICreditCardService
-    {
+	public class CreditCardService : ICreditCardService
+	{
 		private readonly AutoTradeDbContext dbContext;
 
-        public CreditCardService(AutoTradeDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+		public CreditCardService(AutoTradeDbContext dbContext)
+		{
+			this.dbContext = dbContext;
+		}
 
 		public async Task<bool> CardBelongsToUserByIdAsync(string id, string userId)
 		{
 			ApplicationUser user = await dbContext
 				.Users
-				.Include(u=>u.Wallet)
+				.Include(u => u.Wallet)
 				.FirstAsync(u => u.Id.ToString() == userId);
 
 			bool result = user.Wallet.CreditCardId.ToString() == id;
@@ -81,18 +81,18 @@
 			return viewModel;
 		}
 
-        public async Task<decimal> WithdrawByIdAsync(WithdrawMoneyFormModel formModel, string id)
-        {
+		public async Task<decimal> WithdrawByIdAsync(WithdrawMoneyFormModel formModel, string id)
+		{
 			decimal money = formModel.Money;
 
 			Wallet wallet = await dbContext
 				.Wallets
-				.FirstAsync(w => w.CreditCardId.ToString()== id);
+				.FirstAsync(w => w.CreditCardId.ToString() == id);
 
 			wallet.Balance += money;
 			await dbContext.SaveChangesAsync();
 
 			return money;
-        }
-    }
+		}
+	}
 }

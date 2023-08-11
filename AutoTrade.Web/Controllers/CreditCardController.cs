@@ -4,11 +4,10 @@
 	using Microsoft.AspNetCore.Authorization;
 
 	using Services.Data.Interfaces;
-	using Web.ViewModels.CreditCard;
-	using Web.Infrastructure.Extensions;
+	using ViewModels.CreditCard;
+	using Infrastructure.Extensions;
 
 	using static Common.NotificationMessagesConstants;
-    using System.Security.Cryptography;
 
     [Authorize]
 	public class CreditCardController : Controller
@@ -77,7 +76,7 @@
 			try
 			{
 				string creditCardId = await creditCardService.CreateAndReturnIdAsync(formModel, walletId!);
-				await walletService.AddCreditCardByIdAndWalletIdAsync(walletId, creditCardId);
+				await walletService.AddCreditCardByIdAndWalletIdAsync(walletId!, creditCardId);
 
 				TempData[SuccessMessage] = "Credit card was added successfully!";
 			}

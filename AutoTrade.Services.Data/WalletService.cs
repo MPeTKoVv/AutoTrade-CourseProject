@@ -103,7 +103,7 @@
 				.Wallets
 				.FirstAsync(w => w.Id.ToString() == id);
 
-			bool result = wallet.CreditCardId.HasValue;
+			bool result = wallet.CreditCardId.ToString() == id;
 
 			return result;
 		}

@@ -8,26 +8,39 @@
 	using ViewModels.Transaction;
 
 	using static Common.NotificationMessagesConstants;
-	using NuGet.Packaging;
 
 	[Authorize]
 	public class TransactionController : Controller
 	{
 		private readonly ISellerService sellerService;
-		private readonly ICarService carService;
 		private readonly ITransactionService transactionService;
 
-		public TransactionController(ISellerService sellerService, ICarService carService, ITransactionService transactionService)
+		public TransactionController(ISellerService sellerService, ITransactionService transactionService)
 		{
 			this.sellerService = sellerService;
-			this.carService = carService;
 			this.transactionService = transactionService;
 		}
 
 		public async Task<IActionResult> MySoldCars()
 		{
+			bool sellerExists = await this.sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+			if (!sellerExists)
+			{
+				TempData[ErrorMessage] = "You have to be a seller in order to see your sold cars!";
+
+				return RedirectToAction("Become", "Seller");
+			}
+
 			List<TransactionSoldAndBoughtCarsViewModel> soldCars = new List<TransactionSoldAndBoughtCarsViewModel>();
-			soldCars.AddRange(await this.transactionService.GetSoldCarsByUserIdAsync(this.User.GetId()!));
+
+			try
+			{
+				soldCars.AddRange(await this.transactionService.GetSoldCarsByUserIdAsync(this.User.GetId()!));
+			}
+			catch (Exception)
+			{
+				GeneralError();
+			}
 
 			return View(soldCars);
 		}
@@ -35,7 +48,15 @@
 		public async Task<IActionResult> MyBoughtCars()
 		{
 			List<TransactionSoldAndBoughtCarsViewModel> boughtCars = new List<TransactionSoldAndBoughtCarsViewModel>();
-			boughtCars.AddRange(await transactionService.GetBoughtCarsByUserIdAsync(this.User.GetId()!));
+
+			try
+			{
+				boughtCars.AddRange(await transactionService.GetBoughtCarsByUserIdAsync(this.User.GetId()!));
+			}
+			catch (Exception)
+			{
+				GeneralError();
+			}
 			return View(boughtCars);
 		}
 
