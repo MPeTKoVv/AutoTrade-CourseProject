@@ -2,6 +2,7 @@
 {
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.Extensions.Caching.Memory;
 
 	using Services.Data.Interfaces;
 	using Services.Data.Models.Car;
@@ -9,6 +10,7 @@
 	using Infrastructure.Extensions;
 
 	using static Common.NotificationMessagesConstants;
+	using static Common.GeneralApplicationConstants;
 
 	[Authorize]
 	public class CarController : Controller
@@ -22,7 +24,9 @@
 		private readonly IUserService userService;
 		private readonly IWalletService walletService;
 
-		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService, IUserService userService, IWalletService walletService)
+		private readonly IMemoryCache memoryCache;
+
+		public CarController(ICarService carService, ISellerService sellerService, ICategoryService categoryService, IEngineService engineService, ITransmissionService transmissionService, ITransactionService transactionService, IUserService userService, IWalletService walletService, IMemoryCache memoryCache)
 		{
 			this.carService = carService;
 			this.sellerService = sellerService;
@@ -32,6 +36,8 @@
 			this.transactionService = transactionService;
 			this.userService = userService;
 			this.walletService = walletService;
+
+			this.memoryCache = memoryCache;
 		}
 
 		[AllowAnonymous]
@@ -344,13 +350,13 @@
 				await this.carService.DeleteCarByIdAsync(id);
 
 				TempData[WarningMessage] = "The car was successfully deleted!";
-
-				return RedirectToAction("Mine", "Car");
 			}
 			catch (Exception)
 			{
 				return RedirectToAction("All", "Car");
 			}
+
+			return RedirectToAction("Mine", "Car");
 		}
 
 		public async Task<IActionResult> Mine()
@@ -457,6 +463,8 @@
 			{
 				GeneralError();
 			}
+
+			this.memoryCache.Remove(TransactionsCacheKey);
 
 			return RedirectToAction("Mine", "Car");
 		}
