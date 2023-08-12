@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrade.Services.Data.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrade.WebApi", "AutoTrade.WebApi\AutoTrade.WebApi.csproj", "{64488056-8527-4F32-A809-5519E0C7B1E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrade.Services.Mapping", "AutoTrade.Services.Mapping\AutoTrade.Services.Mapping.csproj", "{37D02C2E-E176-488C-B7E0-85AAA2391165}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrade.Services.Mapping", "AutoTrade.Services.Mapping\AutoTrade.Services.Mapping.csproj", "{37D02C2E-E176-488C-B7E0-85AAA2391165}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

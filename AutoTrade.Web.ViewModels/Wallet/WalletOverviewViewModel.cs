@@ -13,6 +13,6 @@
         public decimal Balance { get; set; }
 
         public string? CreditCardId { get; set; }
-        public IEnumerable<TransactionAllViewModel> TransactionHistory { get; set; } = null!;
+        public IEnumerable<TransactionViewModel> TransactionHistory { get; set; } = null!;
     }
 }

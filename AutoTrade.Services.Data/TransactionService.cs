@@ -8,6 +8,7 @@
 	using AutoTrade.Data.Models;
 	using Web.Data;
 	using Web.ViewModels.Transaction;
+	using AutoTrade.Services.Mapping;
 
 	public class TransactionService : ITransactionService
 	{
@@ -16,6 +17,20 @@
 		public TransactionService(AutoTradeDbContext dbContext)
 		{
 			this.dbContext = dbContext;
+		}
+
+		public async Task<IEnumerable<TransactionViewModel>> AllAsync()
+		{
+			IEnumerable<TransactionViewModel> transactions = await dbContext
+				.Transactions
+				.OrderByDescending(t => t.TransactionDate)
+				.Include(t => t.Seller)
+				.ThenInclude(s => s.User)
+				.Include(t => t.Buyer)
+				.To<TransactionViewModel>()
+				.ToListAsync();
+
+			return transactions;
 		}
 
 		public async Task<IEnumerable<TransactionSoldAndBoughtCarsViewModel>> GetBoughtCarsByUserIdAsync(string userId)
@@ -65,16 +80,16 @@
 			return soldCars;
 		}
 
-		public async Task<IEnumerable<TransactionAllViewModel>?> GetTransactionHistoryByUserIdAsync(string userId)
+		public async Task<IEnumerable<TransactionViewModel>?> GetTransactionHistoryByUserIdAsync(string userId)
 		{
-			IEnumerable<TransactionAllViewModel> allTransactions = await dbContext
+			IEnumerable<TransactionViewModel> allTransactions = await dbContext
 				.Transactions
 				.OrderByDescending(t => t.TransactionDate)
 				.Include(t => t.Buyer)
 				.Include(t => t.Seller)
 				.ThenInclude(s => s.User)
 				.Where(t => t.BuyerId.ToString() == userId || t.Seller.UserId.ToString() == userId)
-				.Select(t => new TransactionAllViewModel
+				.Select(t => new TransactionViewModel
 				{
 					Id = t.Id.ToString(),
 					Amount = t.Amount,
@@ -118,5 +133,6 @@
 			await dbContext.Transactions.AddAsync(transaction);
 			await dbContext.SaveChangesAsync();
 		}
+
 	}
 }

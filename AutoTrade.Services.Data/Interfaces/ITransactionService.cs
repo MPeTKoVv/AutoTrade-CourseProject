@@ -1,15 +1,18 @@
-﻿using AutoTrade.Web.ViewModels.Transaction;
-
-namespace AutoTrade.Services.Data.Interfaces
+﻿namespace AutoTrade.Services.Data.Interfaces
 {
+	using AutoTrade.Web.ViewModels.Transaction;
+
 	public interface ITransactionService
 	{
+		Task<IEnumerable<TransactionViewModel>> AllAsync();
+
 		Task RecordTransaction(string carId, string buyerId, string sellerId);
 
-		Task<IEnumerable<TransactionAllViewModel>> GetTransactionHistoryByUserIdAsync(string userId);
+		Task<IEnumerable<TransactionViewModel>> GetTransactionHistoryByUserIdAsync(string userId);
 
 		Task<IEnumerable<TransactionSoldAndBoughtCarsViewModel>> GetSoldCarsByUserIdAsync(string userId);
 
 		Task<IEnumerable<TransactionSoldAndBoughtCarsViewModel>> GetBoughtCarsByUserIdAsync(string userId);
+
 	}
 }
