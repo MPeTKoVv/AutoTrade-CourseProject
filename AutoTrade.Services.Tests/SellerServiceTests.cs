@@ -2,13 +2,11 @@ namespace AutoTrade.Services.Tests
 {
 	using Microsoft.EntityFrameworkCore;
 	
+	using Data;
+	using Data.Interfaces;
 	using AutoTrade.Web.Data;
 
 	using static DatabaseSeeder;
-	using AutoTrade.Services.Data.Interfaces;
-	using NUnit.Framework.Constraints;
-	using AutoTrade.Services.Data;
-	using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 	public class SellerServiceTests
 	{
