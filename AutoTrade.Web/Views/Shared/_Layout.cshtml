@@ -38,15 +38,15 @@
 						</li>
 						@if (this.User.Identity?.IsAuthenticated ?? false)
 						{
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Mine">My Cars</a>
-								</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Mine">My Cars</a>
+							</li>
 
 							@if (isUserSeller)
 							{
-										<li class="nav-item">
-											<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Add">Add Car</a>
-										</li>
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Add">Add Car</a>
+								</li>
 							}
 						}
 					</ul>

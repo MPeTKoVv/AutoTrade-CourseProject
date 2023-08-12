@@ -13,7 +13,6 @@
         public AutoTradeDbContext(DbContextOptions<AutoTradeDbContext> options)
             : base(options)
         {
-
         }
 
         public DbSet<Category> Categories { get; set; } = null!;
