@@ -8,6 +8,7 @@ namespace AutoTrade.Services.Tests
 	using AutoTrade.Services.Data.Interfaces;
 	using NUnit.Framework.Constraints;
 	using AutoTrade.Services.Data;
+	using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 	public class SellerServiceTests
 	{
@@ -43,7 +44,7 @@ namespace AutoTrade.Services.Tests
 
 		[Test]
 		public async Task SellerExistsByUserIdAsyncShoudReturnFalseWhenNotExists()
-		{
+		{ 
 			string existingSellerUserId = BuyerUser.Id.ToString();
 
 			bool result = await this.sellerService.SellerExistsByUserIdAsync(existingSellerUserId);
@@ -51,5 +52,35 @@ namespace AutoTrade.Services.Tests
 			Assert.IsFalse(result);
 		}
 
+		[Test]
+		public async Task SellerExistsByPhoneNumberAsyncShoudReturnTrueWhenExists()
+		{
+			string phoneNumebr = Seller.PhoneNumber;
+
+			bool result = await this.sellerService.SellerExistsByPhoneNumberAsync(phoneNumebr);
+
+			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public async Task SellerExistsByPhoneNumberAsyncShoudReturnFalseWhenNotExists()
+		{
+			string phoneNumebr = "+359999999999";
+
+			bool result = await this.sellerService.SellerExistsByUserIdAsync(phoneNumebr);
+
+			Assert.IsFalse(result);
+		}
+
+		[Test]
+		public async Task GetSellerIdByUserIdAsyncShoudReturnTrueWhenExists()
+		{
+			string expected = Seller.Id.ToString();
+			
+			string sellerUserId = SellerUser.Id.ToString();
+			string actual = await this.sellerService.GetSellerIdByUserIdAsync(sellerUserId);
+
+			Assert.AreEqual(expected, actual);
+		}
 	}
 }
