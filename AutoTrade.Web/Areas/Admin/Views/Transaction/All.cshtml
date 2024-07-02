@@ -1,0 +1,37 @@
+﻿@using AutoTrade.Web.ViewModels.Transaction;
+@model IEnumerable<TransactionViewModel>
+@{
+	ViewBag.Title = "All transactions";
+	int count = 1;
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><label>#</label></th>
+			<th><label>Seller</label></th>
+			<th><label>Seller Email</label></th>
+			<th><label>Car</label></th>
+			<th><label>Amount</label></th>
+			<th><label>Buyer</label></th>
+			<th><label>Buyer Email</label></th>
+			<th><label>Date</label></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var transaction in Model)
+		{
+			<tr>
+				<td><label>@(count++)</label></td>
+				<td><label>@transaction.SellerFullName</label></td>
+				<td><label>@transaction.SellerEmail</label></td>
+				<td><label>@transaction.CarMakeAndModel</label></td>
+				<td><label>@transaction.Amount.ToString("N")€</label></td>
+				<td><label>@transaction.BuyerFullName</label></td>
+				<td><label>@transaction.BuyerEmail</label></td>
+				<td><label>@transaction.Date</label></td>
+			</tr>
+		}
+	</tbody>
+</table>

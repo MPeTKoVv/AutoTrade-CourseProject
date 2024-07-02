@@ -1,0 +1,15 @@
+﻿@*@using static AutoTrade.Common.GeneralApplicationConstants;
+@{
+
+    if (this.User.IsInRole(AdminRoleName))
+    {
+        Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+    }
+}*@
+
+@{
+        Layout = "_Layout";
+}

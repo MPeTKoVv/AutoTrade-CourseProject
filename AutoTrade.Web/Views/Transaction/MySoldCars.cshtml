@@ -1,0 +1,42 @@
+﻿@using AutoTrade.Web.ViewModels.Transaction;
+@model List<TransactionSoldAndBoughtCarsViewModel>
+@{
+	ViewBag.Title = "My sold cars";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<partial name="_MyCarsButtons" />
+
+@if (!Model.Any())
+{
+	<h2 class="text-center">No sold cars!</h2>
+}
+else
+{
+	<h3>Sold cars history</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Make</th>
+				<th scope="col">Model</th>
+				<th scope="col">Buyer</th>
+				<th scope="col">Price</th>
+				<th scope="col">Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var transaction in Model)
+			{
+				<tr>
+					<th>@transaction.CarMake</th>
+					<th>@transaction.CarModel</th>
+					<th>@transaction.BuyerFullName</th>
+					<th>@transaction.Amount</th>
+					<th>@transaction.Date.ToShortDateString()</th>
+				</tr>
+			}
+		</tbody>
+	</table>
+}

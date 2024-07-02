@@ -1,0 +1,64 @@
+﻿@using AutoTrade.Services.Data.Interfaces;
+@model WalletOverviewViewModel
+@inject IWalletService WalletService;
+@inject ICreditCardService CreditCardService;
+@{
+	ViewBag.Title = "Wallet Overview";
+
+	bool hasCreditCard = await WalletService.HasCreditCardByIdAsync(Model.WalletId.ToString());
+	string userId = Model.UserId.ToString();
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<h4>User: @Model.UserName</h4>
+<h4>Balance: @Model.Balance.ToString("N")€</h4>
+
+@if (hasCreditCard)
+{
+	CreditCardViewModel creditCardViewModel = await CreditCardService.GetCreditCardByIdAsync(Model.CreditCardId!);
+
+	<div style="float:right">
+		<partial name="_CreditCardPartial" model="@creditCardViewModel" />
+	</div>
+}
+else
+{
+	<div>
+		<a asp-controller="CreditCard" asp-action="Add"
+		   class="btn btn-primary">Add card</a>
+	</div>
+}
+
+<hr />
+
+<h3>Transaction History</h3>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">From</th>
+			<th scope="col">To</th>
+			<th scope="col">Amount</th>
+			<th scope="col">Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var transaction in Model.TransactionHistory)
+		{
+			<tr>
+				<th>@transaction.BuyerFullName</th>
+				<th>@transaction.SellerFullName</th>
+				@if (transaction.BuyerId == userId)
+				{
+					<th class="table-danger">-@transaction.Amount.ToString("N")€</th>
+				}
+				else
+				{
+					<th class="table-success">+@transaction.Amount.ToString("N")€</th>
+				}
+				<th>@transaction.Date.ToShortDateString()</th>
+			</tr>
+		}
+	</tbody>
+</table>

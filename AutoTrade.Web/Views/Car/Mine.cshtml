@@ -1,0 +1,21 @@
+﻿@model List<CarAllViewModel>
+
+@{
+	ViewBag.Title = "Garage";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<partial name="_MyCarsButtons"/>
+
+@if (!Model.Any())
+{
+	<h2 class="text-center">You do not have any cars yet!</h2>
+}
+
+<div class="row">
+	@foreach (var car in Model)
+	{
+		<partial name="_CarPartial" model="@car" />
+	}
+</div>

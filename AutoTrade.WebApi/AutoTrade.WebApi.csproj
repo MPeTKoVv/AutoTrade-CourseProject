@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>da558894-2aff-4c00-9be6-7f6ab58c009d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutoTrade.Common\AutoTrade.Common.csproj" />
+    <ProjectReference Include="..\AutoTrade.Services.Data.Models\AutoTrade.Services.Data.Models.csproj" />
+    <ProjectReference Include="..\AutoTrade.Services.Data\AutoTrade.Services.Data.csproj" />
+    <ProjectReference Include="..\AutoTrade.Web.Infrstructure\AutoTrade.Web.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
