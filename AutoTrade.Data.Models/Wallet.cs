@@ -7,6 +7,7 @@
 		public Wallet()
 		{
 			this.Id = Guid.NewGuid();
+			Balance = 10000m;
 			this.Transactions = new HashSet<Transaction>();
 		}
 

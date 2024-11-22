@@ -9,7 +9,7 @@
 	{
 		Task<IEnumerable<IndexViewModel>> AllCarsOrderedByAddedOnDescendingAsync();
 
-		Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId);
+		Task CreateAndReturnIdAsync(CarFormModel carViewModel, string sellerId, string userId);
 
 		Task<AllCarsFilteredAndPagedServiceModel> AllAsync(AllCarsQueryModel queryModel);
 

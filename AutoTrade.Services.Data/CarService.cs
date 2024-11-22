@@ -130,11 +130,12 @@
 			return carsForSale;
 		}
 
-		public async Task CreateAndReturnIdAsync(CarFormModel formModel, string sellerId)
+		public async Task CreateAndReturnIdAsync(CarFormModel formModel, string sellerId, string ownerId)
 		{
 			Car newCar = AutoMapperConfig.MapperInstance.Map<Car>(formModel);
 			newCar.AddedOn = DateTime.UtcNow;
 			newCar.SellerId = Guid.Parse(sellerId);
+			newCar.OwnerId = Guid.Parse(ownerId);
 
 			await dbContext.Cars.AddAsync(newCar);
 			await dbContext.SaveChangesAsync();

@@ -100,10 +100,10 @@
 				ModelState.AddModelError(nameof(carFormModel.TransmissionId), "Selected transmission does not exist!");
 			}
 
-			bool engineTypeExists = await engineService.ExistsByIdAsync(carFormModel.EngineTypeId);
+			bool engineTypeExists = await engineService.ExistsByIdAsync(carFormModel.EngineId);
 			if (!engineTypeExists)
 			{
-				ModelState.AddModelError(nameof(carFormModel.EngineTypeId), "Selected engine type does not exist!");
+				ModelState.AddModelError(nameof(carFormModel.EngineId), "Selected engine type does not exist!");
 			}
 
 			if (!ModelState.IsValid)
@@ -120,7 +120,9 @@
 				string? sellerId =
 					await sellerService.GetSellerIdByUserIdAsync(User.GetId()!);
 
-				await carService.CreateAndReturnIdAsync(carFormModel, sellerId!);
+                string userId = this.User.GetId()!;
+
+                await carService.CreateAndReturnIdAsync(carFormModel, sellerId!, userId!);
 
 				TempData[SuccessMessage] = "Car was added successfully!";
 
@@ -130,8 +132,10 @@
 			{
 				ModelState.AddModelError(string.Empty, "Unexpected error occurred while trying to add your new house! Please try again later or contact administrator!");
 				carFormModel.Categories = await categoryService.AllCategoriesAsync();
+				carFormModel.EngineTypes = await engineService.AllEngineTypesAsync();
+				carFormModel.Transmissions = await transmissionService.AllTransmissionsAsync();
 
-				return View(carFormModel);
+                return View(carFormModel);
 			}
 		}
 

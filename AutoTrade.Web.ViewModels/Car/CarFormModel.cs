@@ -48,7 +48,7 @@
 		public int CategoryId { get; set; }
 
 		[Display(Name = "Engine Type")]
-		public int EngineTypeId { get; set; }
+		public int EngineId { get; set; }
 
 		[Display(Name = "Transmission")]
 		public int TransmissionId { get; set; }
@@ -65,7 +65,8 @@
 		{
 			configuration.CreateMap<CarFormModel, Car>()
 				.ForMember(d => d.AddedOn, opt => opt.Ignore())
-				.ForMember(d => d.SellerId, opt => opt.Ignore());
+				.ForMember(d => d.SellerId, opt => opt.Ignore())
+				.ForMember(d=> d.OwnerId, opt => opt.Ignore());
 		}
 	}
 }

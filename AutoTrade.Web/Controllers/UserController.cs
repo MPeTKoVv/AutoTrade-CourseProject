@@ -43,6 +43,7 @@
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                Wallet = new Wallet()
             };
 
             await this.userManager.SetEmailAsync(user, model.Email);
