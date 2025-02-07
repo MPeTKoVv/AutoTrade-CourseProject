@@ -17,5 +17,5 @@ A course project built with ASP.NET Core MVC to manage car sales and dealership 
 ## **🚀 Key Features**
 - Vehicle Inventory Management: CRUD operations for cars, trucks, and motorcycles.
 - Sales Transactions: Record purchases with customer and vehicle details.
-- User Roles: Admin, Salesperson, and Customer roles (if authentication is enabled).
+- User Roles: Admin, Salesperson, and Customer roles.
 - Reporting: Generate PDF/Excel reports for sales and inventory.
